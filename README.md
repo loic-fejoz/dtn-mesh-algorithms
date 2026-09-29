@@ -174,6 +174,7 @@ L'évaluation de la politique Rego produit un ensemble d'actions directes pour l
    - [Article 6 — Réseaux Maillés Proactifs et Hybridation MANET-DTN : AREDN, Babel (RFC 8966) et l'Architecture HYMAD sous Open Policy Agent](./article-6-babel-aredn.md) (Routage Bellman-Ford sans boucle, distance de faisabilité, métriques radio ETX et bascule vers les transporteurs DTN inter-îlots).
    - [Article 7 — Routage par Graphe de Contacts Déterministe : Contact Graph Routing (CGR / SABR - RFC 8877) sous Open Policy Agent](./article-7-cgr.md) (Réseaux orbitaux et spatiaux, plan de contacts déterministe, Time-Expanded Dijkstra, EDT et drop précoce si dépassement de lifetime).
    - [Article 8 — Routage Géographique et Geocasting en DTN : GeoDTN et Greedy-Carry-and-Forward sous Open Policy Agent](./article-8-geodtn.md) (Progression gloutonne MFR, contournement des impasses par Store-Carry-and-Forward, Geocasting délimité par facette `spatial_scope`).
+   - [Article 9 — Synthèse Architecturale : Routage DTN Piloté par Politiques OPA, Bloc d'Extension Modulaire et Unification du Plan de Contrôle](./article-9-synthese-architecture.md) (Découplage OPA/moteur DTN, réconciliation des messages de contrôle, builtins natifs Rego indispensables, retombées terrain/recherche, et alignement IETF/NASA avec ION SNW, bp-sand, ECOS et BPQ).
 
 2. **Spécifications formelles (CDDL) :**
    - [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl) : Format filaire générique du bloc de routage mesh (Type 200) et schéma complet de l'environnement d'évaluation OPA.

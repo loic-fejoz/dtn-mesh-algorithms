@@ -284,4 +284,4 @@ La combinaison du **Bundle Protocol version 7 ([RFC 9171](https://www.rfc-editor
 
 ---
 
-🏁 **Fin de la série :** [Consulter le sommaire complet et les spécifications formelles](./README.md)
+👉 **Article suivant (Synthèse & Perspectives) :** [Article 9 — Synthèse Architecturale : Routage DTN Piloté par Politiques OPA, Bloc d'Extension Modulaire et Unification du Plan de Contrôle](./article-9-synthese-architecture.md)
