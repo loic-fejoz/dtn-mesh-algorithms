@@ -9,7 +9,7 @@
 > - [Article 4 — Routage Probabiliste et Gestion de Mémoire sous Contrainte : MaxProp et ses Optimisations Théoriques (HP-MaxProp)](./article-4-maxprop.md)  
 > - [Article 5 — Routage Hybride, Vecteur de Distance et Adressage Cryptographique : Reticulum (RNS) transposé en DTN](./article-5-reticulum.md)  
 > - [Article 6 — Réseaux Maillés Proactifs et Hybridation MANET-DTN : AREDN, Babel (RFC 8966) et l'Architecture HYMAD sous Open Policy Agent](./article-6-babel-aredn.md)  
-> - [Article 7 — Le Routage Déterministe Spatial : Contact Graph Routing (CGR / SABR - RFC 8877) sous Open Policy Agent](./article-7-cgr.md)  
+> - [Article 7 — Le Routage Déterministe Spatial : Contact Graph Routing (CGR / SABR - CCSDS 734.3-B-1) sous Open Policy Agent](./article-7-cgr.md)  
 > **Spécifications CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl), [maxprop.cddl](./maxprop.cddl), [reticulum.cddl](./reticulum.cddl), [babel.cddl](./babel.cddl) & [cgr.cddl](./cgr.cddl)  
 > **Code des politiques :** [policies/geodtn/](./policies/geodtn/) ([ingress.rego](./policies/geodtn/ingress.rego), [contact.rego](./policies/geodtn/contact.rego), [storage.rego](./policies/geodtn/storage.rego), [helpers.rego](./policies/geodtn/helpers.rego), [constants.rego](./policies/geodtn/constants.rego), [geodtn_test.rego](./policies/geodtn/geodtn_test.rego))
 

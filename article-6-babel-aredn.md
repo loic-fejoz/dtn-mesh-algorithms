@@ -189,10 +189,11 @@ decision := {
 }
 ```
 
-La fonction d'aide [helpers.should_update_babel_route](./policies/babel/helpers.rego#L51-L82) applique rigoureusement les préceptes de la RFC 8966 :
-- Si $seqno_{new} > seqno_{old}$ : le routeur d'origine a augmenté sa séquence, la route est mise à jour immédiatement.
-- Si $seqno_{new} == seqno_{old}$ : la route n'est mise à jour que si $metric_{new} < metric_{old}$.
-- Sinon : la mise à jour est ignorée (`ACCEPT_BABEL_UPDATE_NO_CHANGE`), empêchant toute propagation de métrique dégradée.
+La fonction d'aide [helpers.should_update_babel_route](./policies/babel/helpers.rego#L51-L82) applique rigoureusement les préceptes de la condition de faisabilité (RFC 8966 Section 3.5.1) :
+- Si $seqno_{new} > seqno_{old}$ : le routeur d'origine a augmenté sa séquence, la route est mise à jour immédiatement et la métrique est réinitialisée.
+- Si $seqno_{new} == seqno_{old}$ et $metric_{new} < metric_{old}$ : la route est adoptée car elle propose une métrique strictement meilleure vérifiant la faisabilité ($m < FD$).
+- Si $metric_{new} < FD(D)$ : la métrique est strictement inférieure à la Feasible Distance historique, garantissant l'absence totale de boucle.
+- Sinon : la mise à jour est ignorée (`ACCEPT_BABEL_UPDATE_NO_CHANGE`), empêchant toute propagation de métrique dégradée ou créatrice de cycle.
 
 ### 4.2. Contact : Forwarding Proactif ou Bascule Ferry HYMAD ([contact.rego](./policies/babel/contact.rego))
 
@@ -246,7 +247,7 @@ decision := {
 
 ---
 
-## 5. Validation par les Tests Unitaires OPA (92/92 PASS)
+## 5. Validation par les Tests Unitaires OPA (108/108 PASS)
 
 Une batterie de 16 tests unitaires spécifiques ([policies/babel/babel_test.rego](./policies/babel/babel_test.rego)) valide l'intégralité du comportement :
 - Mise à jour de route sur nouveau seqno vs même seqno.
@@ -285,6 +286,8 @@ policies/contact_test.rego:
   5 tests validés (fondations contact CLA, split-horizon, lifetime)
 policies/flood/flood_test.rego:
   17 tests validés (Spray & Wait binaire/source, Meshtastic SNR backoff et contention)
+policies/ingress_test.rego:
+  6 tests validés (fondations ingress, validation, décrément de sauts, déduplication)
 policies/maxprop/maxprop_test.rego:
   16 tests validés (coût logarithmique, pénalité de saut fluide, 2-hop gossip, cleared list)
 policies/prophet/prophet_test.rego:
@@ -321,8 +324,8 @@ En explorant successivement APRS, Spray and Wait, Meshtastic, PRoPHET, Reticulum
 2. **Open Policy Agent (OPA) transforme le routeur en système expert.** En extrayant la logique de décision du code bas niveau de la couche de convergence, nous pouvons permuter ou hybrider des algorithmes de routage radicalement différents (MANET vs DTN) d'une simple ligne de politique déclarative.
 3. **Le futur du maillage d'urgence est hybride.** Les architectures de demain ne choisiront plus entre mesh temps réel et tolérance aux délais : elles composeront les deux, comme démontré avec l'hybridation AREDN-DTN.
 
-Dans le prochain article ([Article 7](./article-7-cgr.md)), nous franchirons les limites terrestres pour explorer le standard spatial du DTN : le **Contact Graph Routing (CGR / SABR - RFC 8877)** fondé sur des fenêtres de visibilité orbitales déterministes.
+Dans le prochain article ([Article 7](./article-7-cgr.md)), nous franchirons les limites terrestres pour explorer le standard spatial du DTN : le **Contact Graph Routing (CGR / SABR - CCSDS 734.3-B-1)** fondé sur des fenêtres de visibilité orbitales déterministes.
 
 ---
 
-👉 **Article suivant :** [Article 7 — Routage par Graphe de Contacts Déterministe : Contact Graph Routing (CGR / SABR - RFC 8877) sous Open Policy Agent](./article-7-cgr.md)
+👉 **Article suivant :** [Article 7 — Routage par Graphe de Contacts Déterministe : Contact Graph Routing (CGR / SABR - CCSDS 734.3-B-1) sous Open Policy Agent](./article-7-cgr.md)

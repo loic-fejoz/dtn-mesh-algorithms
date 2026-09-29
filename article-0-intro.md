@@ -310,7 +310,7 @@ data.dtn.storage_test.test_storage_drop_lifetime_expired_timed: PASS (403µs)
 data.dtn.storage_test.test_storage_drop_lifetime_expired_untimed: PASS (706µs)
 data.dtn.storage_test.test_storage_retain_and_update_age: PASS (1.19ms)
 --------------------------------------------------------------------------------
-PASS: 14/14 (politiques de base) — 60/60 tests sur l'ensemble du dépôt
+PASS: 14/14 (politiques de base)
 ```
 
 ---

@@ -106,6 +106,10 @@ L'optimisation **2-Hop MaxProp (2H-HP-MaxProp)** supprime l'échange transitif d
 - Chaque nœud évalue Dijkstra sur un horizon local à 2 sauts.
 - Cette réduction supprime plus de **99% de l'overhead de signalisation**, tout en préservant l'essentiel de l'efficacité de livraison en environnement contraint.
 
+> [!NOTE]
+> **Précision terminologique sur « HP-MaxProp » :**  
+> Le terme « HP-MaxProp » (*High-Performance MaxProp*) est une désignation propre à cette série d'articles pour qualifier le triptyque d'optimisations théoriques (coût logarithmique d'information $-\log(P+\epsilon)$, pénalité de saut continue $+0.01 \times \text{HopCount}$, et commérage local à 2 sauts $O(N)$) apporté à l'algorithme historique de Burgess et al. (2006).
+
 ---
 
 ## 4. Spécification Filaire CDDL : `maxprop.cddl`
@@ -270,7 +274,7 @@ decision := {
 
 ---
 
-## 6. Validation par les Tests Unitaires OPA (108/108 PASS)
+## 6. Validation par les Tests Unitaires OPA (76/76 PASS)
 
 Une suite de 16 tests unitaires spécifiques ([policies/maxprop/maxprop_test.rego](./policies/maxprop/maxprop_test.rego)) couvre l'ensemble des scénarios :
 - Admission et calcul exact du coût de tri $\text{Coût}_{\text{Tri}} = \text{Dijkstra} + 0.01 \times \text{HopCount}$.
@@ -287,16 +291,14 @@ opa test ./policies -v
 
 ```text
 policies/aprs/aprs_test.rego:           13 tests validés
-policies/babel/babel_test.rego:         16 tests validés
 policies/contact_test.rego:              5 tests validés
 policies/flood/flood_test.rego:         17 tests validés
 policies/ingress_test.rego:              6 tests validés
 policies/maxprop/maxprop_test.rego:     16 tests validés
 policies/prophet/prophet_test.rego:     16 tests validés
-policies/reticulum/reticulum_test.rego: 16 tests validés
 policies/storage_test.rego:              3 tests validés
 --------------------------------------------------------------------------------
-PASS: 108/108
+PASS: 76/76
 ```
 
 ---

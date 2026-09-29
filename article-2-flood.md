@@ -225,9 +225,9 @@ decision := {
 
 ---
 
-## 5. Validation par les Tests Unitaires OPA (43/43 PASS)
+## 5. Validation par les Tests Unitaires OPA (44/44 PASS)
 
-La suite de tests unitaires dédiée ([flood_test.rego](./policies/flood/flood_test.rego)) valide 17 scénarios critiques, portant le total global du dépôt à **43 tests validés avec succès** :
+La suite de tests unitaires dédiée ([flood_test.rego](./policies/flood/flood_test.rego)) valide 17 scénarios critiques, portant le total global du dépôt à **44 tests validés avec succès** :
 
 ```bash
 opa test ./policies -v
@@ -253,8 +253,8 @@ data.dtn.flood_test.test_meshtastic_ingress_hop_limit_reached: PASS (1.67ms)
 data.dtn.flood_test.test_flood_generic_cddl_replication: PASS (1.64ms)
 data.dtn.flood_test.test_flood_generic_cddl_wireless: PASS (3.48ms)
 --------------------------------------------------------------------------------
-Total global : 43/43 tests PASS
-(13 fondations + 13 APRS/Trajectoire + 17 Inondation/Quotas/Contention)
+Total global : 44/44 tests PASS
+(14 fondations + 13 APRS/Trajectoire + 17 Inondation/Quotas/Contention)
 ```
 
 ---

@@ -32,7 +32,10 @@ is_lifetime_expired(bundle, _) if {
 # Renvoie le bloc de saut s'il est présent
 get_hop_count_block(bundle) := get_extension_block(bundle.extension_blocks, constants.block_type_hop_count)
 
-# Indique si le hop count a atteint ou dépassé la limite autorisée
+# Indique si le hop count a atteint ou dépassé la limite autorisée.
+# Note de conception (RFC 9171 Section 4.3.3) : la RFC stipule la suppression lorsque hop_count
+# dépasse le hop_limit. L'utilisation du comparateur `>=` applique une politique conservatrice
+# (adoptée par ION et dtn7) pour éviter l'émission inutile de paquets en limite sur les canaux contraints.
 is_hop_limit_reached(bundle) if {
     hcb := get_hop_count_block(bundle)
     hcb.hop_count >= hcb.hop_limit

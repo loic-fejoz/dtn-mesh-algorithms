@@ -1,8 +1,8 @@
 ; ==============================================================================
-; Contact Graph Routing (CGR / SABR - RFC 8877) over DTN - CDDL Specification
+; Contact Graph Routing (CGR / SABR - CCSDS 734.3-B-1) over DTN - CDDL Specification
 ;
 ; Formalise les structures de données sérialisées en CBOR pour l'adaptation de
-; l'algorithme spatial CGR (Contact Graph Routing - RFC 8877) au-dessus de BPv7.
+; l'algorithme spatial CGR (Contact Graph Routing / SABR - CCSDS 734.3-B-1) au-dessus de BPv7.
 ;
 ; Principes fondamentaux :
 ; 1. Routage déterministe par calendrier de contacts (Contact Plan).
@@ -67,7 +67,14 @@ contact-plan-revoke-payload = {
 }
 
 ; ------------------------------------------------------------------------------
-; 3. ÉTAT ÉVALUÉ DANS L'ENVIRONNEMENT OPA (CGR Routing Table / Routes Cache)
+; 3. MISE À JOUR DE DISTANCE (Range Update)
+; ------------------------------------------------------------------------------
+range-update-payload = {
+    1 => ranges: [ * scheduled-range ]
+}
+
+; ------------------------------------------------------------------------------
+; 4. ÉTAT ÉVALUÉ DANS L'ENVIRONNEMENT OPA (CGR Routing Table / Routes Cache)
 ; Modélise les métadonnées pré-calculées pour input.bundle et input.node.
 ; ------------------------------------------------------------------------------
 cgr-computed-path = {

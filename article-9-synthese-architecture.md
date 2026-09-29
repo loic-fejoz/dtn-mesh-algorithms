@@ -19,7 +19,7 @@
 
 ## 1. Introduction : La Convergence des Paradigmes de Routage
 
-Au fil des huit premiers volets de cette série, nous avons exploré une large gamme d'algorithmes de routage, allant des protocoles radioamateurs nés dans les années 1980 (APRS AX.25) jusqu'aux architectures résilientes modernes (Reticulum, Meshtastic) et aux standards de l'Internet interplanétaire (Contact Graph Routing - RFC 8877).
+Au fil des huit premiers volets de cette série, nous avons exploré une gamme spectaculaire d'algorithmes de routage, allant des protocoles radioamateurs nés dans les années 1980 (APRS AX.25) jusqu'aux architectures résilientes modernes (Reticulum, Meshtastic) et aux standards de l'Internet interplanétaire (Contact Graph Routing - CCSDS 734.3-B-1 / SABR).
 
 Chacun de ces algorithmes a été conçu à l'origine dans son propre écosystème en vase clos, avec ses formats de trames binaires propriétaires, ses métriques ad-hoc et ses hypothèses matérielles spécifiques.
 
@@ -106,7 +106,7 @@ L'un des enseignements les plus saisissants de nos expérimentations réside dan
 | **MaxProp / HP-MaxProp**| **ZÉRO bloc propriétaire** (Pur BPv7) | Tri de buffer calculé en local à partir du Hop Count Type 10 standard. |
 | **Reticulum (RNS)** | **ZÉRO bloc propriétaire** (Pur BPv7) | Next hop résolu en mémoire locale à partir de la destination EID hashée. |
 | **Babel / AREDN** | **ZÉRO bloc propriétaire** (Pur BPv7) | Forwarding proactif pur ou passerelle ferry MANET-DTN. |
-| **CGR (RFC 8877)** | **ZÉRO bloc propriétaire** (Pur BPv7) | Plan de contacts déterministe résolu par le nœud hôte via Dijkstra temporel. |
+| **CGR (CCSDS SABR)** | **ZÉRO bloc propriétaire** (Pur BPv7) | Plan de contacts déterministe résolu par le nœud hôte via Dijkstra temporel. |
 
 > [!IMPORTANT]
 > **La télémétrie locale n'a pas sa place sur le câble radio.**  
@@ -256,7 +256,7 @@ Pour des topologies de petite taille (moins de 10 nœuds), un parcours ensemblis
 
 | Fonction Builtin Proposée | Signature & Rôle | Protocoles Concernés |
 | :--- | :--- | :--- |
-| `graph.dijkstra_time_expanded(contacts, ranges, source, dest, now)` | Exécute l'algorithme de Dijkstra temporel orienté vers le futur, en intégrant le délai de propagation one-way ($OWLT$) et la capacité des fenêtres. Retourne la séquence de sauts et l'*Earliest Delivery Time* ($EDT$). | **CGR / SABR (RFC 8877)** ([`cgr.rego`](./policies/cgr/contact.rego)) |
+| `graph.dijkstra_time_expanded(contacts, ranges, source, dest, now)` | Exécute l'algorithme de Dijkstra temporel orienté vers le futur, en intégrant le délai de propagation one-way ($OWLT$) et la capacité des fenêtres. Retourne la séquence de sauts et l'*Earliest Delivery Time* ($EDT$). | **CGR / SABR (CCSDS 734.3-B-1)** ([`cgr.rego`](./policies/cgr/contact.rego)) |
 | `graph.dijkstra_log_cost(prob_matrix, source, dest, epsilon)` | Calcule le plus court chemin probabiliste en appliquant la métrique d'information $-\log(P + \epsilon)$ et en retournant le coût total de chemin $C$. | **MaxProp & HP-MaxProp** ([`maxprop.rego`](./policies/maxprop/contact.rego)) |
 
 > [!NOTE]
@@ -370,7 +370,7 @@ Dans notre série d'articles, nous avons démontré comment ces exigences sont g
 
 ### 6.4. BPQ (Bundle Protocol Query Extension Block - IRTF)
 
-Issu des travaux fondateurs du DTNRG (**`draft-cruickshank-dtnrg-bundle-query`**), le bloc d'extension **BPQ** définit un mécanisme standard permettant à un nœud intermédiaire d'interroger le stockage d'un pair pour vérifier la présence d'un bundle ou synchroniser des collections de données sans transfert redondant.
+Issu des travaux fondateurs du DTNRG (**`draft-irtf-dtnrg-bpq`**, par S. Farrell, A. Lynch, D. Kutscher et A. Lindgren), le bloc d'extension **BPQ** définit un mécanisme standard permettant à un nœud intermédiaire d'interroger le stockage d'un pair pour vérifier la présence d'un bundle ou synchroniser des collections de données sans transfert redondant.
 
 Notre travail matérialise et dépasse ce concept :
 - Les **Summary Vectors** formalisés dans [`prophet.cddl`](./prophet.cddl) et [`maxprop.cddl`](./maxprop.cddl) réalisent exactement cette interrogation en comparant les identifiants canoniques `(source, time, seq)`.
@@ -384,15 +384,15 @@ Pour clore cette fresque architecturale, voici la matrice récapitulative intég
 
 | Article & Protocole | Paradigme Clé | Format d'Adressage | Rôle du Bloc Type 200 | Signalisation de Contrôle | Tests OPA |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **[Art. 0 — Fondations](./article-0-intro.md)** | Standard BPv7 & OPA | EID RFC 9171 | Socle architectural | Standard BPv7 Status Reports | 13/13 |
+| **[Art. 0 — Fondations](./article-0-intro.md)** | Standard BPv7 & OPA | EID RFC 9171 | Socle architectural | Standard BPv7 Status Reports | 14/14 |
 | **[Art. 1 — APRS AX.25](./article-1-aprs.md)** | Routage à la source & alias | Indicatifs Radio | `trajectory_control` | Aucune (broadcast aveugle) | 13/13 |
 | **[Art. 2 — Spray & Wait & Meshtastic](./article-2-flood.md)** | Quotas & Contention SNR | EID / NodeNum | `replication_control` / Zéro bloc | Contention physique locale | 17/17 |
 | **[Art. 3 — PRoPHET](./article-3-prophet.md)** | Opportuniste probabiliste | EID canonique | Optionnel (`opportunistic_threshold`) | Handshake RIB & SV ([`prophet.cddl`](./prophet.cddl)) | 16/16 |
 | **[Art. 4 — MaxProp & HP-MaxProp](./article-4-maxprop.md)** | Coût log & Tri de Buffer | EID canonique | ZÉRO bloc filaire de données | Prob-Vector & Cleared List ([`maxprop.cddl`](./maxprop.cddl)) | 16/16 |
 | **[Art. 5 — Reticulum](./article-5-reticulum.md)** | Vecteur de distance réactif | Hash 16 octets | ZÉRO bloc filaire de données | Annonces signées ([`reticulum.cddl`](./reticulum.cddl)) | 16/16 |
 | **[Art. 6 — Babel / AREDN / HYMAD](./article-6-babel-aredn.md)** | Proactif sans boucle & Ferry | EID / Sous-réseau | ZÉRO bloc filaire de données | Hellos, IHU, Updates ([`babel.cddl`](./babel.cddl)) | 16/16 |
-| **[Art. 7 — CGR (RFC 8877)](./article-7-cgr.md)** | Déterministe spatial | EID interplanétaire | ZÉRO bloc filaire de données | Contact Plan Updates ([`cgr.cddl`](./cgr.cddl)) | 16/16 |
-| **[Art. 8 — GeoDTN & Geocast](./article-8-geodtn.md)** | Géographique MFR & SCF | Coordonnées GPS | `spatial_scope` | Zéro signalisation requise | 16/16 |
+| **[Art. 7 — CGR (CCSDS SABR)](./article-7-cgr.md)** | Déterministe spatial | EID interplanétaire | ZÉRO bloc filaire de données | Contact Plan Updates ([`cgr.cddl`](./cgr.cddl)) | 16/16 |
+| **[Art. 8 — GeoDTN & Geocast](./article-8-geodtn.md)** | Géographique Greedy & SCF | Coordonnées GPS | `spatial_scope` | Zéro signalisation requise | 16/16 |
 | **[Art. 9 — Synthèse](./article-9-synthese-architecture.md)** | **Architecture Unifiée OPA** | **Multi-adressage** | **Type 200 Modulaire** | **Grammaire de Contrôle Réconciliée** | **140/140** |
 
 ---

@@ -75,12 +75,25 @@ should_update_babel_route(existing_entry, new_seqno, new_metric, current_time_ms
 }
 
 # 4. Même numéro de séquence, mais métrique strictement inférieure (chemin plus court)
+# vérifiant la condition de faisabilité (RFC 8966 Section 3.5.1 : m < Feasible Distance)
 should_update_babel_route(existing_entry, new_seqno, new_metric, current_time_ms) if {
     existing_entry != null
     is_route_valid(existing_entry, current_time_ms)
     old_seqno := object.get(existing_entry, "seqno", 0)
     new_seqno == old_seqno
     new_metric < existing_entry.metric
+    fd := object.get(existing_entry, "feasible_distance", existing_entry.metric)
+    is_metric_feasible(new_metric, fd)
+}
+
+# 5. Métrique strictement inférieure à la Feasible Distance historique (garantie sans boucle)
+should_update_babel_route(existing_entry, new_seqno, new_metric, current_time_ms) if {
+    existing_entry != null
+    is_route_valid(existing_entry, current_time_ms)
+    old_seqno := object.get(existing_entry, "seqno", 0)
+    new_seqno >= old_seqno
+    fd := object.get(existing_entry, "feasible_distance", constants.metric_infinity)
+    is_metric_feasible(new_metric, fd)
 }
 
 # Vérifie si la source figure dans la blacklist du nœud local

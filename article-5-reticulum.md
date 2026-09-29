@@ -289,9 +289,9 @@ decision := {
 
 ---
 
-## 7. Validation par les Tests Unitaires OPA (76/76 PASS)
+## 7. Validation par les Tests Unitaires OPA (92/92 PASS)
 
-L'implémentation a été validée par 16 tests unitaires complets dans [reticulum_test.rego](./policies/reticulum/reticulum_test.rego), portant le total de la suite de tests à **76 tests réussis avec un taux de réussite de 100%**.
+L'implémentation a été validée par 16 tests unitaires complets dans [reticulum_test.rego](./policies/reticulum/reticulum_test.rego), portant le total de la suite de tests à **92 tests réussis avec un taux de réussite de 100%**.
 
 ```bash
 opa test ./policies -v
@@ -306,6 +306,8 @@ policies/flood/flood_test.rego:
   17 tests validés (Spray & Wait binaire/source, Meshtastic SNR backoff et contention)
 policies/ingress_test.rego:
   6 tests validés (fondations ingress, Hop Count Type 10, blacklist sources)
+policies/maxprop/maxprop_test.rego:
+  16 tests validés (coût logarithmique, pénalité de saut fluide, 2-hop gossip, cleared list)
 policies/prophet/prophet_test.rego:
   16 tests validés (équations mathématiques, RIB handshake, éviction sélective)
 policies/reticulum/reticulum_test.rego:
@@ -328,7 +330,7 @@ policies/reticulum/reticulum_test.rego:
 policies/storage_test.rego:
   3 tests validés (gestion du Bundle Age Block Type 7)
 --------------------------------------------------------------------------------
-PASS: 76/76
+PASS: 92/92
 ```
 
 ---
@@ -337,7 +339,7 @@ PASS: 76/76
 
 Voici la cartographie transversale comparant l'ensemble des protocoles étudiés et implémentés au fil de notre série :
 
-| Critère | APRS AX.25 ([Article 1](./article-1-aprs.md)) | Meshtastic ([Article 2](./article-2-flood.md)) | PRoPHET RFC 6693 ([Article 3](./article-3-prophet.md)) | Reticulum RNS ([Article 4](./article-5-reticulum.md)) |
+| Critère | APRS AX.25 ([Article 1](./article-1-aprs.md)) | Meshtastic ([Article 2](./article-2-flood.md)) | PRoPHET RFC 6693 ([Article 3](./article-3-prophet.md)) | Reticulum RNS ([Article 5](./article-5-reticulum.md)) |
 | :--- | :--- | :--- | :--- | :--- |
 | **Paradigme de Routage** | Routage à la source & alias génériques | Inondation gérée (*Managed Flooding*) | Routage opportuniste probabiliste | Vecteur de distance réactif / proactif |
 | **Format d'Adressage** | Indicatifs radioamateurs (`NOCALL-1`) | NodeNum 32 bits (`!a1b2c3d4`) | EID URI textuels (`dtn://dest/`) | Hashes cryptographiques 16 octets (`dtn://rns/<hash>/`) |

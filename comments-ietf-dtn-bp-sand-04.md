@@ -101,7 +101,7 @@ Cependant, l'analyse approfondie de la version 04 à la lumière de nos modélis
 ### 3.1. Constat : Une Monoculture de SABR/CGR
 
 Dans `draft-ietf-dtn-bp-sand-04`, la Table 25 (Section 9.3.6) n'enregistre qu'un seul algorithme de routage :
-* Code `1` : **SABR** (*Schedule-Aware Bundle Routing*, CCSDS / RFC 8877).
+* Code `1` : **SABR** (*Schedule-Aware Bundle Routing*, CCSDS 734.3-B-1).
 
 SABR/CGR est parfaitement adapté aux réseaux orbitaux déterministes. Toutefois, le champ d'application de BPv7 s'étend largement aux réseaux ad-hoc terrestres, tactiques, maritimes, véhiculaires et d'urgence, où la topologie est **opportuniste, probabiliste ou maillée sans calendrier préétabli**.
 

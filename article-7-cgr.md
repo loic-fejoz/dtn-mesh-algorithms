@@ -1,4 +1,4 @@
-# Article 7 — Le Routage Déterministe Spatial : Contact Graph Routing (CGR / SABR - RFC 8877) sous Open Policy Agent
+# Article 7 — Le Routage Déterministe Spatial : Contact Graph Routing (CGR / SABR - CCSDS 734.3-B-1) sous Open Policy Agent
 
 > **Série :** *Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7)*  
 > **Articles précédents :**  
@@ -28,11 +28,11 @@ Dans l'espace interplanétaire (missions martiennes, sondes vers Jupiter, conste
 2. **Les ruptures de liaison sont périodiques et prévisibles :** Un atterrisseur au fond d'un cratère martien ne peut communiquer avec un orbiteur que lorsque ce dernier survole son zénith (fenêtre de visibilité de 10 à 15 minutes, deux fois par sol martien). Une station sol du Deep Space Network (DSN) à Goldstone, Madrid ou Canberra n'est pointée vers une sonde que selon un créneau d'antenne réservé des semaines à l'avance.
 3. **Les lois de Kepler dictent la topologie :** La trajectoire des astres et des engins spatiaux est connue à la milliseconde près.
 
-Dans ce contexte, attendre une « rencontre opportuniste » ou inonder aveuglément le vide spatial serait absurde. L'algorithme roi du DTN spatial est **Contact Graph Routing (CGR)**, standardisé par l'IRTF et l'IETF dans la **[RFC 8877](https://www.rfc-editor.org/rfc/rfc8877.html)**.
+Dans ce contexte, attendre une « rencontre opportuniste » ou inonder aveuglément le vide spatial serait absurde. L'algorithme roi du DTN spatial est **Contact Graph Routing (CGR)**, formalisé par Scott Burleigh (NASA/JPL, `draft-burleigh-dtnrg-cgr`) et standardisé par le CCSDS sous le standard **SABR (Schedule-Aware Bundle Routing, CCSDS 734.3-B-1)**.
 
 ---
 
-## 2. Les Piliers Théoriques de la RFC 8877
+## 2. Les Piliers Théoriques de CGR et du Standard CCSDS SABR
 
 CGR ne construit pas une table de routage sur un graphe spatial statique, mais sur un **graphe spatio-temporel (*Time-Expanded Graph*)**.
 
@@ -215,7 +215,7 @@ PASS: 124/124
 
 ## 6. Synthèse Comparative : Opportuniste vs Déterministe
 
-| Critère | Approches Opportunistes (PRoPHET / MaxProp) | Approche Déterministe Spatial (CGR RFC 8877) |
+| Critère | Approches Opportunistes (PRoPHET / MaxProp) | Approche Déterministe Spatial (CGR / CCSDS SABR) |
 | :--- | :--- | :--- |
 | **Environnement Cible** | Réseaux urbains, véhicules, capteurs ad-hoc | Espace lointain (Terre, Lune, Mars), constellations LEO |
 | **Connaissance des Contacts** | Découverte en temps réel, probabiliste | Calendrier prédictif déterministe (*Contact Plan*) |

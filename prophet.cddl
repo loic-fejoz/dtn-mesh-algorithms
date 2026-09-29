@@ -73,11 +73,11 @@ summary-vector-payload = {
 ; Identifiant universel canonique BPv7 (RFC 9171 Section 4.2.2) ou empreinte passerelle
 bundle-identifier = canonical-bundle-id / legacy-bridge-id
 
-canonical-bundle-id = {
-    1 => source-eid: tstr,
-    2 => creation-time: uint,
-    3 => sequence-number: uint
-}
+canonical-bundle-id = [
+    source-eid: tstr,
+    creation-time: uint,
+    sequence-number: uint
+]
 
 legacy-bridge-id = (bytes / uint)
 

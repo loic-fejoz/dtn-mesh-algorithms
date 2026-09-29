@@ -218,9 +218,9 @@ Dans son document de référence [*APRS Digipeaters* (John Langner, WB2OSZ)](htt
 
 ---
 
-## 5. Validation par les Tests Unitaires OPA (25/25 PASS)
+## 5. Validation par les Tests Unitaires OPA (27/27 PASS)
 
-La suite de tests unitaires dédiée ([aprs_test.rego](./policies/aprs/aprs_test.rego)) valide 12 scénarios représentatifs :
+La suite de tests unitaires dédiée ([aprs_test.rego](./policies/aprs/aprs_test.rego)) valide 13 scénarios représentatifs :
 
 ```bash
 opa test ./policies -v
@@ -240,8 +240,9 @@ data.dtn.aprs_test.test_aprs_contact_unicast_match: PASS (572µs)
 data.dtn.aprs_test.test_aprs_direwolf_6_1b_suppress_own_packet: PASS (1.26ms)
 data.dtn.aprs_test.test_aprs_direwolf_6_3c_drop_exhausted_alias: PASS (3.18ms)
 data.dtn.aprs_test.test_aprs_direwolf_section_10_trapping_excessive_alias: PASS (4.54ms)
+data.dtn.aprs_test.test_aprs_generic_cddl_trajectory: PASS (1.85ms)
 --------------------------------------------------------------------------------
-Total global : 25/25 tests PASS (13 fondations + 12 APRS)
+Total global : 27/27 tests PASS (14 fondations + 13 APRS)
 ```
 
 ---
