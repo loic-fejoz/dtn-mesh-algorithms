@@ -1,3 +1,5 @@
+🌐 **English version:** [Read in English](./README.en.md)
+
 # DTN Mesh Algorithm: Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7)
 
 Ce projet de recherche et d'expérimentation vise à explorer la transposition, l'adaptation et l'unification d'algorithmes de routage issus de divers horizons (réseaux maillés ad-hoc, réseaux tactiques, radioamateurs, protocoles LPWAN/IoT et littérature DTN académique) au sein de l'architecture **DTN (Delay/Disruption Tolerant Networking)** basée sur le **Bundle Protocol version 7 ([RFC 9171](https://www.rfc-editor.org/rfc/rfc9171.html))**.
