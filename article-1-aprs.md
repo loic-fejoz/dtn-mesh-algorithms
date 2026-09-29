@@ -1,9 +1,9 @@
 # Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7) avec Open Policy Agent
 
 > **Série :** *Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7)*  
-> **Article précédent :** [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](file:///home/loic/projets/dtn-mesh-algorithm/article-0-intro.md)  
-> **Spécification CDDL :** [mesh-algo-extension-block.cddl](file:///home/loic/projets/dtn-mesh-algorithm/mesh-algo-extension-block.cddl)  
-> **Code des politiques :** [policies/aprs/](file:///home/loic/projets/dtn-mesh-algorithm/policies/aprs/) ([ingress.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/aprs/ingress.rego), [contact.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/aprs/contact.rego), [helpers.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/aprs/helpers.rego), [constants.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/aprs/constants.rego), [aprs_test.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/aprs/aprs_test.rego))
+> **Article précédent :** [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](./article-0-intro.md)  
+> **Spécification CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl)  
+> **Code des politiques :** [policies/aprs/](./policies/aprs/) ([ingress.rego](./policies/aprs/ingress.rego), [contact.rego](./policies/aprs/contact.rego), [helpers.rego](./policies/aprs/helpers.rego), [constants.rego](./policies/aprs/constants.rego), [aprs_test.rego](./policies/aprs/aprs_test.rego))
 
 ---
 
@@ -30,7 +30,7 @@ En transposant le digipeating APRS dans le **Bundle Protocol v7 ([RFC 9171](http
 
 ## 2. Spécification CBOR / CDDL : Le Bloc d'Extension Mesh
 
-Pour concilier APRS et les futurs algorithmes (Spray & Wait, PRoPHET, Reticulum, Meshtastic), nous avons formalisé un bloc d'extension BPv7 unifié dans [mesh-algo-extension-block.cddl](file:///home/loic/projets/dtn-mesh-algorithm/mesh-algo-extension-block.cddl).
+Pour concilier APRS et les futurs algorithmes (Spray & Wait, PRoPHET, Reticulum, Meshtastic), nous avons formalisé un bloc d'extension BPv7 unifié dans [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl).
 
 ### 2.1. Dualité Passé vs Futur : TREB et Trajectory Block
 Un point clé d'architecture mis en lumière dans nos réflexions :
@@ -86,7 +86,7 @@ Deux arbitrages d'architecture majeurs émergent de cette transposition :
 
 ## 3. Logique de Décision et Politiques OPA (Rego)
 
-La logique APRS est implémentée de manière déclarative dans [policies/aprs/](file:///home/loic/projets/dtn-mesh-algorithm/policies/aprs/).
+La logique APRS est implémentée de manière déclarative dans [policies/aprs/](./policies/aprs/).
 
 ```
                  [ Bundle Ingress (AX.25 / LoRa) ]
@@ -126,7 +126,7 @@ La logique APRS est implémentée de manière déclarative dans [policies/aprs/]
                                  index stable)  avance index)
 ```
 
-### 3.1. Politique d'Ingress ([ingress.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/aprs/ingress.rego))
+### 3.1. Politique d'Ingress ([ingress.rego](./policies/aprs/ingress.rego))
 
 #### Règle 1 : Déduplication immédiate (Dupe Suppression Cache)
 Comme en APRS analogique, un digipeater ignore un paquet s'il a déjà été traité récemment :
@@ -220,14 +220,14 @@ Dans son document de référence [*APRS Digipeaters* (John Langner, WB2OSZ)](htt
 
 ## 5. Validation par les Tests Unitaires OPA (25/25 PASS)
 
-La suite de tests unitaires dédiée ([aprs_test.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/aprs/aprs_test.rego)) valide 12 scénarios représentatifs :
+La suite de tests unitaires dédiée ([aprs_test.rego](./policies/aprs/aprs_test.rego)) valide 12 scénarios représentatifs :
 
 ```bash
 opa test ./policies -v
 ```
 
 ```text
-/home/loic/projets/dtn-mesh-algorithm/policies/aprs/aprs_test.rego:
+./policies/aprs/aprs_test.rego:
 data.dtn.aprs_test.test_aprs_local_delivery: PASS (906µs)
 data.dtn.aprs_test.test_aprs_duplicate_suppression: PASS (2.08ms)
 data.dtn.aprs_test.test_aprs_strict_hop_matched: PASS (4.15ms)
@@ -259,3 +259,7 @@ Total global : 25/25 tests PASS (13 fondations + 12 APRS)
    Le couplage entre notre bloc de trajectoire future et le **Traceroute Extension Block (TREB)** standard permet une visibilité totale du parcours d'un paquet sans alourdir le routage.
 
 Dans le prochain article (**Article 2**), nous transposerons le protocole **Spray and Wait** : gestion des quotas de réplication ($L$), distribution binaire ($L/2$) et transition dynamique vers la phase *Wait*.
+
+---
+
+👉 **Article suivant :** [Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic](./article-2-flood.md)

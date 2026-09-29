@@ -2,21 +2,21 @@
 
 > **Série :** *Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7)*  
 > **Articles précédents :**  
-> - [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](file:///home/loic/projets/dtn-mesh-algorithm/article-0-intro.md)  
-> - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)](file:///home/loic/projets/dtn-mesh-algorithm/article-1-aprs.md)  
-> - [Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic](file:///home/loic/projets/dtn-mesh-algorithm/article-2-flood.md)  
-> - [Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET (RFC 6693) sous Open Policy Agent](file:///home/loic/projets/dtn-mesh-algorithm/article-3-prophet.md)  
+> - [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](./article-0-intro.md)  
+> - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)](./article-1-aprs.md)  
+> - [Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic](./article-2-flood.md)  
+> - [Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET (RFC 6693) sous Open Policy Agent](./article-3-prophet.md)  
 > **Articles suivants :**  
-> - [Article 5 — Routage Hybride, Vecteur de Distance et Adressage Cryptographique : Reticulum (RNS) transposé en DTN](file:///home/loic/projets/dtn-mesh-algorithm/article-5-reticulum.md)  
-> - [Article 6 — Réseaux Maillés Proactifs et Hybridation MANET-DTN : AREDN, Babel (RFC 8966) et l'Architecture HYMAD sous Open Policy Agent](file:///home/loic/projets/dtn-mesh-algorithm/article-6-babel-aredn.md)  
-> **Spécifications CDDL :** [mesh-algo-extension-block.cddl](file:///home/loic/projets/dtn-mesh-algorithm/mesh-algo-extension-block.cddl), [prophet.cddl](file:///home/loic/projets/dtn-mesh-algorithm/prophet.cddl) & [maxprop.cddl](file:///home/loic/projets/dtn-mesh-algorithm/maxprop.cddl)  
-> **Code des politiques :** [policies/maxprop/](file:///home/loic/projets/dtn-mesh-algorithm/policies/maxprop/) ([ingress.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/maxprop/ingress.rego), [contact.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/maxprop/contact.rego), [storage.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/maxprop/storage.rego), [helpers.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/maxprop/helpers.rego), [constants.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/maxprop/constants.rego), [maxprop_test.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/maxprop/maxprop_test.rego))
+> - [Article 5 — Routage Hybride, Vecteur de Distance et Adressage Cryptographique : Reticulum (RNS) transposé en DTN](./article-5-reticulum.md)  
+> - [Article 6 — Réseaux Maillés Proactifs et Hybridation MANET-DTN : AREDN, Babel (RFC 8966) et l'Architecture HYMAD sous Open Policy Agent](./article-6-babel-aredn.md)  
+> **Spécifications CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl) & [maxprop.cddl](./maxprop.cddl)  
+> **Code des politiques :** [policies/maxprop/](./policies/maxprop/) ([ingress.rego](./policies/maxprop/ingress.rego), [contact.rego](./policies/maxprop/contact.rego), [storage.rego](./policies/maxprop/storage.rego), [helpers.rego](./policies/maxprop/helpers.rego), [constants.rego](./policies/maxprop/constants.rego), [maxprop_test.rego](./policies/maxprop/maxprop_test.rego))
 
 ---
 
 ## 1. Le Nœud Gordien du DTN : La Saturation des Buffers
 
-Dans l'[Article 3](file:///home/loic/projets/dtn-mesh-algorithm/article-3-prophet.md), nous avons modélisé **PRoPHET (RFC 6693)**, où la décision de relayer un bundle dépend de l'accroissement probabiliste apporté par un contact ($P_{(B, D)} > P_{(A, D)}$).
+Dans l'[Article 3](./article-3-prophet.md), nous avons modélisé **PRoPHET (RFC 6693)**, où la décision de relayer un bundle dépend de l'accroissement probabiliste apporté par un contact ($P_{(B, D)} > P_{(A, D)}$).
 
 Cependant, dans tout réseau tolérant aux délais déployé dans le monde réel (réseaux véhiculaires, secours en zone blanche, constellations de microsatellites LEO ou capteurs sauvages), une ressource devient rapidement le goulet d'étranglement fatal : **la mémoire tampon (*storage buffer*) et la bande passante de contact**.
 - Les fenêtres de visibilité radio entre deux nœuds mobiles sont brèves (quelques secondes à quelques minutes).
@@ -112,7 +112,7 @@ L'optimisation **2-Hop MaxProp (2H-HP-MaxProp)** supprime l'échange transitif d
 
 Comme pour nos autres protocoles, **les bundles de données circulent en pur BPv7 standard sans bloc filaire propriétaire**.
 
-La signalisation inter-nœuds (vecteur de probabilités et liste d'acquittements) est formalisée en CBOR dans **[maxprop.cddl](file:///home/loic/projets/dtn-mesh-algorithm/maxprop.cddl)** :
+La signalisation inter-nœuds (vecteur de probabilités et liste d'acquittements) est formalisée en CBOR dans **[maxprop.cddl](./maxprop.cddl)** :
 
 ```cddl
 ; Message de contrôle MaxProp transporté dans le payload d'un bundle administratif
@@ -147,9 +147,9 @@ Le **Bundle ID canonique** `(source, time, sequence)` défini dans la [RFC 9171 
 
 ## 5. Modélisation Déclarative sous Open Policy Agent (OPA)
 
-Le répertoire **[policies/maxprop/](file:///home/loic/projets/dtn-mesh-algorithm/policies/maxprop/)** formalise l'intégralité de la logique de décision MaxProp.
+Le répertoire **[policies/maxprop/](./policies/maxprop/)** formalise l'intégralité de la logique de décision MaxProp.
 
-### 5.1. Ingress : Ingestion d'Acquittements et Calcul du Coût de Tri ([ingress.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/maxprop/ingress.rego))
+### 5.1. Ingress : Ingestion d'Acquittements et Calcul du Coût de Tri ([ingress.rego](./policies/maxprop/ingress.rego))
 
 À l'entrée, OPA applique deux filtres cruciaux :
 1. **Rejet préventif des bundles déjà acquittés :** Si un bundle entrant figure dans la `cleared_list` locale, il est immédiatement détruit sans consommer de mémoire.
@@ -199,7 +199,7 @@ decision := {
 }
 ```
 
-### 5.2. Contact : Forwarding Opportuniste Guidé par Dijkstra ([contact.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/maxprop/contact.rego))
+### 5.2. Contact : Forwarding Opportuniste Guidé par Dijkstra ([contact.rego](./policies/maxprop/contact.rego))
 
 Lorsqu'un contact s'établit avec un pair, la décision de transmettre un bundle dépend du différentiel de coût de chemin :
 - Si le pair dispose d'un chemin vers la destination avec un coût Dijkstra **strictement inférieur** au nôtre ($Cost_{peer \to D} < Cost_{me \to D}$), le bundle est transmis avec sa priorité de tri.
@@ -239,7 +239,7 @@ decision := {
 }
 ```
 
-### 5.3. Storage : Purge de la Cleared List et Éviction Ciblée ([storage.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/maxprop/storage.rego))
+### 5.3. Storage : Purge de la Cleared List et Éviction Ciblée ([storage.rego](./policies/maxprop/storage.rego))
 
 Dans le gestionnaire de stockage :
 1. **Purge instantanée :** Tout bundle identifié dans la `cleared_list` locale est immédiatement détruit (`PURGE_CLEARED`).
@@ -272,7 +272,7 @@ decision := {
 
 ## 6. Validation par les Tests Unitaires OPA (108/108 PASS)
 
-Une suite de 16 tests unitaires spécifiques ([policies/maxprop/maxprop_test.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/maxprop/maxprop_test.rego)) couvre l'ensemble des scénarios :
+Une suite de 16 tests unitaires spécifiques ([policies/maxprop/maxprop_test.rego](./policies/maxprop/maxprop_test.rego)) couvre l'ensemble des scénarios :
 - Admission et calcul exact du coût de tri $\text{Coût}_{\text{Tri}} = \text{Dijkstra} + 0.01 \times \text{HopCount}$.
 - Ingestion des vecteurs de probabilités et des listes d'acquittements (`Cleared List`).
 - Rejet préventif et purge des bundles déjà livrés.
@@ -282,7 +282,7 @@ Une suite de 16 tests unitaires spécifiques ([policies/maxprop/maxprop_test.reg
 Exécution de la suite complète du dépôt :
 
 ```bash
-/home/loic/bin/opa test ./policies -v
+opa test ./policies -v
 ```
 
 ```text
@@ -303,7 +303,7 @@ PASS: 108/108
 
 ## 7. Synthèse Comparative : PRoPHET vs MaxProp
 
-| Critère | PRoPHET ([Article 3](file:///home/loic/projets/dtn-mesh-algorithm/article-3-prophet.md)) | MaxProp / HP-MaxProp ([Article 4](file:///home/loic/projets/dtn-mesh-algorithm/article-4-maxprop.md)) |
+| Critère | PRoPHET ([Article 3](./article-3-prophet.md)) | MaxProp / HP-MaxProp ([Article 4](./article-4-maxprop.md)) |
 | :--- | :--- | :--- |
 | **Métrique de Contact** | Prévisibilité scalaire $P_{(A, B)} \in [0, 1]$ | Probabilités de transition normalisées $\sum P_{i, j} = 1$ |
 | **Propagation d'Information** | Équations de transitivité ($\beta$) | Arbre des plus courts chemins de Dijkstra ($-\log(P + \epsilon)$) |
@@ -318,4 +318,8 @@ PASS: 108/108
 
 Avec PRoPHET et MaxProp, nous avons exploré comment exploiter mathématiquement l'historique des rencontres et la théorie de l'information pour maximiser le taux de remise tout en gérant intelligemment la mémoire tampon.
 
-Dans le prochain article ([Article 5](file:///home/loic/projets/dtn-mesh-algorithm/article-5-reticulum.md)), nous franchirons une étape supplémentaire vers la souveraineté réseau : **Reticulum (RNS)**, un protocole de routage par vecteur de distance fondé sur des adresses cryptographiques auto-souveraines de 16 octets, des annonces signées et une architecture zéro-IP exempte de toute coordination centrale.
+Dans le prochain article ([Article 5](./article-5-reticulum.md)), nous franchirons une étape supplémentaire vers la souveraineté réseau : **Reticulum (RNS)**, un protocole de routage par vecteur de distance fondé sur des adresses cryptographiques auto-souveraines de 16 octets, des annonces signées et une architecture zéro-IP exempte de toute coordination centrale.
+
+---
+
+👉 **Article suivant :** [Article 5 — Routage Hybride, Vecteur de Distance et Adressage Cryptographique : Reticulum (RNS) transposé en DTN](./article-5-reticulum.md)

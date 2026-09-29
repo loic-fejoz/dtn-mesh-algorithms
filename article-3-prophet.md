@@ -2,17 +2,17 @@
 
 > **Série :** *Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7)*  
 > **Articles précédents :**  
-> - [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](file:///home/loic/projets/dtn-mesh-algorithm/article-0-intro.md)  
-> - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)](file:///home/loic/projets/dtn-mesh-algorithm/article-1-aprs.md)  
-> - [Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic](file:///home/loic/projets/dtn-mesh-algorithm/article-2-flood.md)  
-> **Spécifications CDDL :** [mesh-algo-extension-block.cddl](file:///home/loic/projets/dtn-mesh-algorithm/mesh-algo-extension-block.cddl) & [prophet.cddl](file:///home/loic/projets/dtn-mesh-algorithm/prophet.cddl)  
-> **Code des politiques :** [policies/prophet/](file:///home/loic/projets/dtn-mesh-algorithm/policies/prophet/) ([ingress.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/prophet/ingress.rego), [contact.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/prophet/contact.rego), [storage.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/prophet/storage.rego), [helpers.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/prophet/helpers.rego), [constants.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/prophet/constants.rego), [prophet_test.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/prophet/prophet_test.rego))
+> - [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](./article-0-intro.md)  
+> - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)](./article-1-aprs.md)  
+> - [Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic](./article-2-flood.md)  
+> **Spécifications CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl) & [prophet.cddl](./prophet.cddl)  
+> **Code des politiques :** [policies/prophet/](./policies/prophet/) ([ingress.rego](./policies/prophet/ingress.rego), [contact.rego](./policies/prophet/contact.rego), [storage.rego](./policies/prophet/storage.rego), [helpers.rego](./policies/prophet/helpers.rego), [constants.rego](./policies/prophet/constants.rego), [prophet_test.rego](./policies/prophet/prophet_test.rego))
 
 ---
 
 ## 1. Au-delà de l'Inondation Aveugle : La Mobilité Non-Aléatoire
 
-Dans l'article précédent ([Article 2](file:///home/loic/projets/dtn-mesh-algorithm/article-2-flood.md)), nous avons exploré comment **Spray and Wait** borne a priori la réplication en fixant un quota $L$, tandis que **Meshtastic** étouffe les tempêtes radio grâce à une temporisation de contention pondérée par le SNR. Cependant, ces deux approches partagent une hypothèse sous-jacente : **l'opportunisme aveugle**. Tout nœud relais disponible est traité de manière indifférenciée dès lors qu'il se trouve à portée.
+Dans l'article précédent ([Article 2](./article-2-flood.md)), nous avons exploré comment **Spray and Wait** borne a priori la réplication en fixant un quota $L$, tandis que **Meshtastic** étouffe les tempêtes radio grâce à une temporisation de contention pondérée par le SNR. Cependant, ces deux approches partagent une hypothèse sous-jacente : **l'opportunisme aveugle**. Tout nœud relais disponible est traité de manière indifférenciée dès lors qu'il se trouve à portée.
 
 Dans les scénarios réels (réseaux de secours en zone sinistrée, capteurs portés par des équipes de terrain, transports publics, flottes de drones ou d'animaux), les mouvements humains et matériels ne sont **pas aléatoires** :
 - Les entités suivent des trajectoires récurrentes (trajets domicile-travail, patrouilles, tournées logistiques).
@@ -85,7 +85,7 @@ mesh-routing-data = {
 L'émetteur d'un bundle sensible (ex: une alerte médicale prioritaire) peut spécifier `opportunistic-threshold: 0.65`. Ainsi, un nœud relais s'abstiendra de confier le bundle à un passant dont la probabilité envers la destination est trop faible, évitant la dispersion inutile du paquet.
 
 ### 3.2. Dans l'Environnement d'Évaluation OPA (`input`)
-Les tables de prévisibilités $P_{(A, *)}$ et $P_{(B, *)}$ sont des structures de données locales maintenues en mémoire vive par le démon DTN. Elles sont injectées dans le contexte d'évaluation OPA conformément à la Partie 2 de [mesh-algo-extension-block.cddl](file:///home/loic/projets/dtn-mesh-algorithm/mesh-algo-extension-block.cddl) :
+Les tables de prévisibilités $P_{(A, *)}$ et $P_{(B, *)}$ sont des structures de données locales maintenues en mémoire vive par le démon DTN. Elles sont injectées dans le contexte d'évaluation OPA conformément à la Partie 2 de [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl) :
 
 - `input.node.delivery_predictabilities` : dictionnaire `{ "dtn://dest/": 0.45, ... }` calculé par le nœud local.
 - `input.contact.peer_predictabilities` : vecteur de prévisibilité transmis par le pair $B$ lors de l'établissement de la couche de convergence (CLA).
@@ -95,7 +95,7 @@ Les tables de prévisibilités $P_{(A, *)}$ et $P_{(B, *)}$ sont des structures 
 - **Détection des doublons :** Le Bundle ID canonique `(source_eid, creation_timestamp.time, creation_timestamp.sequence_number)` ([RFC 9171 Section 4.2.2](https://www.rfc-editor.org/rfc/rfc9171.html#section-4.2.2)) élimine tout besoin de rajouter un hash ad-hoc.
 - **Rupture des boucles de transitivité :** Même si la transitivité créait une oscillation probabiliste temporaire entre deux groupes de nœuds, le **Hop Count Block (Type 10)** garantit que le bundle sera détruit net dès que `hop_count >= hop_limit`.
 
-### 3.4. Le Protocole de Rencontre : Spécification CDDL des Messages de Contrôle ([prophet.cddl](file:///home/loic/projets/dtn-mesh-algorithm/prophet.cddl))
+### 3.4. Le Protocole de Rencontre : Spécification CDDL des Messages de Contrôle ([prophet.cddl](./prophet.cddl))
 
 Une observation fondamentale distingue PRoPHET des protocoles précédents : **PRoPHET est le tout premier algorithme de notre série qui nécessite explicitement un protocole d'échange bilatéral d'informations entre nœuds lors d'un contact.**
 - En APRS, les stations digipeatent des trames UI en aveugle sans aucun accusé ni synchronisation de table.
@@ -110,7 +110,7 @@ Une observation fondamentale distingue PRoPHET des protocoles précédents : **P
 
 En DTN, ces messages de signalisation peuvent être transportés soit au niveau de la session de la couche de convergence (CLA), soit directement encapsulés dans le **payload d'un bundle administratif** (ex: adressé à `dtn://contact-peer/prophet`).
 
-Le fichier **[prophet.cddl](file:///home/loic/projets/dtn-mesh-algorithm/prophet.cddl)** formalise rigoureusement cette grammaire CBOR :
+Le fichier **[prophet.cddl](./prophet.cddl)** formalise rigoureusement cette grammaire CBOR :
 
 ```cddl
 prophet-control-bundle = {
@@ -139,15 +139,15 @@ Le démon DTN reçoit ce bundle administratif de contrôle, décode la charge ut
 - `rib-entries` alimente `input.contact.peer_predictabilities`.
 - `held-bundles` alimente `input.contact.held_bundle_ids`.
 
-Cette séparation est remarquable : **le plan de transport échange les bundles de contrôle décrits dans [prophet.cddl](file:///home/loic/projets/dtn-mesh-algorithm/prophet.cddl), tandis que le moteur OPA évalue les règles déclaratives de [contact.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/prophet/contact.rego) en toute isolation.**
+Cette séparation est remarquable : **le plan de transport échange les bundles de contrôle décrits dans [prophet.cddl](./prophet.cddl), tandis que le moteur OPA évalue les règles déclaratives de [contact.rego](./policies/prophet/contact.rego) en toute isolation.**
 
 ---
 
 ## 4. Implémentation Déclarative avec OPA (Rego)
 
-La suite de politiques est organisée dans le dossier [policies/prophet/](file:///home/loic/projets/dtn-mesh-algorithm/policies/prophet/).
+La suite de politiques est organisée dans le dossier [policies/prophet/](./policies/prophet/).
 
-### 4.1. Fonctions Mathématiques ([helpers.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/prophet/helpers.rego))
+### 4.1. Fonctions Mathématiques ([helpers.rego](./policies/prophet/helpers.rego))
 
 Rego n'autorisant pas la récursion infinie pour des raisons de garantie de terminaison, le vieillissement et la transitivité sont calculés avec une formule fermée :
 
@@ -182,7 +182,7 @@ update_transitivity(p_ac_old, p_ab, p_bc, beta) := p_ac_new if {
 }
 ```
 
-### 4.2. Règle d'Acheminement lors du Contact ([contact.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/prophet/contact.rego))
+### 4.2. Règle d'Acheminement lors du Contact ([contact.rego](./policies/prophet/contact.rego))
 
 Lorsqu'une liaison CLA s'établit avec un voisin $B$ :
 1. Si $B$ est la destination finale du bundle $\implies$ `FORWARD_DIRECT`.
@@ -210,7 +210,7 @@ decision := {
 }
 ```
 
-### 4.3. Gestion du Tampon et Éviction Mémoire ([storage.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/prophet/storage.rego))
+### 4.3. Gestion du Tampon et Éviction Mémoire ([storage.rego](./policies/prophet/storage.rego))
 
 En réseau opportuniste à stockage persistant (*Store-Carry-and-Forward*), les disques et mémoires Flash s'engorgent rapidement. La Section 3.4 de la RFC 6693 préconise une stratégie d'éviction guidée par la valeur de $P_{(A, D)}$ :
 
@@ -240,7 +240,7 @@ decision := {
 
 ## 5. Validation par les Tests Unitaires OPA (60/60 PASS)
 
-Une batterie de 16 tests unitaires spécifiques à PRoPHET ([prophet_test.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/prophet/prophet_test.rego)) a été ajoutée. Elle couvre :
+Une batterie de 16 tests unitaires spécifiques à PRoPHET ([prophet_test.rego](./policies/prophet/prophet_test.rego)) a été ajoutée. Elle couvre :
 - L'exactitude des calculs mathématiques (rencontre, transitivité, décroissance temporelle).
 - Le comportement d'admission et de rejet à l'Ingress.
 - Le filtrage par Summary Vector et par seuil d'utilité émetteur.
@@ -250,7 +250,7 @@ Une batterie de 16 tests unitaires spécifiques à PRoPHET ([prophet_test.rego](
 Exécution de la suite complète du dépôt :
 
 ```bash
-/home/loic/bin/opa test ./policies -v
+opa test ./policies -v
 ```
 
 ```text
@@ -289,7 +289,7 @@ PASS: 60/60
 
 ## 6. Synthèse Comparative : Epidemic vs Spray & Wait vs PRoPHET
 
-| Critère | Epidemic ([Article 2](file:///home/loic/projets/dtn-mesh-algorithm/article-2-flood.md)) | Spray and Wait ([Article 2](file:///home/loic/projets/dtn-mesh-algorithm/article-2-flood.md)) | PRoPHET ([RFC 6693](https://www.rfc-editor.org/rfc/rfc6693.html)) |
+| Critère | Epidemic ([Article 2](./article-2-flood.md)) | Spray and Wait ([Article 2](./article-2-flood.md)) | PRoPHET ([RFC 6693](https://www.rfc-editor.org/rfc/rfc6693.html)) |
 | :--- | :--- | :--- | :--- |
 | **Connaissance topologique** | Aucune (aveugle) | Aucune (aveugle) | Historique local des rencontres et transitivité |
 | **Dissémination des copies** | Inondation non bornée | Bornée à $L$ copies strictes | Guidée par le différentiel d'utilité $P_{(B, D)} > P_{(A, D)}$ |
@@ -303,4 +303,8 @@ PASS: 60/60
 
 Avec PRoPHET, nous avons franchi une étape décisive : le routage ne subit plus la topologie au hasard, il s'adapte dynamiquement aux habitudes réelles des entités mobiles.
 
-Dans le prochain article ([Article 4 — MaxProp](file:///home/loic/projets/dtn-mesh-algorithm/article-4-maxprop.md)), nous franchirons un pas supplémentaire : comment ordonnancer rigoureusement les files de transmission et d'éviction sous contrainte de mémoire tampon (*buffer congestion*), transformer les probabilités de contact en coût d'information logarithmique optimal ($-\log(P + \epsilon)$) et adapter le commérage topologique aux canaux radio contraints (2-Hop Gossip).
+Dans le prochain article ([Article 4 — MaxProp](./article-4-maxprop.md)), nous franchirons un pas supplémentaire : comment ordonnancer rigoureusement les files de transmission et d'éviction sous contrainte de mémoire tampon (*buffer congestion*), transformer les probabilités de contact en coût d'information logarithmique optimal ($-\log(P + \epsilon)$) et adapter le commérage topologique aux canaux radio contraints (2-Hop Gossip).
+
+---
+
+👉 **Article suivant :** [Article 4 — Routage Probabiliste et Gestion de Mémoire sous Contrainte : MaxProp et ses Optimisations Théoriques (HP-MaxProp)](./article-4-maxprop.md)

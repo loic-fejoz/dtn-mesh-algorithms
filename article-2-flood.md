@@ -2,10 +2,10 @@
 
 > **Série :** *Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7)*  
 > **Articles précédents :**  
-> - [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](file:///home/loic/projets/dtn-mesh-algorithm/article-0-intro.md)  
-> - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)](file:///home/loic/projets/dtn-mesh-algorithm/article-1-aprs.md)  
-> **Spécification CDDL :** [mesh-algo-extension-block.cddl](file:///home/loic/projets/dtn-mesh-algorithm/mesh-algo-extension-block.cddl)  
-> **Code des politiques :** [policies/flood/](file:///home/loic/projets/dtn-mesh-algorithm/policies/flood/) ([ingress.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/flood/ingress.rego), [contact.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/flood/contact.rego), [helpers.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/flood/helpers.rego), [constants.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/flood/constants.rego), [flood_test.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/flood/flood_test.rego))
+> - [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](./article-0-intro.md)  
+> - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)](./article-1-aprs.md)  
+> **Spécification CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl)  
+> **Code des politiques :** [policies/flood/](./policies/flood/) ([ingress.rego](./policies/flood/ingress.rego), [contact.rego](./policies/flood/contact.rego), [helpers.rego](./policies/flood/helpers.rego), [constants.rego](./policies/flood/constants.rego), [flood_test.rego](./policies/flood/flood_test.rego))
 
 ---
 
@@ -81,7 +81,7 @@ Conçu pour des microcontrôleurs ESP32/nRF52 opérant sur la bande ISM 868/915 
 
 ## 3. Spécification CDDL et Épuration Radicale : Spray & Wait et Meshtastic
 
-Le fichier [mesh-algo-extension-block.cddl](file:///home/loic/projets/dtn-mesh-algorithm/mesh-algo-extension-block.cddl) intègre les primitives requises sous le bloc expérimental type `200` :
+Le fichier [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl) intègre les primitives requises sous le bloc expérimental type `200` :
 
 ```cddl
 ; Bloc expérimental BPv7 modulaire et agnostique (Type 200)
@@ -130,9 +130,9 @@ Ce raisonnement aboutit à une conclusion remarquable : **l'inondation gérée d
 
 ## 4. Implémentation Déclarative avec OPA (Rego)
 
-Toutes les règles sont implémentées dans [policies/flood/](file:///home/loic/projets/dtn-mesh-algorithm/policies/flood/).
+Toutes les règles sont implémentées dans [policies/flood/](./policies/flood/).
 
-### 4.1. Fonctions d'Aide Mathématiques ([helpers.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/flood/helpers.rego))
+### 4.1. Fonctions d'Aide Mathématiques ([helpers.rego](./policies/flood/helpers.rego))
 
 ```rego
 package dtn.flood.helpers
@@ -157,7 +157,7 @@ calculate_meshtastic_backoff(snr_db) := delay_ms if {
 }
 ```
 
-### 4.2. Ingress Policy ([ingress.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/flood/ingress.rego))
+### 4.2. Ingress Policy ([ingress.rego](./policies/flood/ingress.rego))
 
 1. **Déduplication universelle :** Rejet immédiat si l'identifiant du bundle a déjà été vu.
 2. **Ingress Spray & Wait :** Enregistre le bundle et initialise la phase (`SPRAY` si $L > 1$, `WAIT` si $L = 1$).
@@ -165,7 +165,7 @@ calculate_meshtastic_backoff(snr_db) := delay_ms if {
    - Vérifie la conformité du `channel_hash` avec celui du nœud local.
    - Calcule le délai de temporisation de rediffusion selon le SNR de réception et l'ordonne via une mutation CBOR.
 
-### 4.3. Contact Policy ([contact.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/flood/contact.rego))
+### 4.3. Contact Policy ([contact.rego](./policies/flood/contact.rego))
 
 La prise de décision lors d'une opportunité de liaison CLA traduit fidèlement les règles théoriques :
 
@@ -227,14 +227,14 @@ decision := {
 
 ## 5. Validation par les Tests Unitaires OPA (43/43 PASS)
 
-La suite de tests unitaires dédiée ([flood_test.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/flood/flood_test.rego)) valide 17 scénarios critiques, portant le total global du dépôt à **43 tests validés avec succès** :
+La suite de tests unitaires dédiée ([flood_test.rego](./policies/flood/flood_test.rego)) valide 17 scénarios critiques, portant le total global du dépôt à **43 tests validés avec succès** :
 
 ```bash
 opa test ./policies -v
 ```
 
 ```text
-/home/loic/projets/dtn-mesh-algorithm/policies/flood/flood_test.rego:
+./policies/flood/flood_test.rego:
 data.dtn.flood_test.test_flood_local_delivery: PASS (602µs)
 data.dtn.flood_test.test_flood_duplicate_suppression: PASS (1.66ms)
 data.dtn.flood_test.test_spray_ingress_spray_phase: PASS (1.82ms)
@@ -269,3 +269,7 @@ Total global : 43/43 tests PASS
 | **Idéal pour** | Réseaux ultra-clairsemés sans congestion | Réseaux LoRa locaux / citoyens | Flottes véhiculaires, drones, réseaux de secours |
 
 Dans le prochain article (**Article 3**), nous aborderons la famille des **protocoles opportunistes probabilistes** avec **PRoPHET ([RFC 6693](https://www.rfc-editor.org/rfc/rfc6693.html))** : calcul dynamique des probabilités de rencontre, vieillissement (*aging*) et transitivité.
+
+---
+
+👉 **Article suivant :** [Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET (RFC 6693) sous Open Policy Agent](./article-3-prophet.md)

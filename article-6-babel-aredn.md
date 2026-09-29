@@ -2,14 +2,14 @@
 
 > **Série :** *Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7)*  
 > **Articles précédents :**  
-> - [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](file:///home/loic/projets/dtn-mesh-algorithm/article-0-intro.md)  
-> - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)](file:///home/loic/projets/dtn-mesh-algorithm/article-1-aprs.md)  
-> - [Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic](file:///home/loic/projets/dtn-mesh-algorithm/article-2-flood.md)  
-> - [Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET (RFC 6693) sous Open Policy Agent](file:///home/loic/projets/dtn-mesh-algorithm/article-3-prophet.md)  
-> - [Article 4 — Routage Probabiliste et Gestion de Mémoire sous Contrainte : MaxProp et ses Optimisations Théoriques (HP-MaxProp)](file:///home/loic/projets/dtn-mesh-algorithm/article-4-maxprop.md)  
-> - [Article 5 — Routage Hybride, Vecteur de Distance et Adressage Cryptographique : Reticulum (RNS) transposé en DTN](file:///home/loic/projets/dtn-mesh-algorithm/article-5-reticulum.md)  
-> **Spécifications CDDL :** [mesh-algo-extension-block.cddl](file:///home/loic/projets/dtn-mesh-algorithm/mesh-algo-extension-block.cddl), [prophet.cddl](file:///home/loic/projets/dtn-mesh-algorithm/prophet.cddl), [reticulum.cddl](file:///home/loic/projets/dtn-mesh-algorithm/reticulum.cddl) & [babel.cddl](file:///home/loic/projets/dtn-mesh-algorithm/babel.cddl)  
-> **Code des politiques :** [policies/babel/](file:///home/loic/projets/dtn-mesh-algorithm/policies/babel/) ([ingress.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/babel/ingress.rego), [contact.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/babel/contact.rego), [storage.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/babel/storage.rego), [helpers.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/babel/helpers.rego), [constants.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/babel/constants.rego), [babel_test.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/babel/babel_test.rego))
+> - [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](./article-0-intro.md)  
+> - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)](./article-1-aprs.md)  
+> - [Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic](./article-2-flood.md)  
+> - [Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET (RFC 6693) sous Open Policy Agent](./article-3-prophet.md)  
+> - [Article 4 — Routage Probabiliste et Gestion de Mémoire sous Contrainte : MaxProp et ses Optimisations Théoriques (HP-MaxProp)](./article-4-maxprop.md)  
+> - [Article 5 — Routage Hybride, Vecteur de Distance et Adressage Cryptographique : Reticulum (RNS) transposé en DTN](./article-5-reticulum.md)  
+> **Spécifications CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl), [reticulum.cddl](./reticulum.cddl) & [babel.cddl](./babel.cddl)  
+> **Code des politiques :** [policies/babel/](./policies/babel/) ([ingress.rego](./policies/babel/ingress.rego), [contact.rego](./policies/babel/contact.rego), [storage.rego](./policies/babel/storage.rego), [helpers.rego](./policies/babel/helpers.rego), [constants.rego](./policies/babel/constants.rego), [babel_test.rego](./policies/babel/babel_test.rego))
 
 ---
 
@@ -90,13 +90,13 @@ Plutôt que d'attendre ou de risquer une boucle :
 ## 3. Découplage Architectural et Spécification `babel.cddl`
 
 ### 3.1. Zéro surcoût filaire pour les données DTN
-Comme pour Meshtastic ([Article 2](file:///home/loic/projets/dtn-mesh-algorithm/article-2-flood.md)) et Reticulum ([Article 4](file:///home/loic/projets/dtn-mesh-algorithm/article-4-reticulum.md)) :
+Comme pour Meshtastic ([Article 2](./article-2-flood.md)) et Reticulum ([Article 4](./article-5-reticulum.md)) :
 - Les bundles de données circulant sur l'infrastructure AREDN/DTN utilisent **strictement les blocs BPv7 standards ([RFC 9171](https://www.rfc-editor.org/rfc/rfc9171.html))**.
 - La destination est portée par l'EID standard (ex: `dtn://aredn/camera-relay-04/` ou `ipn:42.1`).
 - La rupture de boucle physique d'ultime recours est déléguée au **Hop Count Block (Type 10)**.
 - La déduplication repose sur le **Bundle ID canonique** `(source, time, sequence)`.
 
-### 3.2. Spécification CDDL des Messages de Contrôle ([babel.cddl](file:///home/loic/projets/dtn-mesh-algorithm/babel.cddl))
+### 3.2. Spécification CDDL des Messages de Contrôle ([babel.cddl](./babel.cddl))
 Les échanges de signalisation entre routeurs Babel/AREDN sont encapsulés dans le payload de bundles administratifs CBOR :
 
 ```cddl
@@ -138,9 +138,9 @@ seqno-request-payload = {
 
 ## 4. L'Hybridation HYMAD sous Open Policy Agent (OPA)
 
-Le répertoire **[policies/babel/](file:///home/loic/projets/dtn-mesh-algorithm/policies/babel/)** implémente la logique complète sous forme de règles déclaratives Rego.
+Le répertoire **[policies/babel/](./policies/babel/)** implémente la logique complète sous forme de règles déclaratives Rego.
 
-### 4.1. Ingress : Arbitrage Bellman-Ford sans boucle ([ingress.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/babel/ingress.rego))
+### 4.1. Ingress : Arbitrage Bellman-Ford sans boucle ([ingress.rego](./policies/babel/ingress.rego))
 
 À la réception d'un bundle de signalisation Babel `Update`, OPA évalue si la route doit modifier la table du routeur local :
 
@@ -189,12 +189,12 @@ decision := {
 }
 ```
 
-La fonction d'aide [helpers.should_update_babel_route](file:///home/loic/projets/dtn-mesh-algorithm/policies/babel/helpers.rego#L51-L82) applique rigoureusement les préceptes de la RFC 8966 :
+La fonction d'aide [helpers.should_update_babel_route](./policies/babel/helpers.rego#L51-L82) applique rigoureusement les préceptes de la RFC 8966 :
 - Si $seqno_{new} > seqno_{old}$ : le routeur d'origine a augmenté sa séquence, la route est mise à jour immédiatement.
 - Si $seqno_{new} == seqno_{old}$ : la route n'est mise à jour que si $metric_{new} < metric_{old}$.
 - Sinon : la mise à jour est ignorée (`ACCEPT_BABEL_UPDATE_NO_CHANGE`), empêchant toute propagation de métrique dégradée.
 
-### 4.2. Contact : Forwarding Proactif ou Bascule Ferry HYMAD ([contact.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/babel/contact.rego))
+### 4.2. Contact : Forwarding Proactif ou Bascule Ferry HYMAD ([contact.rego](./policies/babel/contact.rego))
 
 Lorsqu'un contact s'établit avec un pair, la politique distingue deux régimes :
 
@@ -223,7 +223,7 @@ decision := {
 }
 ```
 
-### 4.3. Storage : Découverte Réactive par Route Requests ([storage.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/babel/storage.rego))
+### 4.3. Storage : Découverte Réactive par Route Requests ([storage.rego](./policies/babel/storage.rego))
 
 Lors de l'audit de la mémoire de stockage, si un bundle réside dans le buffer pour une destination dont la route a expiré, OPA déclenche l'émission d'une requête de route :
 
@@ -248,7 +248,7 @@ decision := {
 
 ## 5. Validation par les Tests Unitaires OPA (92/92 PASS)
 
-Une batterie de 16 tests unitaires spécifiques ([policies/babel/babel_test.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/babel/babel_test.rego)) valide l'intégralité du comportement :
+Une batterie de 16 tests unitaires spécifiques ([policies/babel/babel_test.rego](./policies/babel/babel_test.rego)) valide l'intégralité du comportement :
 - Mise à jour de route sur nouveau seqno vs même seqno.
 - Rejet des métriques dégradées (condition de faisabilité).
 - Routage unicast strict vers le prochain saut.
@@ -258,7 +258,7 @@ Une batterie de 16 tests unitaires spécifiques ([policies/babel/babel_test.rego
 Exécution de l'ensemble de la suite de tests du projet :
 
 ```bash
-/home/loic/bin/opa test ./policies -v
+opa test ./policies -v
 ```
 
 ```text
@@ -303,13 +303,13 @@ PASS: 108/108
 
 Ce sixième article vient compléter notre matrice comparative des grandes familles de routage transposées sur DTN :
 
-| Critère | APRS AX.25 ([Art. 1](file:///home/loic/projets/dtn-mesh-algorithm/article-1-aprs.md)) | Meshtastic ([Art. 2](file:///home/loic/projets/dtn-mesh-algorithm/article-2-flood.md)) | PRoPHET RFC 6693 ([Art. 3](file:///home/loic/projets/dtn-mesh-algorithm/article-3-prophet.md)) | MaxProp / HP-MaxProp ([Art. 4](file:///home/loic/projets/dtn-mesh-algorithm/article-4-maxprop.md)) | Reticulum RNS ([Art. 5](file:///home/loic/projets/dtn-mesh-algorithm/article-5-reticulum.md)) | AREDN / Babel / HYMAD ([Art. 6](file:///home/loic/projets/dtn-mesh-algorithm/article-6-babel-aredn.md)) |
+| Critère | APRS AX.25 ([Art. 1](./article-1-aprs.md)) | Meshtastic ([Art. 2](./article-2-flood.md)) | PRoPHET RFC 6693 ([Art. 3](./article-3-prophet.md)) | MaxProp / HP-MaxProp ([Art. 4](./article-4-maxprop.md)) | Reticulum RNS ([Art. 5](./article-5-reticulum.md)) | AREDN / Babel / HYMAD ([Art. 6](./article-6-babel-aredn.md)) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Paradigme Fondamental** | Routage à la source & alias | Inondation gérée (*Managed Flooding*) | Opportuniste probabiliste | Dijkstra + Ordonnancement Buffer | Vecteur de distance réactif | **Hybride MANET-DTN (Proactif + Ferry)** |
 | **Débit & Médium Cibles** | Trame AX.25 1200 bauds | LoRa 0.3 - 5 kbps | Bluetooth / Wi-Fi urbain | Réseaux véhiculaires & LoRa (2-hop) | Multi-médium (HF/LoRa/UDP) | **Wi-Fi Haut Débit (10-100 Mbps) + Ferries** |
 | **Garantie sans boucle** | Décrément d'alias & Type 6 | Hop Count Type 10 & IDs | Hop Count Type 10 | Hop Count Type 10 | Hop Count strict & métrique croissante | **Distance de Faisabilité (FD) & Seqnos** |
 | **Blocs Filaire Données DTN** | Type 200 (`trajectory_control`) | **Zéro bloc custom** (Pur BPv7) | Type 200 optionnel (`threshold`) | **Zéro bloc custom** (Pur BPv7) | **Zéro bloc custom** (Pur BPv7) | **Zéro bloc custom** (Pur BPv7) |
-| **Signalisation inter-nœuds** | Aucune (broadcast aveugle) | Aucune (canaux partagés) | Handshake RIB & SV ([prophet.cddl](file:///home/loic/projets/dtn-mesh-algorithm/prophet.cddl)) | Prob-Vector & Cleared List ([maxprop.cddl](file:///home/loic/projets/dtn-mesh-algorithm/maxprop.cddl)) | Annonces signées ([reticulum.cddl](file:///home/loic/projets/dtn-mesh-algorithm/reticulum.cddl)) | Hellos, IHU, Updates ([babel.cddl](file:///home/loic/projets/dtn-mesh-algorithm/babel.cddl)) |
+| **Signalisation inter-nœuds** | Aucune (broadcast aveugle) | Aucune (canaux partagés) | Handshake RIB & SV ([prophet.cddl](./prophet.cddl)) | Prob-Vector & Cleared List ([maxprop.cddl](./maxprop.cddl)) | Annonces signées ([reticulum.cddl](./reticulum.cddl)) | Hellos, IHU, Updates ([babel.cddl](./babel.cddl)) |
 | **Comportement face à l'isolement** | Paquet perdu si non capté | Paquet étouffé si hors portée | Porté en mémoire jusqu'au contact | Trié et purgé par Cleared List | Garde en buffer jusqu'à annonce | **Offloading automatique vers ferry DTN** |
 
 ---
@@ -320,3 +320,9 @@ En explorant successivement APRS, Spray and Wait, Meshtastic, PRoPHET, Reticulum
 1. **Le Bundle Protocol v7 (RFC 9171) est un métamodèle universel.** Il unifie le transport physique sous un format canonique sans imposer d'hypothèse rigide sur la topologie sous-jacente.
 2. **Open Policy Agent (OPA) transforme le routeur en système expert.** En extrayant la logique de décision du code bas niveau de la couche de convergence, nous pouvons permuter ou hybrider des algorithmes de routage radicalement différents (MANET vs DTN) d'une simple ligne de politique déclarative.
 3. **Le futur du maillage d'urgence est hybride.** Les architectures de demain ne choisiront plus entre mesh temps réel et tolérance aux délais : elles composeront les deux, comme démontré avec l'hybridation AREDN-DTN.
+
+Dans le prochain article ([Article 7](./article-7-cgr.md)), nous franchirons les limites terrestres pour explorer le standard spatial du DTN : le **Contact Graph Routing (CGR / SABR - RFC 8877)** fondé sur des fenêtres de visibilité orbitales déterministes.
+
+---
+
+👉 **Article suivant :** [Article 7 — Routage par Graphe de Contacts Déterministe : Contact Graph Routing (CGR / SABR - RFC 8877) sous Open Policy Agent](./article-7-cgr.md)

@@ -2,25 +2,25 @@
 
 > **Série :** *Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7)*  
 > **Articles précédents :**  
-> - [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](file:///home/loic/projets/dtn-mesh-algorithm/article-0-intro.md)  
-> - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)](file:///home/loic/projets/dtn-mesh-algorithm/article-1-aprs.md)  
-> - [Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic](file:///home/loic/projets/dtn-mesh-algorithm/article-2-flood.md)  
-> - [Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET (RFC 6693) sous Open Policy Agent](file:///home/loic/projets/dtn-mesh-algorithm/article-3-prophet.md)  
-> - [Article 4 — Routage Probabiliste et Gestion de Mémoire sous Contrainte : MaxProp et ses Optimisations Théoriques (HP-MaxProp)](file:///home/loic/projets/dtn-mesh-algorithm/article-4-maxprop.md)  
+> - [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](./article-0-intro.md)  
+> - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)](./article-1-aprs.md)  
+> - [Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic](./article-2-flood.md)  
+> - [Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET (RFC 6693) sous Open Policy Agent](./article-3-prophet.md)  
+> - [Article 4 — Routage Probabiliste et Gestion de Mémoire sous Contrainte : MaxProp et ses Optimisations Théoriques (HP-MaxProp)](./article-4-maxprop.md)  
 > **Article suivant :**  
-> - [Article 6 — Réseaux Maillés Proactifs et Hybridation MANET-DTN : AREDN, Babel (RFC 8966) et l'Architecture HYMAD sous Open Policy Agent](file:///home/loic/projets/dtn-mesh-algorithm/article-6-babel-aredn.md)  
-> **Spécifications CDDL :** [mesh-algo-extension-block.cddl](file:///home/loic/projets/dtn-mesh-algorithm/mesh-algo-extension-block.cddl), [prophet.cddl](file:///home/loic/projets/dtn-mesh-algorithm/prophet.cddl) & [reticulum.cddl](file:///home/loic/projets/dtn-mesh-algorithm/reticulum.cddl)  
-> **Code des politiques :** [policies/reticulum/](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/) ([ingress.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/ingress.rego), [contact.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/contact.rego), [storage.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/storage.rego), [helpers.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/helpers.rego), [constants.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/constants.rego), [reticulum_test.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/reticulum_test.rego))
+> - [Article 6 — Réseaux Maillés Proactifs et Hybridation MANET-DTN : AREDN, Babel (RFC 8966) et l'Architecture HYMAD sous Open Policy Agent](./article-6-babel-aredn.md)  
+> **Spécifications CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl) & [reticulum.cddl](./reticulum.cddl)  
+> **Code des politiques :** [policies/reticulum/](./policies/reticulum/) ([ingress.rego](./policies/reticulum/ingress.rego), [contact.rego](./policies/reticulum/contact.rego), [storage.rego](./policies/reticulum/storage.rego), [helpers.rego](./policies/reticulum/helpers.rego), [constants.rego](./policies/reticulum/constants.rego), [reticulum_test.rego](./policies/reticulum/reticulum_test.rego))
 
 ---
 
 ## 1. L'Impératif Zéro-IP et l'Identité Auto-Souveraine
 
 Jusqu'ici, notre exploration des réseaux maillés et tolérants aux délais a couvert :
-1. Le routage à la source et la consommation d'alias d'acheminement sous contrainte radio ([APRS AX.25](file:///home/loic/projets/dtn-mesh-algorithm/article-1-aprs.md)).
-2. L'inondation régulée par quotas stricts ou par temporisation physique de canal ([Spray and Wait & Meshtastic](file:///home/loic/projets/dtn-mesh-algorithm/article-2-flood.md)).
-3. Le routage opportuniste guidé par l'apprentissage statistique des contacts humains ([PRoPHET RFC 6693](file:///home/loic/projets/dtn-mesh-algorithm/article-3-prophet.md)).
-4. L'ordonnancement de transmission et l'éviction de buffer fondés sur la théorie de l'information ([MaxProp](file:///home/loic/projets/dtn-mesh-algorithm/article-4-maxprop.md)).
+1. Le routage à la source et la consommation d'alias d'acheminement sous contrainte radio ([APRS AX.25](./article-1-aprs.md)).
+2. L'inondation régulée par quotas stricts ou par temporisation physique de canal ([Spray and Wait & Meshtastic](./article-2-flood.md)).
+3. Le routage opportuniste guidé par l'apprentissage statistique des contacts humains ([PRoPHET RFC 6693](./article-3-prophet.md)).
+4. L'ordonnancement de transmission et l'éviction de buffer fondés sur la théorie de l'information ([MaxProp](./article-4-maxprop.md)).
 
 Cependant, tous ces protocoles s'appuient soit sur des identifiants administratifs statiques (indicatifs radioamateurs en APRS, adresses MAC/numéros de nœuds en Meshtastic, URI textuels en PRoPHET), soit sur une inondation globale de chaque message.
 
@@ -87,7 +87,7 @@ Tout nœud intermédiaire disposant d'un chemin valide vers cette destination pe
 
 ## 3. Le Coup de Maître : Zéro Bloc Filaire Spécifique pour les Données en DTN
 
-L'un des résultats les plus élégants de notre modélisation architecturale concerne le format filaire : **tout comme Meshtastic dans l'[Article 2](file:///home/loic/projets/dtn-mesh-algorithm/article-2-flood.md), Reticulum ne requiert aucun bloc d'extension propriétaire sur le câble pour acheminer les bundles de données en DTN.**
+L'un des résultats les plus élégants de notre modélisation architecturale concerne le format filaire : **tout comme Meshtastic dans l'[Article 2](./article-2-flood.md), Reticulum ne requiert aucun bloc d'extension propriétaire sur le câble pour acheminer les bundles de données en DTN.**
 
 Examinons pourquoi :
 
@@ -109,7 +109,7 @@ Si les paquets de données voyagent sous la forme de bundles ordinaires, la sign
 
 Dans notre architecture, ces messages sont encapsulés dans le **payload d'un bundle administratif** (ex: adressé à `dtn://rns/announce` ou au pair distant via la CLA).
 
-Le fichier **[reticulum.cddl](file:///home/loic/projets/dtn-mesh-algorithm/reticulum.cddl)** spécifie ces structures en CBOR :
+Le fichier **[reticulum.cddl](./reticulum.cddl)** spécifie ces structures en CBOR :
 
 ```cddl
 ; Message de contrôle Reticulum transporté dans le payload d'un bundle administratif
@@ -186,9 +186,9 @@ Grâce aux primitives DTN, **aucun paquet n'est perdu lors d'une partition rése
 
 ## 6. Modélisation Déclarative sous Open Policy Agent (OPA)
 
-Le répertoire **[policies/reticulum/](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/)** implémente l'ensemble des règles de décision régissant le comportement d'un routeur Reticulum/DTN.
+Le répertoire **[policies/reticulum/](./policies/reticulum/)** implémente l'ensemble des règles de décision régissant le comportement d'un routeur Reticulum/DTN.
 
-### 6.1. Ingress : Ingestion d'Annonces et Mise à Jour de Table ([ingress.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/ingress.rego))
+### 6.1. Ingress : Ingestion d'Annonces et Mise à Jour de Table ([ingress.rego](./policies/reticulum/ingress.rego))
 
 À l'entrée, la politique distingue les paquets de données des annonces de chemin :
 
@@ -231,12 +231,12 @@ decision := {
 }
 ```
 
-La fonction d'aide [helpers.should_update_path](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/helpers.rego#L60-L73) formalise les conditions du vecteur de distance :
+La fonction d'aide [helpers.should_update_path](./policies/reticulum/helpers.rego#L60-L73) formalise les conditions du vecteur de distance :
 1. Aucun chemin n'était connu pour cette destination.
 2. Le chemin enregistré a expiré (`current_time > expires_at_ms`).
 3. L'annonce entrante propose un chemin strictement plus court (`new_hops < existing.hops`).
 
-### 6.2. Contact : Forwarding Unicast au Prochain Saut Désigné ([contact.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/contact.rego))
+### 6.2. Contact : Forwarding Unicast au Prochain Saut Désigné ([contact.rego](./policies/reticulum/contact.rego))
 
 Lorsqu'une opportunité de transmission se présente avec un pair :
 - S'il s'agit d'une annonce et que le lien est en broadcast : rediffusion (`FORWARD_BROADCAST`).
@@ -265,7 +265,7 @@ decision := {
 }
 ```
 
-### 6.3. Storage : Déclenchement de Path Requests en Arrière-Plan ([storage.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/storage.rego))
+### 6.3. Storage : Déclenchement de Path Requests en Arrière-Plan ([storage.rego](./policies/reticulum/storage.rego))
 
 Lors de la revue périodique des mémoires tampons :
 - Les bundles orphelins (sans route valide en table) déclenchent une mutation `TRIGGER_PATH_REQUEST` pour réveiller la découverte réactive si le nœud l'autorise.
@@ -291,10 +291,10 @@ decision := {
 
 ## 7. Validation par les Tests Unitaires OPA (76/76 PASS)
 
-L'implémentation a été validée par 16 tests unitaires complets dans [reticulum_test.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/reticulum_test.rego), portant le total de la suite de tests à **76 tests réussis avec un taux de réussite de 100%**.
+L'implémentation a été validée par 16 tests unitaires complets dans [reticulum_test.rego](./policies/reticulum/reticulum_test.rego), portant le total de la suite de tests à **76 tests réussis avec un taux de réussite de 100%**.
 
 ```bash
-/home/loic/bin/opa test ./policies -v
+opa test ./policies -v
 ```
 
 ```text
@@ -337,12 +337,12 @@ PASS: 76/76
 
 Voici la cartographie transversale comparant l'ensemble des protocoles étudiés et implémentés au fil de notre série :
 
-| Critère | APRS AX.25 ([Article 1](file:///home/loic/projets/dtn-mesh-algorithm/article-1-aprs.md)) | Meshtastic ([Article 2](file:///home/loic/projets/dtn-mesh-algorithm/article-2-flood.md)) | PRoPHET RFC 6693 ([Article 3](file:///home/loic/projets/dtn-mesh-algorithm/article-3-prophet.md)) | Reticulum RNS ([Article 4](file:///home/loic/projets/dtn-mesh-algorithm/article-4-reticulum.md)) |
+| Critère | APRS AX.25 ([Article 1](./article-1-aprs.md)) | Meshtastic ([Article 2](./article-2-flood.md)) | PRoPHET RFC 6693 ([Article 3](./article-3-prophet.md)) | Reticulum RNS ([Article 4](./article-5-reticulum.md)) |
 | :--- | :--- | :--- | :--- | :--- |
 | **Paradigme de Routage** | Routage à la source & alias génériques | Inondation gérée (*Managed Flooding*) | Routage opportuniste probabiliste | Vecteur de distance réactif / proactif |
 | **Format d'Adressage** | Indicatifs radioamateurs (`NOCALL-1`) | NodeNum 32 bits (`!a1b2c3d4`) | EID URI textuels (`dtn://dest/`) | Hashes cryptographiques 16 octets (`dtn://rns/<hash>/`) |
 | **Blocs Filaire DTN Requis** | Extension Bloc Type 200 (`trajectory_control`) | **Aucun** (Pur BPv7 standard : Type 10) | Optionnel Type 200 (`opportunistic_threshold`) | **Aucun** (Pur BPv7 standard : Type 10) |
-| **Messages de Signalisation** | Aucun (diffusion aveugle) | Aucun (canaux pré-partagés) | Échanges bilatéraux RIB & SV ([prophet.cddl](file:///home/loic/projets/dtn-mesh-algorithm/prophet.cddl)) | Annonces signées & Requêtes de chemin ([reticulum.cddl](file:///home/loic/projets/dtn-mesh-algorithm/reticulum.cddl)) |
+| **Messages de Signalisation** | Aucun (diffusion aveugle) | Aucun (canaux pré-partagés) | Échanges bilatéraux RIB & SV ([prophet.cddl](./prophet.cddl)) | Annonces signées & Requêtes de chemin ([reticulum.cddl](./reticulum.cddl)) |
 | **Acheminement des Données** | Multidiffusion broadcast | Diffusion générale avec SNR backoff | Recommmandation opportuniste aux pairs favorables | **Unicast strict** vers le prochain saut désigné |
 | **Gestion des Boucles** | Consommation d'alias & Split Horizon Type 6 | Déduplication par Bundle ID & Hop Count Type 10 | Décroissance transitive & Hop Count Type 10 | Métrique de sauts stricts & Hop Count Type 10 |
 | **Comportement hors partition** | Abandon de paquet si non relayé | Abandon si aucun relais n'écoute | Porté en mémoire jusqu'au contact favorable | **Garde DTN active** (Store-Carry-and-Forward) |
@@ -357,4 +357,8 @@ La transposition de Reticulum vers le Bundle Protocol v7 parachève la démonstr
 2. **L'élégance de la séparation des plans :** Le moteur filaire reste minimaliste et robuste ; la complexité décisionnelle est entièrement déportée dans des politiques déclaratives OPA vérifiables et auditables.
 3. **La résilience accrue :** Reticulum apporte à DTN son adressage cryptographique zero-trust ; DTN offre à Reticulum la persistance indestructible du *Store-Carry-and-Forward*.
 
-Dans les prochains travaux, nous nous intéresserons aux protocoles d'infrastructure proactifs basés sur l'état des liens comme **AREDN (Babel / OLSR)** et à la planification déterministe spatiale avec **Contact Graph Routing (CGR - RFC 8877)** !
+Dans le prochain article ([Article 6](./article-6-babel-aredn.md)), nous nous intéresserons aux protocoles d'infrastructure proactifs basés sur l'état des liens avec **AREDN (Babel / RFC 8966)** et à l'architecture hybride MANET-DTN **HYMAD** !
+
+---
+
+👉 **Article suivant :** [Article 6 — Réseaux Maillés Proactifs et Hybridation MANET-DTN : AREDN, Babel (RFC 8966) et l'Architecture HYMAD sous Open Policy Agent](./article-6-babel-aredn.md)

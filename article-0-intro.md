@@ -2,7 +2,7 @@
 
 > **Série :** *Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7)*  
 > **Auteur :** Recherche & Ingénierie DTN Mesh  
-> **Code associé :** [policies/](file:///home/loic/projets/dtn-mesh-algorithm/policies) ([ingress.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/ingress.rego), [storage.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/storage.rego), [contact.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/contact.rego), [helpers.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/helpers.rego), [dtn_constants.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/dtn_constants.rego))
+> **Code associé :** [policies/](./policies) ([ingress.rego](./policies/ingress.rego), [storage.rego](./policies/storage.rego), [contact.rego](./policies/contact.rego), [helpers.rego](./policies/helpers.rego), [dtn_constants.rego](./policies/dtn_constants.rego))
 
 ---
 
@@ -58,14 +58,14 @@ Une différence architecturale majeure entre le DTN et les réseaux maillés ad-
 - **En DTN (BPv7 RFC 9171 Section 4.2.2) :** Tout bundle possède **nativement** une identité universelle, canonique et mondialement unique :
   $$\text{BundleID} = (\text{source\_eid}, \text{creation\_timestamp.time}, \text{creation\_timestamp.sequence\_number})$$
 
-Même sur les nœuds sans horloge (`time == 0`), le numéro de séquence monotone garantit cette unicité par station émettrice. Dans nos politiques Rego, la déduplication et les vecteurs de résumé reposent directement sur ce tuple ([helpers.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/helpers.rego)) via `helpers.get_bundle_id(bundle)`. Aucun champ d'identifiant de message spécifique n'a besoin d'être surajouté dans un bloc d'extension.
+Même sur les nœuds sans horloge (`time == 0`), le numéro de séquence monotone garantit cette unicité par station émettrice. Dans nos politiques Rego, la déduplication et les vecteurs de résumé reposent directement sur ce tuple ([helpers.rego](./policies/helpers.rego)) via `helpers.get_bundle_id(bundle)`. Aucun champ d'identifiant de message spécifique n'a besoin d'être surajouté dans un bloc d'extension.
 
 De même, le **Hop Count Block (Type 10)** s'impose comme le garde-fou universel : tout algorithme mesh (qu'il s'agisse de Meshtastic ou d'APRS WIDE n-N) réconcilie son décompte de sauts avec ce bloc standard.
 
 ### 2.6. Protection Contre le Déni de Service (DoS) et Nœuds Malveillants : `blacklist_sources`
 Dans les réseaux maillés et opportunistes ouverts (radioamateurs VHF/AX.25, capteurs LoRa, réseaux tactiques d'urgence), n'importe quelle station à portée radio peut injecter des trames dans l'éther. En cas de défaillance matérielle (nœud qui boucle et sature la fréquence) ou d'attaque malveillante par épuisement des ressources mémoire (*Storage Exhaustion Attack*), un routeur DTN doit pouvoir bloquer l'émetteur sans délai.
 
-Plutôt que de recompiler ou de redémarrer le démon DTN, nous intégrons dans le contexte du nœud le champ `blacklist_sources: [* tstr]` ([mesh-algo-extension-block.cddl](file:///home/loic/projets/dtn-mesh-algorithm/mesh-algo-extension-block.cddl)). Dès l'arrivée d'un bundle, la politique d'Ingress vérifie si l'EID source figure dans cette liste :
+Plutôt que de recompiler ou de redémarrer le démon DTN, nous intégrons dans le contexte du nœud le champ `blacklist_sources: [* tstr]` ([mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl)). Dès l'arrivée d'un bundle, la politique d'Ingress vérifie si l'EID source figure dans cette liste :
 - Le bundle est immédiatement rejeté (`DROP`) avant toute allocation de mémoire ou persistance sur disque.
 - **Règle de sécurité cruciale :** Le nœud **ne génère aucun rapport d'état de suppression** (`generate_status_report := false`). Répondre systématiquement à un émetteur malveillant créerait un risque d'amplification de trafic et achèverait de saturer le canal radio partagé.
 
@@ -129,9 +129,9 @@ Il est inefficace et conceptuellement erroné d'avoir une politique monolithique
 
 ## 4. Spécification et Implémentation Rego
 
-L'ensemble des règles est implémenté et validé dans le répertoire [`policies/`](file:///home/loic/projets/dtn-mesh-algorithm/policies).
+L'ensemble des règles est implémenté et validé dans le répertoire [`policies/`](./policies).
 
-### 4.1. Constantes et Aides ([dtn_constants.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/dtn_constants.rego) & [helpers.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/helpers.rego))
+### 4.1. Constantes et Aides ([dtn_constants.rego](./policies/dtn_constants.rego) & [helpers.rego](./policies/helpers.rego))
 
 ```rego
 package dtn.helpers
@@ -160,7 +160,7 @@ will_exceed_hop_limit(bundle) if {
 }
 ```
 
-### 4.2. Politique d'Ingress ([ingress.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/ingress.rego))
+### 4.2. Politique d'Ingress ([ingress.rego](./policies/ingress.rego))
 
 ```rego
 package dtn.ingress
@@ -237,7 +237,7 @@ decision := {
 }
 ```
 
-### 4.3. Politique de Rétention en Stockage ([storage.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/storage.rego))
+### 4.3. Politique de Rétention en Stockage ([storage.rego](./policies/storage.rego))
 
 ```rego
 package dtn.storage
@@ -256,7 +256,7 @@ decision := {
 }
 ```
 
-### 4.4. Politique de Contact CLA ([contact.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/contact.rego))
+### 4.4. Politique de Contact CLA ([contact.rego](./policies/contact.rego))
 
 ```rego
 package dtn.contact
@@ -290,14 +290,14 @@ opa test ./policies -v
 
 **Résultats obtenus :**
 ```text
-/home/loic/projets/dtn-mesh-algorithm/policies/contact_test.rego:
+./policies/contact_test.rego:
 data.dtn.contact_test.test_contact_drop_expired: PASS (2.05ms)
 data.dtn.contact_test.test_contact_drop_hop_limit_reached: PASS (964µs)
 data.dtn.contact_test.test_contact_skip_previous_node: PASS (1.10ms)
 data.dtn.contact_test.test_contact_forward_direct_destination: PASS (1.57ms)
 data.dtn.contact_test.test_contact_forward_opportunistic_relay: PASS (1.33ms)
 
-/home/loic/projets/dtn-mesh-algorithm/policies/ingress_test.rego:
+./policies/ingress_test.rego:
 data.dtn.ingress_test.test_ingress_local_delivery: PASS (504µs)
 data.dtn.ingress_test.test_ingress_drop_lifetime_expired_timed: PASS (1.08ms)
 data.dtn.ingress_test.test_ingress_drop_lifetime_expired_untimed: PASS (1.13ms)
@@ -305,7 +305,7 @@ data.dtn.ingress_test.test_ingress_drop_hop_limit_reached: PASS (1.55ms)
 data.dtn.ingress_test.test_ingress_accept_and_mutate_hop_count: PASS (1.35ms)
 data.dtn.ingress_test.test_ingress_drop_blacklisted_source: PASS (698µs)
 
-/home/loic/projets/dtn-mesh-algorithm/policies/storage_test.rego:
+./policies/storage_test.rego:
 data.dtn.storage_test.test_storage_drop_lifetime_expired_timed: PASS (403µs)
 data.dtn.storage_test.test_storage_drop_lifetime_expired_untimed: PASS (706µs)
 data.dtn.storage_test.test_storage_retain_and_update_age: PASS (1.19ms)
@@ -329,3 +329,7 @@ Ce socle fonctionnel ouvre des problématiques majeures à traiter lors de la tr
    Dans cet article, la seule mutation était l'incrémentation du champ `hop_count`. Pour APRS, la mutation consistera à consommer un alias `WIDE1-1 -> WIDE1*` et à apposer l'indicatif du relais dans un bloc de trace. Pour Spray and Wait, il s'agira de diviser un quota de réplication $L \leftarrow \lfloor L/2 \rfloor$.
 
 Dans le prochain article (**Article 1**), nous nous attaquerons directement à la transposition du **digipeating APRS (AX.25)** : formalisation du nouveau bloc d'extension de chemin futur (*Path Trajectory Block*) et écriture des règles Rego associées.
+
+---
+
+👉 **Article suivant :** [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)](./article-1-aprs.md)
