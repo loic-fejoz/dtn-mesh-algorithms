@@ -1,4 +1,4 @@
-# Article 4 — Routage Hybride, Vecteur de Distance et Adressage Cryptographique : Reticulum (RNS) transposé en DTN
+# Article 5 — Routage Hybride, Vecteur de Distance et Adressage Cryptographique : Reticulum (RNS) transposé en DTN
 
 > **Série :** *Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7)*  
 > **Articles précédents :**  
@@ -6,6 +6,9 @@
 > - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)](file:///home/loic/projets/dtn-mesh-algorithm/article-1-aprs.md)  
 > - [Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic](file:///home/loic/projets/dtn-mesh-algorithm/article-2-flood.md)  
 > - [Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET (RFC 6693) sous Open Policy Agent](file:///home/loic/projets/dtn-mesh-algorithm/article-3-prophet.md)  
+> - [Article 4 — Routage Probabiliste et Gestion de Mémoire sous Contrainte : MaxProp et ses Optimisations Théoriques (HP-MaxProp)](file:///home/loic/projets/dtn-mesh-algorithm/article-4-maxprop.md)  
+> **Article suivant :**  
+> - [Article 6 — Réseaux Maillés Proactifs et Hybridation MANET-DTN : AREDN, Babel (RFC 8966) et l'Architecture HYMAD sous Open Policy Agent](file:///home/loic/projets/dtn-mesh-algorithm/article-6-babel-aredn.md)  
 > **Spécifications CDDL :** [mesh-algo-extension-block.cddl](file:///home/loic/projets/dtn-mesh-algorithm/mesh-algo-extension-block.cddl), [prophet.cddl](file:///home/loic/projets/dtn-mesh-algorithm/prophet.cddl) & [reticulum.cddl](file:///home/loic/projets/dtn-mesh-algorithm/reticulum.cddl)  
 > **Code des politiques :** [policies/reticulum/](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/) ([ingress.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/ingress.rego), [contact.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/contact.rego), [storage.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/storage.rego), [helpers.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/helpers.rego), [constants.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/constants.rego), [reticulum_test.rego](file:///home/loic/projets/dtn-mesh-algorithm/policies/reticulum/reticulum_test.rego))
 
@@ -17,6 +20,7 @@ Jusqu'ici, notre exploration des réseaux maillés et tolérants aux délais a c
 1. Le routage à la source et la consommation d'alias d'acheminement sous contrainte radio ([APRS AX.25](file:///home/loic/projets/dtn-mesh-algorithm/article-1-aprs.md)).
 2. L'inondation régulée par quotas stricts ou par temporisation physique de canal ([Spray and Wait & Meshtastic](file:///home/loic/projets/dtn-mesh-algorithm/article-2-flood.md)).
 3. Le routage opportuniste guidé par l'apprentissage statistique des contacts humains ([PRoPHET RFC 6693](file:///home/loic/projets/dtn-mesh-algorithm/article-3-prophet.md)).
+4. L'ordonnancement de transmission et l'éviction de buffer fondés sur la théorie de l'information ([MaxProp](file:///home/loic/projets/dtn-mesh-algorithm/article-4-maxprop.md)).
 
 Cependant, tous ces protocoles s'appuient soit sur des identifiants administratifs statiques (indicatifs radioamateurs en APRS, adresses MAC/numéros de nœuds en Meshtastic, URI textuels en PRoPHET), soit sur une inondation globale de chaque message.
 

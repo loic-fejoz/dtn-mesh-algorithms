@@ -299,8 +299,8 @@ PASS: 60/60
 
 ---
 
-## 7. Perspectives : Vers les Réseaux Cryptographiques Ad-Hoc (Reticulum)
+## 7. Perspectives : Vers l'Optimalité Théorique et la Gestion des Buffers (MaxProp)
 
 Avec PRoPHET, nous avons franchi une étape décisive : le routage ne subit plus la topologie au hasard, il s'adapte dynamiquement aux habitudes réelles des entités mobiles.
 
-Dans le prochain article (**Article 4**), nous explorerons **Reticulum** : comment bâtir un réseau maillé résilient sans aucune adresse IP ni serveur de noms centralisé, en s'appuyant sur des adresses cryptographiques tronquées (16 octets), la propagation d'annonces de destination (*Next Hop Discovery*) et des politiques de relais étanches aux écoutes indiscrètes.
+Dans le prochain article ([Article 4 — MaxProp](file:///home/loic/projets/dtn-mesh-algorithm/article-4-maxprop.md)), nous franchirons un pas supplémentaire : comment ordonnancer rigoureusement les files de transmission et d'éviction sous contrainte de mémoire tampon (*buffer congestion*), transformer les probabilités de contact en coût d'information logarithmique optimal ($-\log(P + \epsilon)$) et adapter le commérage topologique aux canaux radio contraints (2-Hop Gossip).

@@ -169,13 +169,17 @@ L'évaluation de la politique Rego produit un ensemble d'actions directes pour l
    - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)](./article-1-aprs.md) (Routage à la source, consommation d'alias, conformité Dire Wolf).
    - [Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic](./article-2-flood.md) (Quotas stricts, backoff SNR LoRa, démonstration du zéro bloc filaire pour Meshtastic).
    - [Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET (RFC 6693) sous Open Policy Agent](./article-3-prophet.md) (Mathématiques différentielles de prévisibilité, signalisation inter-nœuds, éviction de buffer).
-   - [Article 4 — Routage Hybride, Vecteur de Distance et Adressage Cryptographique : Reticulum (RNS) transposé en DTN](./article-4-reticulum.md) (Adressage cryptographique 16 octets, annonces de chemin signées, zéro bloc filaire de données et persistance Store-Carry-and-Forward).
+   - [Article 4 — Routage Probabiliste et Gestion de Mémoire sous Contrainte : MaxProp et ses Optimisations Théoriques (HP-MaxProp)](./article-4-maxprop.md) (Coût logarithmique de l'information, pénalité de saut fluide, commérage local à 2 sauts et purge par Cleared List).
+   - [Article 5 — Routage Hybride, Vecteur de Distance et Adressage Cryptographique : Reticulum (RNS) transposé en DTN](./article-5-reticulum.md) (Adressage cryptographique 16 octets, annonces de chemin signées, zéro bloc filaire de données et persistance Store-Carry-and-Forward).
+   - [Article 6 — Réseaux Maillés Proactifs et Hybridation MANET-DTN : AREDN, Babel (RFC 8966) et l'Architecture HYMAD sous Open Policy Agent](./article-6-babel-aredn.md) (Routage Bellman-Ford sans boucle, distance de faisabilité, métriques radio ETX et bascule vers les transporteurs DTN inter-îlots).
 
 2. **Spécifications formelles (CDDL) :**
    - [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl) : Format filaire générique du bloc de routage mesh (Type 200) et schéma complet de l'environnement d'évaluation OPA.
    - [prophet.cddl](./prophet.cddl) : Messages de contrôle inter-nœuds PRoPHET (HELLO, RIB Update, Summary Vector, Handshake combiné et Delivery ACK).
+   - [maxprop.cddl](./maxprop.cddl) : Messages de contrôle inter-nœuds MaxProp (vecteur de probabilités directes, Cleared List d'acquittements) et métadonnées de tri/éviction.
    - [reticulum.cddl](./reticulum.cddl) : Messages de contrôle inter-nœuds Reticulum (Announce, Path Request, Path Response, Proof) et structure de table de routage locale.
+   - [babel.cddl](./babel.cddl) : Messages de contrôle inter-nœuds Babel (Hello, IHU, Update, Route Request, Seqno Request) et table de routage proactive avec Feasible Distance.
 
 3. **Code & Politiques Déclaratives OPA :**
-   - Règles Rego modulaires dans [policies/](./policies/) réparties par protocole (`aprs/`, `flood/`, `prophet/`, `reticulum/`).
-   - Suite de 76 tests unitaires automatisés (`opa test ./policies -v` -> 76/76 PASS).
+   - Règles Rego modulaires dans [policies/](./policies/) réparties par protocole (`aprs/`, `flood/`, `prophet/`, `maxprop/`, `reticulum/`, `babel/`).
+   - Suite de 108 tests unitaires automatisés (`opa test ./policies -v` -> 108/108 PASS).
