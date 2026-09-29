@@ -2,7 +2,7 @@
 
 Ce projet de recherche et d'expérimentation vise à explorer la transposition, l'adaptation et l'unification d'algorithmes de routage issus de divers horizons (réseaux maillés ad-hoc, réseaux tactiques, radioamateurs, protocoles LPWAN/IoT et littérature DTN académique) au sein de l'architecture **DTN (Delay/Disruption Tolerant Networking)** basée sur le **Bundle Protocol version 7 ([RFC 9171](https://www.rfc-editor.org/rfc/rfc9171.html))**.
 
-Le projet sert de socle pour des réflexions théoriques, des spécifications d'extensions de blocs ([BUNDLE-BLOCK-TYPE.md](file:///home/loic/projets/dtn-mesh-algorithm/BUNDLE-BLOCK-TYPE.md)), des modélisations de politiques de routage via **Open Policy Agent (OPA / Rego)**, ainsi qu'une série d'articles de blog techniques et d'implémentations de référence.
+Le projet sert de socle pour des réflexions théoriques, des spécifications d'extensions de blocs ([BUNDLE-BLOCK-TYPE.md](./BUNDLE-BLOCK-TYPE.md)), des modélisations de politiques de routage via **Open Policy Agent (OPA / Rego)**, ainsi qu'une série d'articles de blog techniques et d'implémentations de référence.
 
 ---
 
@@ -62,7 +62,7 @@ Afin d'obtenir une vision exhaustive des architectures de routage applicables au
 
 Pour implémenter ces comportements dans le respect de la spécification **BPv7 ([RFC 9171](https://www.rfc-editor.org/rfc/rfc9171.html))**, nous croisons les blocs standardisés avec de nouveaux blocs d'extension expérimentaux.
 
-Consulter l'état de l'art détaillé des blocs dans le document : **[BUNDLE-BLOCK-TYPE.md](file:///home/loic/projets/dtn-mesh-algorithm/BUNDLE-BLOCK-TYPE.md)**.
+Consulter l'état de l'art détaillé des blocs dans le document : **[BUNDLE-BLOCK-TYPE.md](./BUNDLE-BLOCK-TYPE.md)**.
 
 ```
 +-----------------------------------------------------------------------+
@@ -93,7 +93,7 @@ Consulter l'état de l'art détaillé des blocs dans le document : **[BUNDLE-BLO
 
 ---
 
-### B. Le Bloc d'Extension Générique Modulaire ([mesh-algo-extension-block.cddl](file:///home/loic/projets/dtn-mesh-algorithm/mesh-algo-extension-block.cddl))
+### B. Le Bloc d'Extension Générique Modulaire ([mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl))
 
 Plutôt que de figer des formats rigides par protocole, nous avons conçu un **bloc d'extension de routage mesh unifié (Type 200)** fondé sur des **facettes et dimensions orthogonales**. N'importe quel protocole présent ou futur peut activer et composer un sous-ensemble de ces primitives CBOR :
 
@@ -109,7 +109,7 @@ Plutôt que de figer des formats rigides par protocole, nous avons conçu un **b
 > L'inondation gérée de Meshtastic ne nécessite aucun bloc propriétaire sur le câble. Le contrôle de sauts repose sur le **Hop Count Block (Type 10)** standard BPv7, la déduplication sur le **Bundle ID canonique**, la ségrégation de canal sur les **whitelists d'EID**, et le calcul de temporisation $Backoff(SNR)$ ainsi que l'annulation par écoute sont gouvernés localement par OPA via la télémétrie (`input.ingress.snr_db`, `input.node.cancelled_rebroadcasts`).
 
 > **Séparation Filaire vs Contexte d'Évaluation OPA :**  
-> Les métriques physiques locales (SNR radio mesuré, RSSI en dBm, calcul de temporisation de backoff en ms, état mémoire du buffer) **ne sont jamais sérialisées sur le câble radio** pour préserver la bande passante. Elles sont injectées directement dans l'environnement d'évaluation d'OPA (`input.ingress`, `input.contact`, `input.node`), également formalisé dans la Partie 2 de [mesh-algo-extension-block.cddl](file:///home/loic/projets/dtn-mesh-algorithm/mesh-algo-extension-block.cddl).
+> Les métriques physiques locales (SNR radio mesuré, RSSI en dBm, calcul de temporisation de backoff en ms, état mémoire du buffer) **ne sont jamais sérialisées sur le câble radio** pour préserver la bande passante. Elles sont injectées directement dans l'environnement d'évaluation d'OPA (`input.ingress`, `input.contact`, `input.node`), également formalisé dans la Partie 2 de [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl).
 
 ---
 
@@ -165,13 +165,17 @@ L'évaluation de la politique Rego produit un ensemble d'actions directes pour l
 ## 5. Feuille de route et livrables
 
 1. **Articles de vulgarisation & études de cas :**
-   - *Article 1 :* De l'AX.25 d'APRS au Bundle Protocol v7 : réinventer le digipeating avec des blocs d'extension CBOR.
-   - *Article 2 :* Inondation contrôlée et quotas : modéliser Meshtastic et SprayAndWait sur DTN.
-   - *Article 3 :* Piloter un routeur DTN avec Open Policy Agent (OPA) : rendre le routage déclaratif.
-   - *Article 4 :* Routage hybride et cryptographique : leçons de Reticulum et AREDN/Babel pour le DTN.
+   - [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](./article-0-intro.md) (Architecture BPv7, blocs standards Type 10 & 7, déduplication, status reports et défense DoS `blacklist_sources`).
+   - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)](./article-1-aprs.md) (Routage à la source, consommation d'alias, conformité Dire Wolf).
+   - [Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic](./article-2-flood.md) (Quotas stricts, backoff SNR LoRa, démonstration du zéro bloc filaire pour Meshtastic).
+   - [Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET (RFC 6693) sous Open Policy Agent](./article-3-prophet.md) (Mathématiques différentielles de prévisibilité, signalisation inter-nœuds, éviction de buffer).
+   - [Article 4 — Routage Hybride, Vecteur de Distance et Adressage Cryptographique : Reticulum (RNS) transposé en DTN](./article-4-reticulum.md) (Adressage cryptographique 16 octets, annonces de chemin signées, zéro bloc filaire de données et persistance Store-Carry-and-Forward).
+
 2. **Spécifications formelles (CDDL) :**
-   - [mesh-algo-extension-block.cddl](file:///home/loic/projets/dtn-mesh-algorithm/mesh-algo-extension-block.cddl) : Format filaire générique du bloc de routage mesh (Type 200) et schéma de l'environnement d'évaluation OPA.
-   - [prophet.cddl](file:///home/loic/projets/dtn-mesh-algorithm/prophet.cddl) : Messages de contrôle inter-nœuds PRoPHET (HELLO, RIB Update, Summary Vector, Handshake combiné et Delivery ACK).
-3. **Code & Démonstrateurs :**
-   - Règles Rego complètes pour chaque algorithme.
-   - Banc de test émulé avec conteneurs ou simulateur DTN (ex: CORE / ns-3 / PyDTN).
+   - [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl) : Format filaire générique du bloc de routage mesh (Type 200) et schéma complet de l'environnement d'évaluation OPA.
+   - [prophet.cddl](./prophet.cddl) : Messages de contrôle inter-nœuds PRoPHET (HELLO, RIB Update, Summary Vector, Handshake combiné et Delivery ACK).
+   - [reticulum.cddl](./reticulum.cddl) : Messages de contrôle inter-nœuds Reticulum (Announce, Path Request, Path Response, Proof) et structure de table de routage locale.
+
+3. **Code & Politiques Déclaratives OPA :**
+   - Règles Rego modulaires dans [policies/](./policies/) réparties par protocole (`aprs/`, `flood/`, `prophet/`, `reticulum/`).
+   - Suite de 76 tests unitaires automatisés (`opa test ./policies -v` -> 76/76 PASS).
