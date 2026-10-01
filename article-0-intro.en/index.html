@@ -1,0 +1,2452 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7) sous OPA">
+      
+      
+        <meta name="author" content="Loïc & DTN Mesh Algorithm Team">
+      
+      
+        <link rel="canonical" href="https://loic-fejoz.github.io/sdtn/article-0-intro.en/">
+      
+      
+        <link rel="prev" href="../article-10-roadmap-extensions/">
+      
+      
+        <link rel="next" href="../article-1-aprs.en/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Art. 0 — DTN & OPA Foundations - DTN Mesh Algorithm</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#article-0-foundations-of-dtn-routing-with-open-policy-agent-lifecycle-hop-limit-and-expiration" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href=".." title="DTN Mesh Algorithm" class="md-header__button md-logo" aria-label="DTN Mesh Algorithm" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DTN Mesh Algorithm
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Art. 0 — DTN & OPA Foundations
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Passage au mode sombre"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Passage au mode sombre" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Passage au mode clair"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Passage au mode clair" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Onglets" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../article-0-intro/" class="md-tabs__link">
+          
+  
+  
+  🇫🇷 Articles (FR)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  🇬🇧 Articles (EN)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../mesh-algo-extension-block.cddl" class="md-tabs__link">
+          
+  
+  
+  Spécifications CDDL
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../BUNDLE-BLOCK-TYPE/" class="md-tabs__link">
+          
+  
+  
+  Documents & Propositions IETF
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="DTN Mesh Algorithm" class="md-nav__button md-logo" aria-label="DTN Mesh Algorithm" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DTN Mesh Algorithm
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🇫🇷 Accueil (FR)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🇬🇧 Home (EN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🇫🇷 Articles (FR)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    🇫🇷 Articles (FR)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-0-intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 0 — Fondations DTN & OPA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-1-aprs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 1 — APRS AX.25 Digipeating
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-2-flood/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 2 — Flood, Spray & Wait, Meshtastic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-3-prophet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 3 — PRoPHET (RFC 6693)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-4-maxprop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 4 — MaxProp & HP-MaxProp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-5-reticulum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 5 — Reticulum (RNS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-6-babel-aredn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 6 — Babel (RFC 8966) & HYMAD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-7-cgr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 7 — CGR / SABR (CCSDS 734.3-B-1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-8-geodtn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 8 — GeoDTN & Geocasting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-9-synthese-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 9 — Synthèse Architecturale
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-10-roadmap-extensions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 10 — Feuille de Route & Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🇬🇧 Articles (EN)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    🇬🇧 Articles (EN)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 0 — DTN & OPA Foundations
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 0 — DTN & OPA Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduction-why-drive-a-dtn-router-with-opa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introduction: Why Drive a DTN Router with OPA?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-fundamental-rfc-9171-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Fundamental RFC 9171 Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Fundamental RFC 9171 Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-dtn-epoch-vs-unix-epoch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1. DTN Epoch vs Unix Epoch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-lifetime-expiration-the-pitfall-of-real-time-clock-less-rtc-less-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2. Lifetime Expiration: The Pitfall of Real-Time-Clock-Less (RTC-less) Nodes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-hop-count-block-type-10-and-storm-prevention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3. Hop Count Block (Type 10) and Storm Prevention
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-bundle-deletion-status-reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4. Bundle Deletion Status Reports
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-canonical-bundle-identity-uselessness-of-ad-hoc-packet-ids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5. Canonical Bundle Identity: Uselessness of Ad-Hoc packet-ids
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-denial-of-service-dos-protection-and-malicious-nodes-blacklist_sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6. Denial of Service (DoS) Protection and Malicious Nodes: blacklist_sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-declarative-policy-architecture-3-stage-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Declarative Policy Architecture: 3-Stage Breakdown
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Declarative Policy Architecture: 3-Stage Breakdown">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stage-1-ingress-policy-dtningress-immediate-reception" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 1: Ingress Policy (dtn.ingress) — Immediate Reception
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-2-storage-audit-policy-dtnstorage-periodic-garbage-collector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 2: Storage Audit Policy (dtn.storage) — Periodic Garbage Collector
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-3-contact-policy-dtncontact-cla-link-opportunity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3: Contact Policy (dtn.contact) — CLA Link Opportunity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-rego-specification-and-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Rego Specification and Implementation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Rego Specification and Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-constants-and-helpers-dtn_constantsrego-helpersrego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1. Constants and Helpers (dtn_constants.rego &amp; helpers.rego)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-ingress-policy-ingressrego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2. Ingress Policy (ingress.rego)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-storage-retention-policy-storagerego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3. Storage Retention Policy (storage.rego)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-cla-contact-policy-contactrego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4. CLA Contact Policy (contact.rego)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-opa-unit-test-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. OPA Unit Test Validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-questions-and-perspectives-for-subsequent-articles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Questions and Perspectives for Subsequent Articles
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-1-aprs.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 1 — APRS AX.25 Digipeating
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-2-flood.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 2 — Flood, Spray & Wait, Meshtastic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-3-prophet.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 3 — PRoPHET (RFC 6693)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-4-maxprop.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 4 — MaxProp & HP-MaxProp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-5-reticulum.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 5 — Reticulum (RNS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-6-babel-aredn.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 6 — Babel (RFC 8966) & HYMAD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-7-cgr.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 7 — CGR / SABR (CCSDS 734.3-B-1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-8-geodtn.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 8 — GeoDTN & Geocasting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-9-synthese-architecture.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 9 — Architectural Synthesis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-10-roadmap-extensions.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 10 — Roadmap & Future Work
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spécifications CDDL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Spécifications CDDL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mesh-algo-extension-block.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Type 200 Modular Extension Block
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prophet.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PRoPHET Control Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../maxprop.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MaxProp Control Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reticulum.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reticulum Control Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../babel.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Babel Control Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cgr.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CGR Contact Plan Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documents & Propositions IETF
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Documents & Propositions IETF
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BUNDLE-BLOCK-TYPE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spécifications de Bloc DTN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../comments-ietf-dtn-bp-sand-04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Commentaires IETF BP-SAND
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduction-why-drive-a-dtn-router-with-opa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introduction: Why Drive a DTN Router with OPA?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-fundamental-rfc-9171-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Fundamental RFC 9171 Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Fundamental RFC 9171 Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-dtn-epoch-vs-unix-epoch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1. DTN Epoch vs Unix Epoch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-lifetime-expiration-the-pitfall-of-real-time-clock-less-rtc-less-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2. Lifetime Expiration: The Pitfall of Real-Time-Clock-Less (RTC-less) Nodes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-hop-count-block-type-10-and-storm-prevention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3. Hop Count Block (Type 10) and Storm Prevention
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-bundle-deletion-status-reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4. Bundle Deletion Status Reports
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-canonical-bundle-identity-uselessness-of-ad-hoc-packet-ids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5. Canonical Bundle Identity: Uselessness of Ad-Hoc packet-ids
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-denial-of-service-dos-protection-and-malicious-nodes-blacklist_sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6. Denial of Service (DoS) Protection and Malicious Nodes: blacklist_sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-declarative-policy-architecture-3-stage-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Declarative Policy Architecture: 3-Stage Breakdown
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Declarative Policy Architecture: 3-Stage Breakdown">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stage-1-ingress-policy-dtningress-immediate-reception" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 1: Ingress Policy (dtn.ingress) — Immediate Reception
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-2-storage-audit-policy-dtnstorage-periodic-garbage-collector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 2: Storage Audit Policy (dtn.storage) — Periodic Garbage Collector
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-3-contact-policy-dtncontact-cla-link-opportunity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3: Contact Policy (dtn.contact) — CLA Link Opportunity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-rego-specification-and-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Rego Specification and Implementation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Rego Specification and Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-constants-and-helpers-dtn_constantsrego-helpersrego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1. Constants and Helpers (dtn_constants.rego &amp; helpers.rego)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-ingress-policy-ingressrego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2. Ingress Policy (ingress.rego)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-storage-retention-policy-storagerego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3. Storage Retention Policy (storage.rego)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-cla-contact-policy-contactrego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4. CLA Contact Policy (contact.rego)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-opa-unit-test-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. OPA Unit Test Validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-questions-and-perspectives-for-subsequent-articles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Questions and Perspectives for Subsequent Articles
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="article-0-foundations-of-dtn-routing-with-open-policy-agent-lifecycle-hop-limit-and-expiration">Article 0 — Foundations of DTN Routing with Open Policy Agent: Lifecycle, Hop Limit, and Expiration<a class="headerlink" href="#article-0-foundations-of-dtn-routing-with-open-policy-agent-lifecycle-hop-limit-and-expiration" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Series:</strong> <em>Transposing Mesh &amp; Opportunistic Routing Algorithms to DTN (BPv7)</em><br />
+<strong>Author:</strong> DTN Mesh Research &amp; Engineering<br />
+<strong>Associated Code:</strong> <a href="./policies">policies/</a> (<a href="../policies/ingress.rego">ingress.rego</a>, <a href="../policies/storage.rego">storage.rego</a>, <a href="../policies/contact.rego">contact.rego</a>, <a href="../policies/helpers.rego">helpers.rego</a>, <a href="../policies/dtn_constants.rego">dtn_constants.rego</a>)</p>
+<p>ℹ️ <strong>Editorial Transparency Note (EU AI Act Alignment):</strong> This article was generated with AI assistance under the editorial direction and structuring of a human author, who assumes responsibility for its technical review, verification, and content (ongoing proofreading).</p>
+</blockquote>
+<hr />
+<h2 id="1-introduction-why-drive-a-dtn-router-with-opa">1. Introduction: Why Drive a DTN Router with OPA?<a class="headerlink" href="#1-introduction-why-drive-a-dtn-router-with-opa" title="Permanent link">&para;</a></h2>
+<p>The <strong>Bundle Protocol version 7 (<a href="https://www.rfc-editor.org/rfc/rfc9171.html">RFC 9171</a>)</strong> is designed to operate over heterogeneous, intermittent, and high-latency networks (deep-space links, tactical mesh networks, LoRa sensors, AX.25 amateur radio links). Unlike the traditional IP stack where routing is delegated to static forwarding tables or real-time dynamic protocols (BGP, OSPF), DTN relies on the <strong>Store-Carry-and-Forward</strong> paradigm:</p>
+<ol>
+<li>A node receives a bundle.</li>
+<li>It validates and stores it in its persistent storage (<em>Bundle Store</em>).</li>
+<li>It waits for a contact opportunity (sometimes several hours or days).</li>
+<li>It selects eligible bundles and forwards them to a peer via a Convergence Layer Adapter (CLA).</li>
+</ol>
+<p>In the majority of historical implementations (ION, IBR-DTN, uD3TN), routing rules (Epidemic, PRoPHET, CGR) are hardcoded in C/C++ or Python, tightly coupled with the routing daemon's event loop.</p>
+<p><strong>Our Architectural Thesis:</strong><br />
+By delegating decision-making to a declarative policy engine like <strong>Open Policy Agent (OPA)</strong> via the <strong>Rego</strong> language, we strictly separate:
+- <strong>Data Plane:</strong> CBOR reception, BPSec cryptographic validation (<a href="https://www.rfc-editor.org/rfc/rfc9172.html">RFC 9172</a>), disk persistence, and CLA transmission.
+- <strong>Control/Decision Plane:</strong> Enforcement of retention rules, replication quota computation, contact filtering, loop detection, and dropping invalid bundles.</p>
+<p>Before tackling complex algorithms like Spray and Wait, PRoPHET, or APRS digipeating, this first article establishes the <strong>elementary, non-negotiable foundations</strong> of any DTN node: <strong>dropping bundles whose hop count limit is exceeded and those whose lifetime has expired.</strong></p>
+<hr />
+<h2 id="2-fundamental-rfc-9171-rules">2. Fundamental RFC 9171 Rules<a class="headerlink" href="#2-fundamental-rfc-9171-rules" title="Permanent link">&para;</a></h2>
+<h3 id="21-dtn-epoch-vs-unix-epoch">2.1. DTN Epoch vs Unix Epoch<a class="headerlink" href="#21-dtn-epoch-vs-unix-epoch" title="Permanent link">&para;</a></h3>
+<p>A frequent source of bugs in DTN lies in time management. The standard Bundle Protocol epoch (DTN Time) is set to <strong>January 1, 2000 at 00:00:00 UTC</strong>, rather than January 1, 1970 (Unix Epoch). The exact offset is <strong>946,684,800 seconds</strong> (or <code>946,684,800,000 ms</code>).</p>
+<h3 id="22-lifetime-expiration-the-pitfall-of-real-time-clock-less-rtc-less-nodes">2.2. Lifetime Expiration: The Pitfall of Real-Time-Clock-Less (RTC-less) Nodes<a class="headerlink" href="#22-lifetime-expiration-the-pitfall-of-real-time-clock-less-rtc-less-nodes" title="Permanent link">&para;</a></h3>
+<p>RFC 9171 handles two timestamping scenarios:
+1. <strong>Node with synchronized clock (<code>creation_timestamp.time &gt; 0</code>):</strong><br />
+   Expiration occurs as soon as:<br />
+   $$\text{CurrentDTNTime} \ge \text{creation_timestamp.time} + \text{lifetime}$$
+2. <strong>Node without synchronized clock (<code>creation_timestamp.time == 0</code>):</strong><br />
+   Very common on IoT/LoRa nodes or microcontrollers rebooted without GPS or NTP. In this case, RFC 9171 <strong>mandates</strong> the presence of the <strong>Bundle Age Block (Type 7)</strong>. The relative bundle age $\text{bundle_age}$ is incremented in milliseconds along the transit and storage path. Expiration occurs as soon as:<br />
+   $$\text{bundle_age} \ge \text{lifetime}$$</p>
+<h3 id="23-hop-count-block-type-10-and-storm-prevention">2.3. Hop Count Block (Type 10) and Storm Prevention<a class="headerlink" href="#23-hop-count-block-type-10-and-storm-prevention" title="Permanent link">&para;</a></h3>
+<p>The <strong>Hop Count Block (Type 10)</strong> contains two unsigned integers: <code>hop_limit</code> and <code>hop_count</code>.
+Section 4.3.3 of RFC 9171 specifies two critical moments:
+- <strong>At reception (<em>Ingress</em>):</strong> The node <strong>MUST</strong> increment <code>hop_count</code> by 1. If $\text{hop_count} \ge \text{hop_limit}$, the bundle <strong>MUST</strong> be destroyed (unless it is destined for the local node).
+- <strong>Before transmission (<em>Forwarding</em>):</strong> If $\text{hop_count} \ge \text{hop_limit}$, the bundle <strong>MUST</strong> be destroyed and <strong>MUST NOT</strong> be forwarded.</p>
+<h3 id="24-bundle-deletion-status-reports">2.4. Bundle Deletion Status Reports<a class="headerlink" href="#24-bundle-deletion-status-reports" title="Permanent link">&para;</a></h3>
+<p>When the <code>deletion_report</code> flag (bit 14 of the bundle processing control flags) is set by the sender, the DTN engine must generate a status report administrative bundle with the standardized reason code:
+- Reason <code>1</code>: <code>Lifetime expired</code>
+- Reason <code>9</code>: <code>Hop limit exceeded</code></p>
+<h3 id="25-canonical-bundle-identity-uselessness-of-ad-hoc-packet-ids">2.5. Canonical Bundle Identity: Uselessness of Ad-Hoc <code>packet-id</code>s<a class="headerlink" href="#25-canonical-bundle-identity-uselessness-of-ad-hoc-packet-ids" title="Permanent link">&para;</a></h3>
+<p>A major architectural difference between DTN and ad-hoc or amateur radio mesh networks (APRS, Meshtastic) lies in how message uniqueness is managed:
+- <strong>In AX.25 (APRS):</strong> UI frames contain no link-layer message identifier. Digipeaters had to invent an ad-hoc hash: $\text{hash}(\text{source}, \text{dest}, \text{info})$ to detect duplicates.
+- <strong>In Meshtastic:</strong> The LoRa header inserts a 32-bit pseudo-random integer (<code>packet_id</code>).
+- <strong>In DTN (BPv7 RFC 9171 Section 4.2.2):</strong> Every bundle <strong>natively</strong> possesses a universal, canonical, globally unique identity:
+  $$\text{BundleID} = (\text{source_eid}, \text{creation_timestamp.time}, \text{creation_timestamp.sequence_number})$$</p>
+<p>Even on clockless nodes (<code>time == 0</code>), the monotonic sequence number guarantees this uniqueness per sending station. In our Rego policies, deduplication and summary vectors rely directly on this tuple (<a href="../policies/helpers.rego">helpers.rego</a>) via <code>helpers.get_bundle_id(bundle)</code>. No additional message identifier field needs to be added into an extension block.</p>
+<p>Likewise, the <strong>Hop Count Block (Type 10)</strong> stands as the universal safeguard: every mesh algorithm (whether Meshtastic or APRS WIDE n-N) reconciles its hop count with this standard block.</p>
+<h3 id="26-denial-of-service-dos-protection-and-malicious-nodes-blacklist_sources">2.6. Denial of Service (DoS) Protection and Malicious Nodes: <code>blacklist_sources</code><a class="headerlink" href="#26-denial-of-service-dos-protection-and-malicious-nodes-blacklist_sources" title="Permanent link">&para;</a></h3>
+<p>In open mesh and opportunistic networks (amateur radio VHF/AX.25, LoRa sensors, emergency tactical networks), any station within radio range can inject frames into the ether. In the event of hardware failure (a looping node saturating the frequency) or malicious storage exhaustion attacks, a DTN router must be capable of blocking the sender without delay.</p>
+<p>Rather than recompiling or restarting the DTN daemon, we incorporate the <code>blacklist_sources: [* tstr]</code> field into the node context (<a href="../mesh-algo-extension-block.cddl">mesh-algo-extension-block.cddl</a>). Upon bundle arrival, the Ingress policy checks whether the source EID appears in this list:
+- The bundle is immediately rejected (<code>DROP</code>) prior to any memory allocation or disk persistence.
+- <strong>Crucial security rule:</strong> The node <strong>generates no deletion status report</strong> (<code>generate_status_report := false</code>). Systematically replying to a malicious sender would create traffic amplification risks and further saturate the shared radio channel.</p>
+<hr />
+<h2 id="3-declarative-policy-architecture-3-stage-breakdown">3. Declarative Policy Architecture: 3-Stage Breakdown<a class="headerlink" href="#3-declarative-policy-architecture-3-stage-breakdown" title="Permanent link">&para;</a></h2>
+<p>Having a single monolithic policy is inefficient and conceptually flawed. In a DTN system, forwarding decisions take place at three distinct moments in the bundle lifecycle:</p>
+<div class="codehilite"><pre><span></span><code><span class="w">                  </span><span class="o">+</span><span class="c1">-----------------------------------+</span>
+<span class="w">                  </span><span class="o">|</span><span class="w">        </span><span class="n">Bundle</span><span class="w"> </span><span class="n">Arrives</span><span class="w"> </span><span class="p">(</span><span class="n">CLA</span><span class="p">)</span><span class="w">       </span><span class="o">|</span>
+<span class="w">                  </span><span class="o">+</span><span class="c1">-----------------------------------+</span>
+<span class="w">                                    </span><span class="o">|</span>
+<span class="w">                                    </span><span class="n">v</span>
+<span class="w">                     </span><span class="o">[</span><span class="n"> 1. Ingress Policy (on_rx) </span><span class="o">]</span>
+<span class="w">                                    </span><span class="o">|</span>
+<span class="w">                        </span><span class="o">+</span><span class="c1">------------+------------+</span>
+<span class="w">                        </span><span class="o">|</span><span class="w">                         </span><span class="o">|</span>
+<span class="w">                    </span><span class="o">[</span><span class="n">ACCEPT</span><span class="o">]</span><span class="w">                    </span><span class="o">[</span><span class="n">DROP</span><span class="o">]</span>
+<span class="w">                        </span><span class="o">|</span><span class="w">                         </span><span class="o">|</span>
+<span class="w">                        </span><span class="n">v</span><span class="w">                         </span><span class="n">v</span>
+<span class="w">             </span><span class="o">+</span><span class="c1">--------------------+       (Optional: Status Report)</span>
+<span class="w">             </span><span class="o">|</span><span class="w">    </span><span class="n">Bundle</span><span class="w"> </span><span class="n">Store</span><span class="w">    </span><span class="o">|</span>
+<span class="w">             </span><span class="o">+</span><span class="c1">--------------------+</span>
+<span class="w">                </span><span class="o">|</span><span class="w">              </span><span class="o">|</span>
+<span class="w">                </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">periodic</span><span class="p">)</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">CLA</span><span class="w"> </span><span class="n">opportunity</span><span class="p">)</span>
+<span class="w">                </span><span class="n">v</span><span class="w">              </span><span class="n">v</span>
+<span class="w">       </span><span class="o">[</span><span class="n"> 2. Storage Policy </span><span class="o">]</span><span class="w">  </span><span class="o">[</span><span class="n"> 3. Contact Policy </span><span class="o">]</span>
+<span class="w">          </span><span class="p">(</span><span class="n">Audit</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">GC</span><span class="p">)</span><span class="w">          </span><span class="p">(</span><span class="n">Forwarding</span><span class="p">)</span>
+<span class="w">                </span><span class="o">|</span><span class="w">                      </span><span class="o">|</span>
+<span class="w">             </span><span class="o">[</span><span class="n">DROP / RETAIN</span><span class="o">]</span><span class="w">      </span><span class="o">[</span><span class="n">FORWARD / SKIP / DROP</span><span class="o">]</span>
+</code></pre></div>
+
+<h3 id="stage-1-ingress-policy-dtningress-immediate-reception">Stage 1: Ingress Policy (<code>dtn.ingress</code>) — Immediate Reception<a class="headerlink" href="#stage-1-ingress-policy-dtningress-immediate-reception" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>When?</strong> As soon as a bundle is extracted from a CLA link (LoRa, AX.25, TCPCL).</li>
+<li><strong>Inputs:</strong> <code>bundle</code>, <code>node.local_eid</code>, <code>node.blacklist_sources</code>, <code>ingress.peer_eid</code>, <code>current_dtn_time_ms</code>.</li>
+<li><strong>Role:</strong></li>
+<li>If <code>source</code> is listed in <code>blacklist_sources</code>: Immediate <code>DROP</code> without status report (anti-spam / DoS).</li>
+<li>If <code>destination == local_eid</code>: Priority local delivery (<code>DELIVER_LOCAL</code>).</li>
+<li>If <code>is_lifetime_expired</code>: <code>DROP</code> (code 1).</li>
+<li>If <code>will_exceed_hop_limit</code>: <code>DROP</code> (code 9).</li>
+<li>Otherwise: <code>ACCEPT</code> with mandatory CBOR mutation: <code>hop_count = hop_count + 1</code>.</li>
+</ul>
+<h3 id="stage-2-storage-audit-policy-dtnstorage-periodic-garbage-collector">Stage 2: Storage Audit Policy (<code>dtn.storage</code>) — Periodic Garbage Collector<a class="headerlink" href="#stage-2-storage-audit-policy-dtnstorage-periodic-garbage-collector" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>When?</strong> Executed periodically by a timer (e.g., every 10 seconds or 1 minute) or during buffer memory saturation alerts.</li>
+<li><strong>Inputs:</strong> <code>bundle</code>, <code>current_dtn_time_ms</code>, <code>elapsed_since_last_audit_ms</code>.</li>
+<li><strong>Role:</strong></li>
+<li>Check if lifetime expired during buffer retention. If so, <code>DROP</code> (code 1).</li>
+<li>If the bundle is clockless (<code>time == 0</code>), order mutation of the <strong>Bundle Age Block (Type 7)</strong> to add elapsed storage time.</li>
+</ul>
+<h3 id="stage-3-contact-policy-dtncontact-cla-link-opportunity">Stage 3: Contact Policy (<code>dtn.contact</code>) — CLA Link Opportunity<a class="headerlink" href="#stage-3-contact-policy-dtncontact-cla-link-opportunity" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>When?</strong> When a link with a neighbor node is detected or a CLA link is established.</li>
+<li><strong>Inputs:</strong> <code>bundle</code>, <code>node</code>, <code>contact.peer_eid</code>, <code>contact.cla_type</code>, <code>current_dtn_time_ms</code>.</li>
+<li><strong>Role:</strong></li>
+<li>Re-verify time validity and hop limit prior to forwarding.</li>
+<li>Verify immediate loop avoidance (<em>Split Horizon</em>): do not echo the bundle back to the proximate sender indicated in the <strong>Previous Node Insertion Block (Type 6)</strong> (<code>SKIP</code>).</li>
+<li>Decide forwarding: <code>FORWARD</code> if the contact is the final destination or a valid opportunistic relay.</li>
+</ul>
+<hr />
+<h2 id="4-rego-specification-and-implementation">4. Rego Specification and Implementation<a class="headerlink" href="#4-rego-specification-and-implementation" title="Permanent link">&para;</a></h2>
+<p>All rules are implemented and validated in the <a href="./policies"><code>policies/</code></a> directory.</p>
+<h3 id="41-constants-and-helpers-dtn_constantsrego-helpersrego">4.1. Constants and Helpers (<a href="../policies/dtn_constants.rego">dtn_constants.rego</a> &amp; <a href="../policies/helpers.rego">helpers.rego</a>)<a class="headerlink" href="#41-constants-and-helpers-dtn_constantsrego-helpersrego" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">package</span><span class="w"> </span><span class="n">dtn</span><span class="p">.</span><span class="n">helpers</span>
+
+<span class="k">import</span><span class="w"> </span><span class="n">future</span><span class="p">.</span><span class="n">keywords</span><span class="p">.</span><span class="k">if</span>
+<span class="k">import</span><span class="w"> </span><span class="n">future</span><span class="p">.</span><span class="n">keywords</span><span class="p">.</span><span class="k">in</span>
+<span class="k">import</span><span class="w"> </span><span class="k">data</span><span class="p">.</span><span class="n">dtn</span><span class="p">.</span><span class="n">constants</span>
+
+<span class="c1"># Unified detection of lifetime expiration</span>
+<span class="n">is_lifetime_expired</span><span class="p">(</span><span class="n">bundle</span><span class="p">,</span><span class="w"> </span><span class="n">current_dtn_time_ms</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">bundle</span><span class="p">.</span><span class="n">primary</span><span class="p">.</span><span class="n">creation_timestamp</span><span class="p">.</span><span class="n">time</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">0</span>
+<span class="w">    </span><span class="n">expiration_time</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">bundle</span><span class="p">.</span><span class="n">primary</span><span class="p">.</span><span class="n">creation_timestamp</span><span class="p">.</span><span class="n">time</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bundle</span><span class="p">.</span><span class="n">primary</span><span class="p">.</span><span class="n">lifetime</span>
+<span class="w">    </span><span class="n">current_dtn_time_ms</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">expiration_time</span>
+<span class="p">}</span>
+
+<span class="n">is_lifetime_expired</span><span class="p">(</span><span class="n">bundle</span><span class="p">,</span><span class="w"> </span><span class="n">_</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">bundle</span><span class="p">.</span><span class="n">primary</span><span class="p">.</span><span class="n">creation_timestamp</span><span class="p">.</span><span class="n">time</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span>
+<span class="w">    </span><span class="n">age_block</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">get_extension_block</span><span class="p">(</span><span class="n">bundle</span><span class="p">.</span><span class="n">extension_blocks</span><span class="p">,</span><span class="w"> </span><span class="n">constants</span><span class="p">.</span><span class="n">block_type_bundle_age</span><span class="p">)</span>
+<span class="w">    </span><span class="n">age_block</span><span class="p">.</span><span class="n">bundle_age_ms</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">bundle</span><span class="p">.</span><span class="n">primary</span><span class="p">.</span><span class="n">lifetime</span>
+<span class="p">}</span>
+
+<span class="c1"># Hop limit exceeded detection</span>
+<span class="n">will_exceed_hop_limit</span><span class="p">(</span><span class="n">bundle</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">hcb</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">get_hop_count_block</span><span class="p">(</span><span class="n">bundle</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="n">hcb</span><span class="p">.</span><span class="n">hop_count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">hcb</span><span class="p">.</span><span class="n">hop_limit</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="42-ingress-policy-ingressrego">4.2. Ingress Policy (<a href="../policies/ingress.rego">ingress.rego</a>)<a class="headerlink" href="#42-ingress-policy-ingressrego" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">package</span><span class="w"> </span><span class="n">dtn</span><span class="p">.</span><span class="n">ingress</span>
+
+<span class="k">import</span><span class="w"> </span><span class="k">data</span><span class="p">.</span><span class="n">dtn</span><span class="p">.</span><span class="n">constants</span>
+<span class="k">import</span><span class="w"> </span><span class="k">data</span><span class="p">.</span><span class="n">dtn</span><span class="p">.</span><span class="n">helpers</span>
+
+<span class="c1"># 0. Immediate rejection if source is blacklisted (Anti-Spam / DoS)</span>
+<span class="n">decision</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DROP"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"reason_code"</span><span class="p">:</span><span class="w"> </span><span class="n">constants</span><span class="p">.</span><span class="n">reason_depleted_storage</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Source EID is blacklisted on this node"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"generate_status_report"</span><span class="p">:</span><span class="w"> </span><span class="k">false</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"mutations"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="p">}</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">helpers</span><span class="p">.</span><span class="n">is_source_blacklisted</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">.</span><span class="n">primary</span><span class="p">.</span><span class="n">source</span><span class="p">,</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">node</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1"># 1. Local delivery</span>
+<span class="n">decision</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DELIVER_LOCAL"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Destination matches local node"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"generate_status_report"</span><span class="p">:</span><span class="w"> </span><span class="k">false</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"mutations"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="p">}</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">not</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">is_source_blacklisted</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">.</span><span class="n">primary</span><span class="p">.</span><span class="n">source</span><span class="p">,</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">node</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">.</span><span class="n">primary</span><span class="p">.</span><span class="n">destination</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">node</span><span class="p">.</span><span class="n">local_eid</span>
+<span class="p">}</span>
+
+<span class="c1"># 2. Lifetime expiration upon arrival</span>
+<span class="n">decision</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DROP"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"reason_code"</span><span class="p">:</span><span class="w"> </span><span class="n">constants</span><span class="p">.</span><span class="n">reason_lifetime_expired</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bundle lifetime has expired upon arrival"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"generate_status_report"</span><span class="p">:</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">is_deletion_report_requested</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">),</span>
+<span class="w">    </span><span class="s2">"mutations"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="p">}</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">not</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">is_source_blacklisted</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">.</span><span class="n">primary</span><span class="p">.</span><span class="n">source</span><span class="p">,</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">node</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">.</span><span class="n">primary</span><span class="p">.</span><span class="n">destination</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">node</span><span class="p">.</span><span class="n">local_eid</span>
+<span class="w">    </span><span class="n">helpers</span><span class="p">.</span><span class="n">is_lifetime_expired</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">,</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">current_dtn_time_ms</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1"># 3. Hop limit exceeded</span>
+<span class="n">decision</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DROP"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"reason_code"</span><span class="p">:</span><span class="w"> </span><span class="n">constants</span><span class="p">.</span><span class="n">reason_hop_limit_exceeded</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Hop limit exceeded after ingress hop increment"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"generate_status_report"</span><span class="p">:</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">is_deletion_report_requested</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">),</span>
+<span class="w">    </span><span class="s2">"mutations"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="p">}</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">not</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">is_source_blacklisted</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">.</span><span class="n">primary</span><span class="p">.</span><span class="n">source</span><span class="p">,</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">node</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">.</span><span class="n">primary</span><span class="p">.</span><span class="n">destination</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">node</span><span class="p">.</span><span class="n">local_eid</span>
+<span class="w">    </span><span class="k">not</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">is_lifetime_expired</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">,</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">current_dtn_time_ms</span><span class="p">)</span>
+<span class="w">    </span><span class="n">helpers</span><span class="p">.</span><span class="n">will_exceed_hop_limit</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1"># 4. Acceptance and hop count increment</span>
+<span class="n">decision</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ACCEPT"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bundle accepted for forwarding / storage"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"generate_status_report"</span><span class="p">:</span><span class="w"> </span><span class="k">false</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"mutations"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">        </span><span class="s2">"block_type"</span><span class="p">:</span><span class="w"> </span><span class="n">constants</span><span class="p">.</span><span class="n">block_type_hop_count</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"operation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SET_FIELD"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"field"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hop_count"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="n">hop_block</span><span class="p">.</span><span class="n">hop_count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span>
+<span class="w">    </span><span class="p">}]</span>
+<span class="p">}</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">not</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">is_source_blacklisted</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">.</span><span class="n">primary</span><span class="p">.</span><span class="n">source</span><span class="p">,</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">node</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">.</span><span class="n">primary</span><span class="p">.</span><span class="n">destination</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">node</span><span class="p">.</span><span class="n">local_eid</span>
+<span class="w">    </span><span class="k">not</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">is_lifetime_expired</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">,</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">current_dtn_time_ms</span><span class="p">)</span>
+<span class="w">    </span><span class="k">not</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">will_exceed_hop_limit</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">)</span>
+<span class="w">    </span><span class="n">hop_block</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">get_hop_count_block</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="43-storage-retention-policy-storagerego">4.3. Storage Retention Policy (<a href="../policies/storage.rego">storage.rego</a>)<a class="headerlink" href="#43-storage-retention-policy-storagerego" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">package</span><span class="w"> </span><span class="n">dtn</span><span class="p">.</span><span class="n">storage</span>
+
+<span class="k">import</span><span class="w"> </span><span class="k">data</span><span class="p">.</span><span class="n">dtn</span><span class="p">.</span><span class="n">constants</span>
+<span class="k">import</span><span class="w"> </span><span class="k">data</span><span class="p">.</span><span class="n">dtn</span><span class="p">.</span><span class="n">helpers</span>
+
+<span class="n">decision</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DROP"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"reason_code"</span><span class="p">:</span><span class="w"> </span><span class="n">constants</span><span class="p">.</span><span class="n">reason_lifetime_expired</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bundle lifetime expired during storage retention"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"generate_status_report"</span><span class="p">:</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">is_deletion_report_requested</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">),</span>
+<span class="w">    </span><span class="s2">"mutations"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="p">}</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">helpers</span><span class="p">.</span><span class="n">is_lifetime_expired</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">,</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">current_dtn_time_ms</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="44-cla-contact-policy-contactrego">4.4. CLA Contact Policy (<a href="../policies/contact.rego">contact.rego</a>)<a class="headerlink" href="#44-cla-contact-policy-contactrego" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">package</span><span class="w"> </span><span class="n">dtn</span><span class="p">.</span><span class="n">contact</span>
+
+<span class="k">import</span><span class="w"> </span><span class="k">data</span><span class="p">.</span><span class="n">dtn</span><span class="p">.</span><span class="n">constants</span>
+<span class="k">import</span><span class="w"> </span><span class="k">data</span><span class="p">.</span><span class="n">dtn</span><span class="p">.</span><span class="n">helpers</span>
+
+<span class="c1"># Loop avoidance: do not forward back to proximate sender</span>
+<span class="n">decision</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SKIP"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Peer is the previous sender (split-horizon / loop avoidance)"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"generate_status_report"</span><span class="p">:</span><span class="w"> </span><span class="k">false</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"mutations"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="p">}</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">not</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">is_lifetime_expired</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">,</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">current_dtn_time_ms</span><span class="p">)</span>
+<span class="w">    </span><span class="k">not</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">is_hop_limit_reached</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">)</span>
+<span class="w">    </span><span class="n">pib</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">get_extension_block</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">.</span><span class="n">extension_blocks</span><span class="p">,</span><span class="w"> </span><span class="n">constants</span><span class="p">.</span><span class="n">block_type_previous_node</span><span class="p">)</span>
+<span class="w">    </span><span class="n">pib</span><span class="p">.</span><span class="n">previous_node</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">contact</span><span class="p">.</span><span class="n">peer_eid</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<hr />
+<h2 id="5-opa-unit-test-validation">5. OPA Unit Test Validation<a class="headerlink" href="#5-opa-unit-test-validation" title="Permanent link">&para;</a></h2>
+<p>The unit test suite validates all execution paths and runs directly via the <code>opa</code> CLI:</p>
+<div class="codehilite"><pre><span></span><code>opa<span class="w"> </span><span class="nb">test</span><span class="w"> </span>./policies<span class="w"> </span>-v
+</code></pre></div>
+
+<p><strong>Results:</strong></p>
+<div class="codehilite"><pre><span></span><code>./policies/contact_test.rego:
+data.dtn.contact_test.test_contact_drop_expired: PASS (2.05ms)
+data.dtn.contact_test.test_contact_drop_hop_limit_reached: PASS (964µs)
+data.dtn.contact_test.test_contact_skip_previous_node: PASS (1.10ms)
+data.dtn.contact_test.test_contact_forward_direct_destination: PASS (1.57ms)
+data.dtn.contact_test.test_contact_forward_opportunistic_relay: PASS (1.33ms)
+
+./policies/ingress_test.rego:
+data.dtn.ingress_test.test_ingress_local_delivery: PASS (504µs)
+data.dtn.ingress_test.test_ingress_drop_lifetime_expired_timed: PASS (1.08ms)
+data.dtn.ingress_test.test_ingress_drop_lifetime_expired_untimed: PASS (1.13ms)
+data.dtn.ingress_test.test_ingress_drop_hop_limit_reached: PASS (1.55ms)
+data.dtn.ingress_test.test_ingress_accept_and_mutate_hop_count: PASS (1.35ms)
+data.dtn.ingress_test.test_ingress_drop_blacklisted_source: PASS (698µs)
+
+./policies/storage_test.rego:
+data.dtn.storage_test.test_storage_drop_lifetime_expired_timed: PASS (403µs)
+data.dtn.storage_test.test_storage_drop_lifetime_expired_untimed: PASS (706µs)
+data.dtn.storage_test.test_storage_retain_and_update_age: PASS (1.19ms)
+--------------------------------------------------------------------------------
+PASS: 14/14 (base policies)
+</code></pre></div>
+
+<hr />
+<h2 id="6-questions-and-perspectives-for-subsequent-articles">6. Questions and Perspectives for Subsequent Articles<a class="headerlink" href="#6-questions-and-perspectives-for-subsequent-articles" title="Permanent link">&para;</a></h2>
+<p>This functional foundation opens key issues to tackle when transposing more advanced mesh algorithms:</p>
+<ol>
+<li><strong>Congestion management and buffer eviction:</strong><br />
+   If local storage is full (<code>storage_used &gt;= storage_capacity</code>), which bundle to drop? A blind FIFO policy? The bundle with the smallest remaining lifetime? Or an eviction policy based on global utility (like MaxProp)?</li>
+<li><strong>Status Reports Feedback:</strong><br />
+   If OPA instructs <code>generate_status_report = true</code>, the DTN daemon must generate an administrative bundle to the source. How to ensure these status reports do not themselves cause a flooding storm over a bandwidth-constrained radio network?</li>
+<li><strong>Convergence Layer Adapter (CLA) constraints:</strong><br />
+   Certain links (e.g., LoRa with 1% duty cycle, or AX.25 at 1200 baud) cannot accept large bundles. The <code>input.contact</code> object will need to expose MTU and estimated bitrate to filter oversized bundles.</li>
+<li><strong>Complex CBOR mutations:</strong><br />
+   In this article, the sole mutation was incrementing <code>hop_count</code>. For APRS, the mutation will consist of consuming an alias <code>WIDE1-1 -&gt; WIDE1*</code> and appending the relay callsign into a trace block. For Spray and Wait, it will involve dividing a replication quota $L \leftarrow \lfloor L/2 \rfloor$.</li>
+</ol>
+<p>In the next article (<strong>Article 1</strong>), we will directly tackle transposing <strong>APRS digipeating (AX.25)</strong>: formalizing the new future path extension block (<em>Path Trajectory Block</em>) and authoring the associated Rego rules.</p>
+<hr />
+<p>👉 <strong>Next article:</strong> <a href="../article-1-aprs.en/">Article 1 — Transposing APRS Digipeating (AX.25 WIDE n-N) to DTN (BPv7)</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

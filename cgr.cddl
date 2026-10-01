@@ -1,0 +1,88 @@
+; ==============================================================================
+; Contact Graph Routing (CGR / SABR - CCSDS 734.3-B-1) over DTN - CDDL Specification
+;
+; Formalise les structures de données sérialisées en CBOR pour l'adaptation de
+; l'algorithme spatial CGR (Contact Graph Routing / SABR - CCSDS 734.3-B-1) au-dessus de BPv7.
+;
+; Principes fondamentaux :
+; 1. Routage déterministe par calendrier de contacts (Contact Plan).
+; 2. Fenêtres spatio-temporelles : [start-time, end-time], débit et capacité résiduelle.
+; 3. Temps de propagation one-way light time (OWLT) pour liaisons interplanétaires.
+; 4. Acheminement au plus tôt (Earliest Delivery Time - EDT) avec respect du lifetime.
+; ==============================================================================
+
+; Message de contrôle CGR transporté dans le payload d'un bundle administratif
+cgr-control-bundle = {
+    1 => message-type: cgr-message-type,
+    2 => issuer-eid: tstr,                  ; EID de l'autorité émettrice du calendrier
+    3 => timestamp-ms: uint,                ; Horloge DTN d'émission
+    4 => payload: cgr-payload               ; Charge utile selon le type
+}
+
+cgr-message-type = &(
+    msg-contact-plan-update: 1, ; Ajout ou modification de contacts planifiés
+    msg-contact-plan-revoke: 2, ; Annulation d'une fenêtre de contact (panne, etc.)
+    msg-range-update: 3         ; Mise à jour de distance / délai OWLT
+)
+
+cgr-payload = (
+    contact-plan-update-payload /
+    contact-plan-revoke-payload /
+    range-update-payload
+)
+
+; ------------------------------------------------------------------------------
+; 1. MISE À JOUR DU CONTACT PLAN (Contact Plan Update)
+; ------------------------------------------------------------------------------
+contact-plan-update-payload = {
+    1 => contacts: [ * scheduled-contact ],
+    ? 2 => ranges: [ * scheduled-range ]
+}
+
+scheduled-contact = {
+    1 => contact-id: uint,                  ; Identifiant unique de contact
+    2 => from-eid: tstr,                    ; Nœud émetteur
+    3 => to-eid: tstr,                      ; Nœud récepteur
+    4 => start-time-ms: uint,               ; Début de la fenêtre de visibilité
+    5 => end-time-ms: uint,                 ; Fin de la fenêtre de visibilité
+    6 => data-rate-bps: uint,               ; Débit de transmission en octets ou bits/s
+    ? 7 => max-capacity-bytes: uint,        ; Capacité totale de la fenêtre
+    ? 8 => confidence: float                ; Probabilité de tenue de contact [0.0 - 1.0]
+}
+
+scheduled-range = {
+    1 => from-eid: tstr,
+    2 => to-eid: tstr,
+    3 => start-time-ms: uint,
+    4 => end-time-ms: uint,
+    5 => owlt-ms: uint                      ; One-Way Light Time en millisecondes
+}
+
+; ------------------------------------------------------------------------------
+; 2. RÉVOCATION DE CONTACT (Contact Revocation)
+; ------------------------------------------------------------------------------
+contact-plan-revoke-payload = {
+    1 => contact-ids: [ * uint ],
+    2 => reason: tstr
+}
+
+; ------------------------------------------------------------------------------
+; 3. MISE À JOUR DE DISTANCE (Range Update)
+; ------------------------------------------------------------------------------
+range-update-payload = {
+    1 => ranges: [ * scheduled-range ]
+}
+
+; ------------------------------------------------------------------------------
+; 4. ÉTAT ÉVALUÉ DANS L'ENVIRONNEMENT OPA (CGR Routing Table / Routes Cache)
+; Modélise les métadonnées pré-calculées pour input.bundle et input.node.
+; ------------------------------------------------------------------------------
+cgr-computed-path = {
+    destination-eid: tstr,
+    next-hop-eid: tstr,
+    first-contact-id: uint,
+    earliest-delivery-time-ms: uint,
+    remaining-capacity-bytes: uint,
+    hops: uint,
+    confidence: float
+}

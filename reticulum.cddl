@@ -1,0 +1,89 @@
+; ==============================================================================
+; Reticulum Network Stack (RNS) over DTN - CDDL Specification
+;
+; Formalise les structures de données sérialisées en CBOR pour l'adaptation de
+; Reticulum au-dessus du Bundle Protocol v7 (BPv7 - RFC 9171).
+;
+; Reticulum repose sur :
+; 1. L'adressage cryptographique par hash tronqué (16 octets / 128 bits).
+; 2. La découverte de chemin par annonces signées (Announce).
+; 3. Le routage par vecteur de distance vers le prochain saut (Next Hop).
+; 4. Les accusés de réception cryptographiques (Proofs).
+; ==============================================================================
+
+; Message de contrôle Reticulum transporté dans le payload d'un bundle administratif
+reticulum-control-bundle = {
+    1 => message-type: reticulum-message-type,
+    2 => destination-hash: bytes .size 16,  ; Hash SHA-256 tronqué à 16 octets
+    3 => timestamp-ms: uint,                ; Horloge DTN de création
+    4 => payload: reticulum-payload         ; Charge utile selon le type
+}
+
+reticulum-message-type = &(
+    msg-announce: 1,      ; Annonce de destination et découverte de chemin
+    msg-path-request: 2,  ; Requête explicite de chemin vers une destination
+    msg-path-response: 3, ; Réponse de chemin (chemin connu par un tiers)
+    msg-proof: 4          ; Preuve de réception / accusé cryptographique
+)
+
+reticulum-payload = (
+    announce-payload /
+    path-request-payload /
+    path-response-payload /
+    proof-payload
+)
+
+; ------------------------------------------------------------------------------
+; 1. ANNOUNCE : Découverte de Chemin et Publication de Clé Publique
+; Diffusé périodiquement ou lors d'un changement de topologie.
+; Permet à chaque nœud intermédiaire d'enregistrer la route vers le destinataire.
+; ------------------------------------------------------------------------------
+announce-payload = {
+    1 => public-key: bytes .size 32,        ; Clé publique Ed25519 ou Curve25519
+    2 => announce-hops: uint,               ; Compteur de sauts d'annonce (0 à l'origine)
+    3 => random-salt: bytes .size 10,       ; Sel aléatoire (protection replay)
+    4 => signature: bytes .size 64,         ; Signature Ed25519 par la clé privée de destination
+    ? 5 => app-data: bytes,                 ; Métadonnées applicatives chiffrées ou claires
+    ? 6 => ratchet: bytes .size 32          ; Clé éphémère (Forward Secrecy)
+}
+
+; ------------------------------------------------------------------------------
+; 2. PATH REQUEST : Recherche Réactive de Destination Inconnue
+; Utilisé lorsqu'un bundle doit être envoyé mais qu'aucune annonce n'a été reçue.
+; ------------------------------------------------------------------------------
+path-request-payload = {
+    1 => requested-destination-hash: bytes .size 16,
+    2 => requester-hash: bytes .size 16,
+    3 => request-id: uint
+}
+
+; ------------------------------------------------------------------------------
+; 3. PATH RESPONSE : Réponse à une Requête de Chemin
+; ------------------------------------------------------------------------------
+path-response-payload = {
+    1 => destination-hash: bytes .size 16,
+    2 => hops-to-destination: uint,
+    3 => next-hop-node: tstr,               ; EID du relais suivant recommandé
+    4 => announce-proof: announce-payload   ; L'annonce originale signée en preuve
+}
+
+; ------------------------------------------------------------------------------
+; 4. PROOF : Accusé de Réception Cryptographique
+; Atteste de la livraison effective d'un paquet à son destinataire légitime.
+; ------------------------------------------------------------------------------
+proof-payload = {
+    1 => bundle-id-hash: bytes .size 32,    ; Hash de l'identifiant du bundle acquitté
+    2 => signature: bytes .size 64          ; Signature par la clé privée du destinataire
+}
+
+; ------------------------------------------------------------------------------
+; 5. Entrée de la Table de Routage Locale (Next-Hop Routing Table)
+; Modélise l'état stocké dans input.node.routing_table pour l'évaluation OPA.
+; ------------------------------------------------------------------------------
+reticulum-routing-table-entry = {
+    destination-hash: bytes .size 16 / tstr, ; Hash en bytes ou hexadécimal
+    next-hop-eid: tstr,                      ; EID du nœud voisin immédiat pour joindre la destination
+    hops: uint,                              ; Distance en sauts vers la destination
+    expires-at-ms: uint,                     ; Date DTN d'expiration de l'entrée de routage
+    ? cla-interface: tstr                    ; Interface CLA associée (ex: "lora0", "tcp0")
+}

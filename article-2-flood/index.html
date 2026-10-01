@@ -1,0 +1,2405 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7) sous OPA">
+      
+      
+        <meta name="author" content="Loïc & DTN Mesh Algorithm Team">
+      
+      
+        <link rel="canonical" href="https://loic-fejoz.github.io/sdtn/article-2-flood/">
+      
+      
+        <link rel="prev" href="../article-1-aprs/">
+      
+      
+        <link rel="next" href="../article-3-prophet/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Art. 2 — Flood, Spray & Wait, Meshtastic - DTN Mesh Algorithm</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#article-2-dompter-linondation-en-dtn-depidemic-a-spray-and-wait-et-au-flooding-gere-de-meshtastic" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href=".." title="DTN Mesh Algorithm" class="md-header__button md-logo" aria-label="DTN Mesh Algorithm" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DTN Mesh Algorithm
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Art. 2 — Flood, Spray & Wait, Meshtastic
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Passage au mode sombre"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Passage au mode sombre" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Passage au mode clair"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Passage au mode clair" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Onglets" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../article-0-intro/" class="md-tabs__link">
+          
+  
+  
+  🇫🇷 Articles (FR)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../article-0-intro.en/" class="md-tabs__link">
+          
+  
+  
+  🇬🇧 Articles (EN)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../mesh-algo-extension-block.cddl" class="md-tabs__link">
+          
+  
+  
+  Spécifications CDDL
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../BUNDLE-BLOCK-TYPE/" class="md-tabs__link">
+          
+  
+  
+  Documents & Propositions IETF
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="DTN Mesh Algorithm" class="md-nav__button md-logo" aria-label="DTN Mesh Algorithm" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DTN Mesh Algorithm
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🇫🇷 Accueil (FR)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🇬🇧 Home (EN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🇫🇷 Articles (FR)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    🇫🇷 Articles (FR)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-0-intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 0 — Fondations DTN & OPA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-1-aprs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 1 — APRS AX.25 Digipeating
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 2 — Flood, Spray & Wait, Meshtastic
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 2 — Flood, Spray & Wait, Meshtastic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-la-tension-fondamentale-de-linondation-en-reseau-contraint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. La Tension Fondamentale de l'Inondation en Réseau Contraint
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. La Tension Fondamentale de l&#39;Inondation en Réseau Contraint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-lillusion-depidemic-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1. L'illusion d'Epidemic Routing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-decryptage-des-algorithmes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Décryptage des Algorithmes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Décryptage des Algorithmes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-spray-and-wait-spyropoulos-psounis-raghavendra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1. Spray and Wait (Spyropoulos, Psounis, Raghavendra)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1. Spray and Wait (Spyropoulos, Psounis, Raghavendra)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-source-spray-vs-binary-spray" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Source Spray vs Binary Spray
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-la-phase-wait-l-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. La Phase Wait ($L = 1$)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-le-flooding-gere-de-meshtastic-managed-flooding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2. Le Flooding Géré de Meshtastic (Managed Flooding)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-specification-cddl-et-epuration-radicale-spray-wait-et-meshtastic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Spécification CDDL et Épuration Radicale : Spray &amp; Wait et Meshtastic
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Spécification CDDL et Épuration Radicale : Spray &amp; Wait et Meshtastic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-reconciliation-architecturale-hop-count-block-type-10-et-bundle-id-universel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1. Réconciliation Architecturale : Hop Count Block (Type 10) et Bundle ID Universel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-pourquoi-le-channel_id-a-ete-supprime-le-canal-radio-nest-pas-une-metadonnee-bpv7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2. Pourquoi le channel_id a été supprimé : Le canal radio n'est pas une métadonnée BPv7
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-le-constat-majeur-meshtastic-opere-en-pur-bpv7-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3. Le Constat Majeur : Meshtastic opère en pur BPv7 standard !
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-implementation-declarative-avec-opa-rego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Implémentation Déclarative avec OPA (Rego)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Implémentation Déclarative avec OPA (Rego)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-fonctions-daide-mathematiques-helpersrego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1. Fonctions d'Aide Mathématiques (helpers.rego)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-ingress-policy-ingressrego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2. Ingress Policy (ingress.rego)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-contact-policy-contactrego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3. Contact Policy (contact.rego)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-validation-par-les-tests-unitaires-opa-4444-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Validation par les Tests Unitaires OPA (44/44 PASS)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-synthese-comparative-quel-protocole-pour-quel-reseau" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Synthèse Comparative : Quel Protocole pour Quel Réseau ?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-3-prophet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 3 — PRoPHET (RFC 6693)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-4-maxprop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 4 — MaxProp & HP-MaxProp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-5-reticulum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 5 — Reticulum (RNS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-6-babel-aredn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 6 — Babel (RFC 8966) & HYMAD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-7-cgr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 7 — CGR / SABR (CCSDS 734.3-B-1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-8-geodtn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 8 — GeoDTN & Geocasting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-9-synthese-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 9 — Synthèse Architecturale
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-10-roadmap-extensions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 10 — Feuille de Route & Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🇬🇧 Articles (EN)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    🇬🇧 Articles (EN)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-0-intro.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 0 — DTN & OPA Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-1-aprs.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 1 — APRS AX.25 Digipeating
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-2-flood.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 2 — Flood, Spray & Wait, Meshtastic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-3-prophet.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 3 — PRoPHET (RFC 6693)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-4-maxprop.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 4 — MaxProp & HP-MaxProp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-5-reticulum.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 5 — Reticulum (RNS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-6-babel-aredn.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 6 — Babel (RFC 8966) & HYMAD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-7-cgr.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 7 — CGR / SABR (CCSDS 734.3-B-1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-8-geodtn.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 8 — GeoDTN & Geocasting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-9-synthese-architecture.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 9 — Architectural Synthesis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-10-roadmap-extensions.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 10 — Roadmap & Future Work
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spécifications CDDL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Spécifications CDDL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mesh-algo-extension-block.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Type 200 Modular Extension Block
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prophet.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PRoPHET Control Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../maxprop.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MaxProp Control Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reticulum.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reticulum Control Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../babel.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Babel Control Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cgr.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CGR Contact Plan Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documents & Propositions IETF
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Documents & Propositions IETF
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BUNDLE-BLOCK-TYPE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spécifications de Bloc DTN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../comments-ietf-dtn-bp-sand-04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Commentaires IETF BP-SAND
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-la-tension-fondamentale-de-linondation-en-reseau-contraint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. La Tension Fondamentale de l'Inondation en Réseau Contraint
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. La Tension Fondamentale de l&#39;Inondation en Réseau Contraint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-lillusion-depidemic-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1. L'illusion d'Epidemic Routing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-decryptage-des-algorithmes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Décryptage des Algorithmes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Décryptage des Algorithmes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-spray-and-wait-spyropoulos-psounis-raghavendra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1. Spray and Wait (Spyropoulos, Psounis, Raghavendra)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1. Spray and Wait (Spyropoulos, Psounis, Raghavendra)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-source-spray-vs-binary-spray" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Source Spray vs Binary Spray
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-la-phase-wait-l-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. La Phase Wait ($L = 1$)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-le-flooding-gere-de-meshtastic-managed-flooding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2. Le Flooding Géré de Meshtastic (Managed Flooding)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-specification-cddl-et-epuration-radicale-spray-wait-et-meshtastic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Spécification CDDL et Épuration Radicale : Spray &amp; Wait et Meshtastic
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Spécification CDDL et Épuration Radicale : Spray &amp; Wait et Meshtastic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-reconciliation-architecturale-hop-count-block-type-10-et-bundle-id-universel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1. Réconciliation Architecturale : Hop Count Block (Type 10) et Bundle ID Universel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-pourquoi-le-channel_id-a-ete-supprime-le-canal-radio-nest-pas-une-metadonnee-bpv7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2. Pourquoi le channel_id a été supprimé : Le canal radio n'est pas une métadonnée BPv7
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-le-constat-majeur-meshtastic-opere-en-pur-bpv7-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3. Le Constat Majeur : Meshtastic opère en pur BPv7 standard !
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-implementation-declarative-avec-opa-rego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Implémentation Déclarative avec OPA (Rego)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Implémentation Déclarative avec OPA (Rego)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-fonctions-daide-mathematiques-helpersrego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1. Fonctions d'Aide Mathématiques (helpers.rego)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-ingress-policy-ingressrego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2. Ingress Policy (ingress.rego)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-contact-policy-contactrego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3. Contact Policy (contact.rego)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-validation-par-les-tests-unitaires-opa-4444-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Validation par les Tests Unitaires OPA (44/44 PASS)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-synthese-comparative-quel-protocole-pour-quel-reseau" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Synthèse Comparative : Quel Protocole pour Quel Réseau ?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="article-2-dompter-linondation-en-dtn-depidemic-a-spray-and-wait-et-au-flooding-gere-de-meshtastic">Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic<a class="headerlink" href="#article-2-dompter-linondation-en-dtn-depidemic-a-spray-and-wait-et-au-flooding-gere-de-meshtastic" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Série :</strong> <em>Transposition d'algorithmes de routage mesh &amp; opportunistes vers DTN (BPv7)</em><br />
+<strong>Articles précédents :</strong><br />
+- <a href="../article-0-intro/">Article 0 — Les Fondations du Routage DTN avec Open Policy Agent</a><br />
+- <a href="../article-1-aprs/">Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)</a><br />
+<strong>Spécification CDDL :</strong> <a href="../mesh-algo-extension-block.cddl">mesh-algo-extension-block.cddl</a><br />
+<strong>Code des politiques :</strong> <a href="./policies/flood/">policies/flood/</a> (<a href="../policies/flood/ingress.rego">ingress.rego</a>, <a href="../policies/flood/contact.rego">contact.rego</a>, <a href="../policies/flood/helpers.rego">helpers.rego</a>, <a href="../policies/flood/constants.rego">constants.rego</a>, <a href="../policies/flood/flood_test.rego">flood_test.rego</a>)</p>
+<p>ℹ️ <strong>Transparence Éditoriale (Conformité EU AI Act) :</strong> Cet article a été rédigé avec l'assistance d'une IA sous la direction éditoriale et la structuration d'un auteur humain, qui en assure la relecture, la vérification technique et la responsabilité du contenu (relecture en cours).</p>
+</blockquote>
+<hr />
+<h2 id="1-la-tension-fondamentale-de-linondation-en-reseau-contraint">1. La Tension Fondamentale de l'Inondation en Réseau Contraint<a class="headerlink" href="#1-la-tension-fondamentale-de-linondation-en-reseau-contraint" title="Permanent link">&para;</a></h2>
+<p>Dans les réseaux tolérants aux délais (DTN) et les réseaux maillés ad-hoc sans infrastructure, le routage est confronté à un dilemme permanent entre :
+1. <strong>La minimisation du délai d'acheminement</strong> vers la destination.
+2. <strong>La préservation des ressources critiques</strong> : énergie de la batterie, occupation du tampon mémoire (<em>buffer</em>) et temps d'occupation spectral radio (<em>duty cycle</em> LoRa, collisions CSMA).</p>
+<h3 id="11-lillusion-depidemic-routing">1.1. L'illusion d'Epidemic Routing<a class="headerlink" href="#11-lillusion-depidemic-routing" title="Permanent link">&para;</a></h3>
+<p>Introduit par Vahdat et Becker en 2000, l'<strong>Epidemic Routing</strong> repose sur une inondation opportuniste aveugle : dès que deux nœuds se rencontrent, ils échangent tous les bundles qu'ils ne possèdent pas encore en commun.
+- <strong>Avantage théorique :</strong> Dans un réseau idéal sans contrainte de mémoire ni de bande passante, Epidemic garantit mathématiquement le délai de livraison minimal (<em>optimal delay</em>), car il explore simultanément tous les chemins physiques possibles.
+- <strong>Catastrophe pratique :</strong> Dès que le volume de trafic augmente, les files d'attente saturent. Le réseau s'effondre sous l'effet de tempêtes de diffusion (<em>broadcast storms</em>) et de destructions massives de paquets par dépassement de buffer (<em>drop-tail</em>).</p>
+<p>Pour surmonter cette limite, deux philosophies majeures ont émergé :
+- <strong>L'arbitrage spatio-temporel et radio (Meshtastic) :</strong> Limiter le rayon de propagation via un <code>hop_limit</code> strict, dédupliquer agressivement et introduire une fenêtre de contention inversement proportionnelle à la qualité du signal radio (SNR).
+- <strong>Le contingentement strict par quotas (Spray and Wait) :</strong> Borner a priori le nombre maximal $L$ de copies autorisées à circuler dans l'ensemble du réseau, éliminant tout risque de prolifération exponentielle incontrôlée.</p>
+<hr />
+<h2 id="2-decryptage-des-algorithmes">2. Décryptage des Algorithmes<a class="headerlink" href="#2-decryptage-des-algorithmes" title="Permanent link">&para;</a></h2>
+<h3 id="21-spray-and-wait-spyropoulos-psounis-raghavendra">2.1. Spray and Wait (Spyropoulos, Psounis, Raghavendra)<a class="headerlink" href="#21-spray-and-wait-spyropoulos-psounis-raghavendra" title="Permanent link">&para;</a></h3>
+<p>Pour pallier la démesure d'Epidemic tout en conservant une grande simplicité, Spray and Wait découpe la vie d'un bundle en deux phases distinctes :</p>
+<div class="codehilite"><pre><span></span><code><span class="w">             </span>[<span class="w"> </span><span class="nv">Source</span><span class="w"> </span>é<span class="nv">mettrice</span><span class="w"> </span>:<span class="w"> </span><span class="nv">Quota</span><span class="w"> </span><span class="nv">L</span><span class="w"> </span><span class="nv">copies</span><span class="w"> </span>]
+<span class="w">                               </span><span class="o">|</span>
+<span class="w">                               </span><span class="nv">v</span>
+<span class="w">                     </span><span class="o">+-------------------+</span>
+<span class="w">                     </span><span class="o">|</span><span class="w">   </span><span class="nv">Phase</span><span class="w"> </span><span class="nv">SPRAY</span><span class="w">     </span><span class="o">|</span><span class="w">  </span><span class="ss">(</span><span class="nv">L</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="ss">)</span>
+<span class="w">                     </span><span class="o">+-------------------+</span>
+<span class="w">                               </span><span class="o">|</span>
+<span class="w">            </span><span class="o">+------------------+------------------+</span>
+<span class="w">            </span><span class="o">|</span><span class="w">                                     </span><span class="o">|</span>
+<span class="w">    </span><span class="ss">(</span><span class="nv">Source</span><span class="w"> </span><span class="nv">Spray</span><span class="ss">)</span><span class="w">                         </span><span class="ss">(</span><span class="nv">Binary</span><span class="w"> </span><span class="nv">Spray</span><span class="ss">)</span>
+<span class="w">  </span><span class="nv">Donne</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="nv">copie</span><span class="w"> </span><span class="nv">par</span><span class="w"> </span><span class="nv">relais</span>,<span class="w">              </span><span class="nv">Donne</span><span class="w"> </span><span class="nv">floor</span><span class="ss">(</span><span class="nv">L</span><span class="o">/</span><span class="mi">2</span><span class="ss">)</span><span class="w"> </span><span class="nv">copies</span>,
+<span class="w">  </span><span class="nv">conserve</span><span class="w"> </span><span class="ss">(</span><span class="nv">L</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="ss">)</span><span class="w"> </span><span class="nv">copies</span><span class="w">                </span><span class="nv">garde</span><span class="w"> </span><span class="nv">ceil</span><span class="ss">(</span><span class="nv">L</span><span class="o">/</span><span class="mi">2</span><span class="ss">)</span><span class="w"> </span><span class="nv">copies</span>
+<span class="w">            </span><span class="o">|</span><span class="w">                                     </span><span class="o">|</span>
+<span class="w">            </span><span class="o">+------------------+------------------+</span>
+<span class="w">                               </span><span class="o">|</span>
+<span class="w">                               </span><span class="nv">v</span>
+<span class="w">                     </span><span class="o">+-------------------+</span>
+<span class="w">                     </span><span class="o">|</span><span class="w">   </span><span class="nv">Phase</span><span class="w"> </span><span class="k">WAIT</span><span class="w">      </span><span class="o">|</span><span class="w">  </span><span class="ss">(</span><span class="nv">L</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="ss">)</span>
+<span class="w">                     </span><span class="o">+-------------------+</span>
+<span class="w">                               </span><span class="o">|</span>
+<span class="w">              </span><span class="ss">(</span><span class="nv">Relais</span><span class="w"> </span><span class="nv">interm</span>é<span class="nv">diaire</span><span class="w"> </span><span class="nv">interdit</span><span class="w"> </span><span class="o">!</span><span class="ss">)</span>
+<span class="w">            </span><span class="nv">Attente</span><span class="w"> </span><span class="nv">passive</span><span class="w"> </span><span class="nv">de</span><span class="w"> </span><span class="nv">la</span><span class="w"> </span><span class="nv">destination</span><span class="w"> </span><span class="nv">finale</span>
+</code></pre></div>
+
+<h4 id="a-source-spray-vs-binary-spray">A. Source Spray vs Binary Spray<a class="headerlink" href="#a-source-spray-vs-binary-spray" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Source Spray :</strong> Seule la source distribue des copies. Dès qu'elle croise un nœud relais qui ne possède pas le bundle, elle lui transmet 1 copie (qui passe immédiatement en phase <em>Wait</em> avec $L=1$). La source décrémente son quota local de 1.</li>
+<li><strong>Binary Spray :</strong> Tout nœud possédant $L &gt; 1$ copies peut répliquer. Lorsqu'il rencontre un nœud sans copie, il lui transfère $\lfloor L / 2 \rfloor$ copies et conserve $\lceil L / 2 \rceil$ copies. Cette distribution binaire est beaucoup plus rapide que le mode source, car l'effort de dissémination est partagé exponentiellement entre porteurs.</li>
+</ul>
+<h4 id="b-la-phase-wait-l-1">B. La Phase Wait ($L = 1$)<a class="headerlink" href="#b-la-phase-wait-l-1" title="Permanent link">&para;</a></h4>
+<p>Dès qu'un porteur ne dispose plus que d'une seule copie ($L = 1$), il bascule en phase <strong>Wait</strong>. Il lui est <strong>strictement interdit</strong> de transmettre le bundle à un autre relais intermédiaire. Il transporte le bundle jusqu'à rencontrer directement l'Endpoint de destination finale (<code>contact.peer_eid == destination</code>).</p>
+<hr />
+<h3 id="22-le-flooding-gere-de-meshtastic-managed-flooding">2.2. Le Flooding Géré de Meshtastic (<em>Managed Flooding</em>)<a class="headerlink" href="#22-le-flooding-gere-de-meshtastic-managed-flooding" title="Permanent link">&para;</a></h3>
+<p>Conçu pour des microcontrôleurs ESP32/nRF52 opérant sur la bande ISM 868/915 MHz en modulation LoRa, Meshtastic applique une inondation hautement optimisée pour la radio bas débit :</p>
+<ol>
+<li><strong>Table de déduplication (<em>Seen Cache</em>) :</strong> Chaque trame porte un <code>packet_id</code> (32 bits). Tout paquet déjà reçu au cours d'une fenêtre glissante est immédiatement détruit à l'ingress.</li>
+<li><strong>Ségrégation de canal (<em>Channel Hash</em>) :</strong> Le paquet est filtré selon un hash de canal (ex: canal public par défaut vs canal privé chiffré).</li>
+<li><strong>Fenêtre de contention pondérée par le SNR (<em>SNR-based backoff</em>) :</strong><br />
+   Lorsqu'un nœud reçoit un paquet à relayer en diffusion radio, il ne réémet pas immédiatement. Il calcule un délai de temporisation :
+   $$\text{Backoff}(SNR) = \text{BaseDelay} + \text{Factor} \times \max(0, SNR_{\text{dB}} + 15)$$</li>
+<li><strong>Nœud lointain (faible SNR, ex: -10 dB) :</strong> Reçoit une temporisation <strong>courte</strong>. Il retransmet en priorité pour propager le paquet le plus loin possible.</li>
+<li><strong>Nœud proche (fort SNR, ex: +10 dB) :</strong> Reçoit une temporisation <strong>longue</strong>.</li>
+<li><strong>Annulation par écoute (<em>Contention Cancel</em>) :</strong> Si pendant sa temporisation, le nœud proche entend le paquet être retransmis par un pair, il <strong>annule sa propre transmission</strong>. Cela supprime les échos inutiles entre nœuds géographiquement voisins !</li>
+</ol>
+<hr />
+<h2 id="3-specification-cddl-et-epuration-radicale-spray-wait-et-meshtastic">3. Spécification CDDL et Épuration Radicale : Spray &amp; Wait et Meshtastic<a class="headerlink" href="#3-specification-cddl-et-epuration-radicale-spray-wait-et-meshtastic" title="Permanent link">&para;</a></h2>
+<p>Le fichier <a href="../mesh-algo-extension-block.cddl">mesh-algo-extension-block.cddl</a> intègre les primitives requises sous le bloc expérimental type <code>200</code> :</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">; Bloc expérimental BPv7 modulaire et agnostique (Type 200)</span>
+<span class="nc">mesh-routing-data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">legacy-bridge-id</span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="nb">bytes</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">uint</span><span class="p">),</span><span class="w"> </span><span class="c1">; Empreinte externe optionnelle (passerelle LoRa)</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nc">replication-control</span><span class="p">,</span><span class="w">              </span><span class="c1">; Primitives de contingentement et quotas</span>
+<span class="w">    </span><span class="o">...</span>
+<span class="p">}</span>
+
+<span class="c1">; Dimension Réplication (utilisée par Spray &amp; Wait, MaxProp, etc.)</span>
+<span class="nc">replication-control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">quota</span><span class="p">:</span><span class="w"> </span><span class="nb">uint</span><span class="p">,</span><span class="w">                        </span><span class="c1">; Quota L de copies attribuées</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">mode</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="p">(</span><span class="s">mode-source</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">mode-binary</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="c1">; Distribution unitaire ou binaire</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">phase</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="p">(</span><span class="s">phase-disseminate</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">phase-wait</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="c1">; Phase active</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">generation</span><span class="p">:</span><span class="w"> </span><span class="nb">uint</span><span class="w">                  </span><span class="c1">; Génération / niveau de réplication</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="31-reconciliation-architecturale-hop-count-block-type-10-et-bundle-id-universel">3.1. Réconciliation Architecturale : Hop Count Block (Type 10) et Bundle ID Universel<a class="headerlink" href="#31-reconciliation-architecturale-hop-count-block-type-10-et-bundle-id-universel" title="Permanent link">&para;</a></h3>
+<p>Deux simplifications majeures ont été dégagées lors de notre modélisation :</p>
+<ol>
+<li>
+<p><strong>La limite de saut Meshtastic est 100 % isomorphe au Hop Count Block (Type 10) :</strong><br />
+   Meshtastic utilise <code>hop_start</code> (la valeur initiale) et <code>hop_limit</code> (décrémenté à chaque saut). Dans la RFC 9171, le <strong>Hop Count Block (Type 10)</strong> utilise <code>hop_limit</code> et <code>hop_count</code>.<br />
+   L'équivalence est absolue : $\text{hop_start} = \text{hop_limit}_{\text{Type 10}}$ et le nombre de sauts restants sous Meshtastic vaut $\text{hop_limit} - \text{hop_count}$.<br />
+   En réutilisant le bloc standard Type 10, <strong>tout routeur DTN conventionnel</strong> (même dépourvu de la logique LoRa Meshtastic) coupe net la propagation du paquet s'il dépasse sa limite !</p>
+</li>
+<li>
+<p><strong>L'inutilité des <code>packet-id</code> et <code>message-id</code> :</strong><br />
+   Alors que Meshtastic et Spray &amp; Wait définissent chacun un identifiant de paquet ou de message pour leur table anti-doublon ou leurs <em>Summary Vectors</em>, le <strong>Bundle ID canonique</strong> <code>(source_eid, creation_time, sequence_number)</code> de la RFC 9171 Section 4.2.2 remplit nativement et universellement cet office. Aucun identifiant ad-hoc n'a besoin d'être transporté dans le bloc d'extension en DTN natif.</p>
+</li>
+</ol>
+<h3 id="32-pourquoi-le-channel_id-a-ete-supprime-le-canal-radio-nest-pas-une-metadonnee-bpv7">3.2. Pourquoi le <code>channel_id</code> a été supprimé : Le canal radio n'est pas une métadonnée BPv7<a class="headerlink" href="#32-pourquoi-le-channel_id-a-ete-supprime-le-canal-radio-nest-pas-une-metadonnee-bpv7" title="Permanent link">&para;</a></h3>
+<p>Une réflexion architecturale poussée nous a conduits à éliminer tout champ de canal radio (<code>wireless-channel</code> / <code>channel_id</code>) du bloc d'extension filaire :
+- <strong>Violation du découpage en couches :</strong> Le Bundle Protocol est un réseau superposé (<em>overlay</em>). Un canal LoRa ou une fréquence radio sont des propriétés de couche 1 / 2 (PHY / Liaison). Si un bundle traverse une liaison satellite ou un tunnel TCPCL entre deux villes, un identifiant de canal radio local n'a plus aucun sens.
+- <strong>Filtrage applicatif par EID (Whitelist) :</strong> Dans Meshtastic, la ségrégation de canal sert à filtrer les flux que le nœud ne souhaite pas relayer. En DTN, cela s'exprime de manière infiniment plus élégante et universelle par une <strong>whitelist de motifs d'EID de destination</strong> (<code>input.node.allowed_destinations</code>, ex: <code>dtn://channels/emergency/*</code>) ou directement au niveau de l'adaptateur CLA d'entrée.</p>
+<h3 id="33-le-constat-majeur-meshtastic-opere-en-pur-bpv7-standard">3.3. Le Constat Majeur : Meshtastic opère en pur BPv7 standard !<a class="headerlink" href="#33-le-constat-majeur-meshtastic-opere-en-pur-bpv7-standard" title="Permanent link">&para;</a></h3>
+<p>Ce raisonnement aboutit à une conclusion remarquable : <strong>l'inondation gérée de Meshtastic ne nécessite aucun bloc d'extension propriétaire sur les ondes !</strong>
+- Le contrôle du rayon de propagation repose sur le standard <strong>Hop Count Block (Type 10)</strong>.
+- La déduplication repose sur le standard <strong>Bundle ID canonique BPv7</strong>.
+- La ségrégation de flux repose sur les <strong>EIDs standardisés</strong>.
+- Le calcul de temporisation de contention ($Backoff(SNR)$) et l'annulation par écoute sont des <strong>décisions d'orchestration purement locales</strong>, confiées au moteur OPA via la télémétrie d'entrée (<code>input.ingress.snr_db</code>) et l'état interne (<code>input.node.cancelled_rebroadcasts</code>).</p>
+<hr />
+<h2 id="4-implementation-declarative-avec-opa-rego">4. Implémentation Déclarative avec OPA (Rego)<a class="headerlink" href="#4-implementation-declarative-avec-opa-rego" title="Permanent link">&para;</a></h2>
+<p>Toutes les règles sont implémentées dans <a href="./policies/flood/">policies/flood/</a>.</p>
+<h3 id="41-fonctions-daide-mathematiques-helpersrego">4.1. Fonctions d'Aide Mathématiques (<a href="../policies/flood/helpers.rego">helpers.rego</a>)<a class="headerlink" href="#41-fonctions-daide-mathematiques-helpersrego" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">package</span><span class="w"> </span><span class="n">dtn</span><span class="p">.</span><span class="n">flood</span><span class="p">.</span><span class="n">helpers</span>
+
+<span class="c1"># Division binaire de quota pour Spray &amp; Wait</span>
+<span class="n">calculate_binary_spray</span><span class="p">(</span><span class="n">quota</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">quota</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">2</span>
+<span class="w">    </span><span class="n">to_send</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">floor</span><span class="p">(</span><span class="n">quota</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+<span class="w">    </span><span class="n">to_keep</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">quota</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">to_send</span>
+<span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">"send_quota"</span><span class="p">:</span><span class="w"> </span><span class="n">to_send</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"keep_quota"</span><span class="p">:</span><span class="w"> </span><span class="n">to_keep</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"new_local_phase"</span><span class="p">:</span><span class="w"> </span><span class="n">phase_for_quota</span><span class="p">(</span><span class="n">to_keep</span><span class="p">),</span>
+<span class="w">        </span><span class="s2">"transmitted_phase"</span><span class="p">:</span><span class="w"> </span><span class="n">phase_for_quota</span><span class="p">(</span><span class="n">to_send</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># Calcul de contention Meshtastic</span>
+<span class="n">calculate_meshtastic_backoff</span><span class="p">(</span><span class="n">snr_db</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">delay_ms</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">clamped_snr</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">max</span><span class="p">([</span><span class="n">snr_db</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">15</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="p">])</span>
+<span class="w">    </span><span class="n">delay_ms</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">constants</span><span class="p">.</span><span class="n">meshtastic_base_backoff_ms</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">round</span><span class="p">(</span><span class="n">clamped_snr</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">constants</span><span class="p">.</span><span class="n">meshtastic_snr_factor_ms</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="42-ingress-policy-ingressrego">4.2. Ingress Policy (<a href="../policies/flood/ingress.rego">ingress.rego</a>)<a class="headerlink" href="#42-ingress-policy-ingressrego" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Déduplication universelle :</strong> Rejet immédiat si l'identifiant du bundle a déjà été vu.</li>
+<li><strong>Ingress Spray &amp; Wait :</strong> Enregistre le bundle et initialise la phase (<code>SPRAY</code> si $L &gt; 1$, <code>WAIT</code> si $L = 1$).</li>
+<li><strong>Ingress Meshtastic :</strong></li>
+<li>Vérifie la conformité du <code>channel_hash</code> avec celui du nœud local.</li>
+<li>Calcule le délai de temporisation de rediffusion selon le SNR de réception et l'ordonne via une mutation CBOR.</li>
+</ol>
+<h3 id="43-contact-policy-contactrego">4.3. Contact Policy (<a href="../policies/flood/contact.rego">contact.rego</a>)<a class="headerlink" href="#43-contact-policy-contactrego" title="Permanent link">&para;</a></h3>
+<p>La prise de décision lors d'une opportunité de liaison CLA traduit fidèlement les règles théoriques :</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 1. Contact direct avec la destination : livraison immédiate sans condition</span>
+<span class="n">decision</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FORWARD_DIRECT"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Peer is the destination endpoint"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"mutations"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="p">}</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">input</span><span class="p">.</span><span class="n">contact</span><span class="p">.</span><span class="n">peer_eid</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">.</span><span class="n">primary</span><span class="p">.</span><span class="n">destination</span>
+<span class="p">}</span>
+
+<span class="c1"># 2. Interdiction formelle de relayer un bundle en phase WAIT à un intermédiaire</span>
+<span class="n">decision</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SKIP"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Spray &amp; Wait bundle is in WAIT phase (L=1): awaiting direct destination contact only"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"mutations"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="p">}</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">input</span><span class="p">.</span><span class="n">contact</span><span class="p">.</span><span class="n">peer_eid</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">.</span><span class="n">primary</span><span class="p">.</span><span class="n">destination</span>
+<span class="w">    </span><span class="n">block</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">get_spray_block</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">)</span>
+<span class="w">    </span><span class="k">not</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">peer_already_holds_bundle</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">contact</span><span class="p">,</span><span class="w"> </span><span class="n">block</span><span class="p">.</span><span class="n">payload</span><span class="p">.</span><span class="n">message_id</span><span class="p">)</span>
+<span class="w">    </span><span class="n">block</span><span class="p">.</span><span class="n">payload</span><span class="p">.</span><span class="n">replication_quota</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="m">1</span>
+<span class="p">}</span>
+
+<span class="c1"># 3. Réplication en mode Binary Spray</span>
+<span class="n">decision</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FORWARD_REPLICATE"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"reason"</span><span class="p">:</span><span class="w"> </span><span class="n">sprintf</span><span class="p">(</span><span class="s2">"Binary spray: splitting quota L=%v"</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">block</span><span class="p">.</span><span class="n">payload</span><span class="p">.</span><span class="n">replication_quota</span><span class="p">]),</span>
+<span class="w">    </span><span class="s2">"mutations"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">        </span><span class="s2">"block_type"</span><span class="p">:</span><span class="w"> </span><span class="n">constants</span><span class="p">.</span><span class="n">block_type_mesh_routing</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"operation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MUTATE_SPRAY_QUOTA"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"local_quota"</span><span class="p">:</span><span class="w"> </span><span class="n">split</span><span class="p">.</span><span class="n">keep_quota</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"local_phase"</span><span class="p">:</span><span class="w"> </span><span class="n">split</span><span class="p">.</span><span class="n">new_local_phase</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"transmitted_quota"</span><span class="p">:</span><span class="w"> </span><span class="n">split</span><span class="p">.</span><span class="n">send_quota</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"transmitted_phase"</span><span class="p">:</span><span class="w"> </span><span class="n">split</span><span class="p">.</span><span class="n">transmitted_phase</span>
+<span class="w">    </span><span class="p">}]</span>
+<span class="p">}</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">input</span><span class="p">.</span><span class="n">contact</span><span class="p">.</span><span class="n">peer_eid</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">.</span><span class="n">primary</span><span class="p">.</span><span class="n">destination</span>
+<span class="w">    </span><span class="n">block</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">get_spray_block</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">)</span>
+<span class="w">    </span><span class="k">not</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">peer_already_holds_bundle</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">contact</span><span class="p">,</span><span class="w"> </span><span class="n">block</span><span class="p">.</span><span class="n">payload</span><span class="p">.</span><span class="n">message_id</span><span class="p">)</span>
+<span class="w">    </span><span class="n">block</span><span class="p">.</span><span class="n">payload</span><span class="p">.</span><span class="n">replication_quota</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">2</span>
+<span class="w">    </span><span class="n">block</span><span class="p">.</span><span class="n">payload</span><span class="p">.</span><span class="n">spray_mode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">constants</span><span class="p">.</span><span class="n">spray_mode_binary</span>
+<span class="w">    </span><span class="n">split</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">calculate_binary_spray</span><span class="p">(</span><span class="n">block</span><span class="p">.</span><span class="n">payload</span><span class="p">.</span><span class="n">replication_quota</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1"># 4. Annulation Meshtastic si entendu pendant le backoff</span>
+<span class="n">decision</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SKIP"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Meshtastic rebroadcast cancelled: packet heard from another peer during backoff"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"mutations"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="p">}</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">block</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">helpers</span><span class="p">.</span><span class="n">get_meshtastic_block</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">bundle</span><span class="p">)</span>
+<span class="w">    </span><span class="n">block</span><span class="p">.</span><span class="n">payload</span><span class="p">.</span><span class="n">packet_id</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">object</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="s2">"cancelled_rebroadcasts"</span><span class="p">,</span><span class="w"> </span><span class="p">[])</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<hr />
+<h2 id="5-validation-par-les-tests-unitaires-opa-4444-pass">5. Validation par les Tests Unitaires OPA (44/44 PASS)<a class="headerlink" href="#5-validation-par-les-tests-unitaires-opa-4444-pass" title="Permanent link">&para;</a></h2>
+<p>La suite de tests unitaires dédiée (<a href="../policies/flood/flood_test.rego">flood_test.rego</a>) valide 17 scénarios critiques, portant le total global du dépôt à <strong>44 tests validés avec succès</strong> :</p>
+<div class="codehilite"><pre><span></span><code>opa<span class="w"> </span><span class="nb">test</span><span class="w"> </span>./policies<span class="w"> </span>-v
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>./policies/flood/flood_test.rego:
+data.dtn.flood_test.test_flood_local_delivery: PASS (602µs)
+data.dtn.flood_test.test_flood_duplicate_suppression: PASS (1.66ms)
+data.dtn.flood_test.test_spray_ingress_spray_phase: PASS (1.82ms)
+data.dtn.flood_test.test_spray_ingress_wait_phase: PASS (1.53ms)
+data.dtn.flood_test.test_spray_contact_direct_destination: PASS (504µs)
+data.dtn.flood_test.test_spray_contact_skip_peer_already_holds: PASS (1.02ms)
+data.dtn.flood_test.test_spray_contact_binary_split_even: PASS (3.27ms)
+data.dtn.flood_test.test_spray_contact_binary_split_to_wait: PASS (2.40ms)
+data.dtn.flood_test.test_spray_contact_source_spray: PASS (1.80ms)
+data.dtn.flood_test.test_spray_contact_wait_phase_skip_relay: PASS (1.26ms)
+data.dtn.flood_test.test_meshtastic_ingress_channel_match_and_backoff: PASS (3.76ms)
+data.dtn.flood_test.test_meshtastic_ingress_channel_mismatch: PASS (1.45ms)
+data.dtn.flood_test.test_meshtastic_contact_cancelled_during_backoff: PASS (766µs)
+data.dtn.flood_test.test_meshtastic_contact_broadcast_success: PASS (586µs)
+data.dtn.flood_test.test_meshtastic_ingress_hop_limit_reached: PASS (1.67ms)
+data.dtn.flood_test.test_flood_generic_cddl_replication: PASS (1.64ms)
+data.dtn.flood_test.test_flood_generic_cddl_wireless: PASS (3.48ms)
+--------------------------------------------------------------------------------
+Total global : 44/44 tests PASS
+(14 fondations + 13 APRS/Trajectoire + 17 Inondation/Quotas/Contention)
+</code></pre></div>
+
+<hr />
+<h2 id="6-synthese-comparative-quel-protocole-pour-quel-reseau">6. Synthèse Comparative : Quel Protocole pour Quel Réseau ?<a class="headerlink" href="#6-synthese-comparative-quel-protocole-pour-quel-reseau" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Caractéristique</th>
+<th style="text-align: left;">Epidemic Routing</th>
+<th style="text-align: left;">Meshtastic Managed Flooding</th>
+<th style="text-align: left;">Spray and Wait</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Nombre maximal de copies</strong></td>
+<td style="text-align: left;">$N$ (Tous les nœuds du réseau)</td>
+<td style="text-align: left;">Non borné (limité par le TTL radio)</td>
+<td style="text-align: left;">Borne stricte $L$ fixée à l'émission</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Consommation mémoire</strong></td>
+<td style="text-align: left;">Catastrophique sous charge</td>
+<td style="text-align: left;">Modérée (table des ID récents)</td>
+<td style="text-align: left;">Faible et prédictible</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Consommation spectrale radio</strong></td>
+<td style="text-align: left;">Maximale (tempêtes de paquets)</td>
+<td style="text-align: left;">Optimisée par temporisation SNR</td>
+<td style="text-align: left;">Faible ($L-1$ transmissions intermédiaires)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Idéal pour</strong></td>
+<td style="text-align: left;">Réseaux ultra-clairsemés sans congestion</td>
+<td style="text-align: left;">Réseaux LoRa locaux / citoyens</td>
+<td style="text-align: left;">Flottes véhiculaires, drones, réseaux de secours</td>
+</tr>
+</tbody>
+</table>
+<p>Dans le prochain article (<strong>Article 3</strong>), nous aborderons la famille des <strong>protocoles opportunistes probabilistes</strong> avec <strong>PRoPHET (<a href="https://www.rfc-editor.org/rfc/rfc6693.html">RFC 6693</a>)</strong> : calcul dynamique des probabilités de rencontre, vieillissement (<em>aging</em>) et transitivité.</p>
+<hr />
+<p>👉 <strong>Article suivant :</strong> <a href="../article-3-prophet/">Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET (RFC 6693) sous Open Policy Agent</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

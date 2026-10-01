@@ -1,0 +1,104 @@
+; ==============================================================================
+; Babel & AREDN Routing Protocol over DTN - CDDL Specification
+;
+; Formalise les structures de données sérialisées en CBOR pour l'adaptation du
+; protocole de routage maillé proactif Babel (RFC 8966) et de l'architecture
+; AREDN (Amateur Radio Emergency Data Network) au-dessus de BPv7 (RFC 9171).
+;
+; Caractéristiques clés :
+; 1. Vecteur de distance Bellman-Ford sans boucle via Feasible Distance (FD).
+; 2. Numéros de séquence (Seqno) pour désamorcer les métriques croissantes.
+; 3. Métrique de qualité de lien (ETX / 2-way Hello & IHU).
+; 4. Passerelle hybride MANET-DTN (HYMAD) : acheminement proactif intra-cluster
+;    et tolérance aux délais inter-îlots par Store-Carry-and-Forward.
+; ==============================================================================
+
+; Message de contrôle Babel transporté dans le payload d'un bundle administratif
+babel-control-bundle = {
+    1 => message-type: babel-message-type,
+    2 => sender-router-id: bytes .size 8,   ; Identifiant unique du routeur (64 bits)
+    3 => timestamp-ms: uint,                ; Horloge DTN de création
+    4 => payload: babel-payload             ; Charge utile selon le type
+}
+
+babel-message-type = &(
+    msg-hello: 1,         ; Découverte de voisins et mesure unidirectionnelle
+    msg-ihu: 2,           ; "I Heard You" : validation bidirectionnelle et coût
+    msg-update: 3,        ; Annonce / mise à jour de route et métrique
+    msg-route-request: 4, ; Demande d'actualisation de route
+    msg-seqno-request: 5  ; Requête d'incrémentation de seqno (désamorce boucle)
+)
+
+babel-payload = (
+    hello-payload /
+    ihu-payload /
+    update-payload /
+    route-request-payload /
+    seqno-request-payload
+)
+
+; ------------------------------------------------------------------------------
+; 1. HELLO : Battement de cœur et sondage de lien
+; ------------------------------------------------------------------------------
+hello-payload = {
+    1 => seqno: uint .size 2,               ; Numéro de séquence du Hello émetteur
+    2 => interval-ms: uint,                 ; Intervalle prévu entre deux Hellos
+    ? 3 => tx-cost: uint                    ; Coût estimé d'émission
+}
+
+; ------------------------------------------------------------------------------
+; 2. IHU ("I Heard You") : Confirmation bilatérale du lien radio
+; Indispensable pour calculer la qualité radio bidirectionnelle (ETX).
+; ------------------------------------------------------------------------------
+ihu-payload = {
+    1 => rx-cost: uint,                     ; Coût de réception observé
+    2 => interval-ms: uint,                 ; Intervalle de maintien en vie
+    3 => peer-eid: tstr                     ; EID du pair que l'on confirme entendre
+}
+
+; ------------------------------------------------------------------------------
+; 3. UPDATE : Annonce de route proactive avec Distance de Faisabilité
+; ------------------------------------------------------------------------------
+update-payload = {
+    1 => prefix-eid: tstr,                  ; Destination annoncée (préfixe EID ou subnet)
+    2 => router-id: bytes .size 8,          ; Router-ID d'origine de la destination
+    3 => seqno: uint .size 2,               ; Numéro de séquence émis par le routeur source
+    4 => metric: uint,                      ; Métrique cumulée (0 à 65535, 65535 = infini)
+    5 => interval-ms: uint,                 ; Durée de validité de l'annonce
+    ? 6 => etx-ratio: float                 ; Ratio ETX mesuré (optionnel pour diagnostic)
+}
+
+; ------------------------------------------------------------------------------
+; 4. ROUTE REQUEST : Demande d'annonce de route
+; ------------------------------------------------------------------------------
+route-request-payload = {
+    1 => requested-prefix-eid: tstr         ; Préfixe/EID recherché (ou "*" pour tout)
+}
+
+; ------------------------------------------------------------------------------
+; 5. SEQNO REQUEST : Demande urgente d'incrémentation de séquence
+; Déclenché lorsqu'une route se dégrade et qu'aucune route faisable n'existe.
+; Permet d'éviter le problème de "comptage à l'infini" de Bellman-Ford.
+; ------------------------------------------------------------------------------
+seqno-request-payload = {
+    1 => prefix-eid: tstr,                  ; Destination concernée
+    2 => router-id: bytes .size 8,          ; Router-ID de la destination cible
+    3 => seqno: uint .size 2,               ; Séquence minimale demandée (seqno + 1)
+    4 => hop-count: uint                    ; Compteur de propagation de la requête
+}
+
+; ------------------------------------------------------------------------------
+; 6. Entrée de la Table de Routage Babel Locale (Babel Route Table Entry)
+; Modélise l'état stocké dans input.node.routing_table pour l'évaluation OPA.
+; ------------------------------------------------------------------------------
+babel-routing-table-entry = {
+    prefix-eid: tstr,                       ; EID de destination
+    router-id: bytes .size 8 / tstr,        ; Router-ID de la source
+    seqno: uint,                            ; Dernier numéro de séquence reçu
+    metric: uint,                           ; Métrique actuelle vers la destination
+    feasible-distance: uint,                ; Feasible Distance (plus petite métrique historique)
+    next-hop-eid: tstr,                     ; EID du prochain saut désigné
+    expires-at-ms: uint,                    ; Expiration de l'entrée en base
+    ? link-cost: uint,                      ; Coût du lien vers le next-hop
+    ? is-local-cluster: bool                ; True si nœud dans l'îlot MANET local
+}

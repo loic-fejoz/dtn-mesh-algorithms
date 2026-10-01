@@ -1,0 +1,125 @@
+; ==============================================================================
+; PRoPHET (RFC 6693) Node-to-Node Control Messages - CDDL Specification
+;
+; Définit les structures de données sérialisées en CBOR et transportées dans le
+; payload d'un bundle administratif DTN (ex: destination "dtn://node-b/prophet")
+; lors de la phase de rencontre (Contact / Handshake) entre deux nœuds DTN.
+;
+; Conforme à la RFC 8610 (CDDL) et à la RFC 6693 (PRoPHET v2).
+; ==============================================================================
+
+prophet-control-bundle = {
+    1 => message-type: prophet-message-type,
+    2 => sender-eid: tstr,                  ; EID de l'émetteur du message de contrôle
+    3 => timestamp-ms: uint,                ; Horloge DTN d'émission du contrôle
+    ? 4 => payload: prophet-message-payload ; Contenu spécifique au type de message
+}
+
+prophet-message-type = &(
+    msg-hello: 1,             ; Découverte mutuelle et négociation des paramètres
+    msg-rib-update: 2,        ; Échange de la table de prévisibilités P(a, *)
+    msg-summary-vector: 3,    ; Inventaire des bundles actuellement détenus
+    msg-handshake-combined: 4,; Optimisation radio : fusion RIB + Summary Vector
+    msg-bundle-offer: 5,      ; Annonce des bundles éligibles au relais
+    msg-bundle-request: 6,    ; Requête de transfert pour des bundles précis
+    msg-delivery-ack: 7       ; Confirmation de livraison finale (purge des mémoires)
+)
+
+prophet-message-payload = (
+    hello-payload /
+    rib-update-payload /
+    summary-vector-payload /
+    handshake-combined-payload /
+    bundle-offer-payload /
+    bundle-request-payload /
+    delivery-ack-payload
+)
+
+; ------------------------------------------------------------------------------
+; 1. HELLO : Découverte de voisinage et paramètres opérationnels
+; ------------------------------------------------------------------------------
+hello-payload = {
+    1 => prophet-version: uint,             ; Version du protocole (ex: 2 pour RFC 6693)
+    ? 2 => p-encounter-max: float,          ; Valeur configurée de P_encounter (défaut: 0.75)
+    ? 3 => gamma: float,                    ; Facteur de vieillissement temporel (défaut: 0.98)
+    ? 4 => beta: float,                     ; Facteur d'échelle de transitivité (défaut: 0.25)
+    ? 5 => aging-interval-seconds: uint     ; Période unitaire d'audit temporel
+}
+
+; ------------------------------------------------------------------------------
+; 2. RIB UPDATE : Table de Prévisibilité de Livraison P(sender, destination)
+; Permet au récepteur de recalculer ses prévisibilités transitives via l'équation :
+; P(a, c) = P(a, c) + (1 - P(a, c)) * P(a, b) * P(b, c) * beta
+; ------------------------------------------------------------------------------
+rib-update-payload = {
+    1 => entries: [* rib-entry]             ; Liste des entrées de routage probabiliste
+}
+
+rib-entry = {
+    1 => destination-eid: tstr,             ; Endpoint ID de la destination finale
+    2 => delivery-predictability: float,    ; Valeur scalaire P entre 0.0 et 1.0
+    ? 3 => last-update-dtn-time: uint       ; Horodatage du dernier contact direct avec cette destination
+}
+
+; ------------------------------------------------------------------------------
+; 3. SUMMARY VECTOR : Inventaire des Bundles Stockés
+; Permet au pair de savoir quels bundles sont déjà présents dans le tampon du voisin
+; afin de ne pas gaspiller de bande passante radio à les répliquer.
+; ------------------------------------------------------------------------------
+summary-vector-payload = {
+    1 => held-bundles: [* bundle-identifier]
+}
+
+; Identifiant universel canonique BPv7 (RFC 9171 Section 4.2.2) ou empreinte passerelle
+bundle-identifier = canonical-bundle-id / legacy-bridge-id
+
+canonical-bundle-id = [
+    source-eid: tstr,
+    creation-time: uint,
+    sequence-number: uint
+]
+
+legacy-bridge-id = (bytes / uint)
+
+; ------------------------------------------------------------------------------
+; 4. HANDSHAKE COMBINÉ : Optimisation Radio pour Liens Contraints
+; Fusionne l'annonce de prévisibilité (RIB) et l'inventaire des bundles (SV)
+; dans une seule et unique trame CBOR, réduisant la négociation à un seul échange A <-> B.
+; ------------------------------------------------------------------------------
+handshake-combined-payload = {
+    1 => rib-entries: [* rib-entry],
+    2 => held-bundles: [* bundle-identifier],
+    ? 3 => available-storage-bytes: uint    ; Espace mémoire restant pour estimer la capacité d'accueil
+}
+
+; ------------------------------------------------------------------------------
+; 5. BUNDLE OFFER & REQUEST : Négociation de Transfert Sélectif
+; Après comparaison probabiliste via OPA, le nœud émetteur propose les bundles pour
+; lesquels le pair offre une prévisibilité supérieure : P(peer, dest) > P(local, dest).
+; ------------------------------------------------------------------------------
+bundle-offer-payload = {
+    1 => offered-bundles: [* {
+        1 => id: bundle-identifier,
+        2 => destination-eid: tstr,
+        3 => size-bytes: uint,
+        ? 4 => opportunistic-threshold: float
+    }]
+}
+
+bundle-request-payload = {
+    1 => requested-bundles: [* bundle-identifier]
+}
+
+; ------------------------------------------------------------------------------
+; 6. DELIVERY ACK : Purge Distribuée des Tampons (Buffer Garbage Collection)
+; Lorsqu'un bundle est délivré à sa destination finale singleton, un accusé
+; de réception est diffusé opportunistiquement pour que tous les porteurs
+; intermédiaires détruisent leurs copies inutiles.
+; ------------------------------------------------------------------------------
+delivery-ack-payload = {
+    1 => delivered-bundles: [* {
+        1 => id: bundle-identifier,
+        2 => delivered-at-time: uint,
+        3 => destination-eid: tstr
+    }]
+}

@@ -1,0 +1,2091 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7) sous OPA">
+      
+      
+        <meta name="author" content="Loïc & DTN Mesh Algorithm Team">
+      
+      
+        <link rel="canonical" href="https://loic-fejoz.github.io/sdtn/article-10-roadmap-extensions.en/">
+      
+      
+        <link rel="prev" href="../article-9-synthese-architecture.en/">
+      
+      
+        <link rel="next" href="../mesh-algo-extension-block.cddl">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Art. 10 — Roadmap & Future Work - DTN Mesh Algorithm</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#article-10-perspectives-and-extension-roadmap-towards-a-panoramic-view-of-dtn-routing-and-control-plane-evolution" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href=".." title="DTN Mesh Algorithm" class="md-header__button md-logo" aria-label="DTN Mesh Algorithm" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DTN Mesh Algorithm
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Art. 10 — Roadmap & Future Work
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Passage au mode sombre"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Passage au mode sombre" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Passage au mode clair"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Passage au mode clair" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Onglets" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../article-0-intro/" class="md-tabs__link">
+          
+  
+  
+  🇫🇷 Articles (FR)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../article-0-intro.en/" class="md-tabs__link">
+          
+  
+  
+  🇬🇧 Articles (EN)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../mesh-algo-extension-block.cddl" class="md-tabs__link">
+          
+  
+  
+  Spécifications CDDL
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../BUNDLE-BLOCK-TYPE/" class="md-tabs__link">
+          
+  
+  
+  Documents & Propositions IETF
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="DTN Mesh Algorithm" class="md-nav__button md-logo" aria-label="DTN Mesh Algorithm" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DTN Mesh Algorithm
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🇫🇷 Accueil (FR)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🇬🇧 Home (EN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🇫🇷 Articles (FR)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    🇫🇷 Articles (FR)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-0-intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 0 — Fondations DTN & OPA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-1-aprs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 1 — APRS AX.25 Digipeating
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-2-flood/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 2 — Flood, Spray & Wait, Meshtastic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-3-prophet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 3 — PRoPHET (RFC 6693)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-4-maxprop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 4 — MaxProp & HP-MaxProp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-5-reticulum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 5 — Reticulum (RNS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-6-babel-aredn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 6 — Babel (RFC 8966) & HYMAD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-7-cgr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 7 — CGR / SABR (CCSDS 734.3-B-1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-8-geodtn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 8 — GeoDTN & Geocasting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-9-synthese-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 9 — Synthèse Architecturale
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-10-roadmap-extensions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 10 — Feuille de Route & Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🇬🇧 Articles (EN)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    🇬🇧 Articles (EN)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-0-intro.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 0 — DTN & OPA Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-1-aprs.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 1 — APRS AX.25 Digipeating
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-2-flood.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 2 — Flood, Spray & Wait, Meshtastic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-3-prophet.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 3 — PRoPHET (RFC 6693)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-4-maxprop.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 4 — MaxProp & HP-MaxProp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-5-reticulum.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 5 — Reticulum (RNS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-6-babel-aredn.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 6 — Babel (RFC 8966) & HYMAD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-7-cgr.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 7 — CGR / SABR (CCSDS 734.3-B-1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-8-geodtn.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 8 — GeoDTN & Geocasting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-9-synthese-architecture.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 9 — Architectural Synthesis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 10 — Roadmap & Future Work
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 10 — Roadmap & Future Work
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduction-completing-the-panoramic-view-of-dtn-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introduction: Completing the Panoramic View of DTN Routing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-panoramic-mapping-and-gap-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Panoramic Mapping and Gap Analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-demonstrating-control-plane-extensibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Demonstrating Control Plane Extensibility
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Demonstrating Control Plane Extensibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-principle-of-cddl-extensibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Principle of CDDL Extensibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-alignment-with-ietf-standardization-ietf-sand-draft-ietf-dtn-bp-sand-04" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Alignment with IETF Standardization (IETF SAND draft-ietf-dtn-bp-sand-04)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-step-by-step-implementation-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Step-by-Step Implementation Roadmap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-technical-series-conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Technical Series Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spécifications CDDL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Spécifications CDDL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mesh-algo-extension-block.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Type 200 Modular Extension Block
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prophet.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PRoPHET Control Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../maxprop.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MaxProp Control Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reticulum.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reticulum Control Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../babel.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Babel Control Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cgr.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CGR Contact Plan Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documents & Propositions IETF
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Documents & Propositions IETF
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BUNDLE-BLOCK-TYPE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spécifications de Bloc DTN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../comments-ietf-dtn-bp-sand-04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Commentaires IETF BP-SAND
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduction-completing-the-panoramic-view-of-dtn-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introduction: Completing the Panoramic View of DTN Routing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-panoramic-mapping-and-gap-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Panoramic Mapping and Gap Analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-demonstrating-control-plane-extensibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Demonstrating Control Plane Extensibility
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Demonstrating Control Plane Extensibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-principle-of-cddl-extensibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Principle of CDDL Extensibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-alignment-with-ietf-standardization-ietf-sand-draft-ietf-dtn-bp-sand-04" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Alignment with IETF Standardization (IETF SAND draft-ietf-dtn-bp-sand-04)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-step-by-step-implementation-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Step-by-Step Implementation Roadmap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-technical-series-conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Technical Series Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="article-10-perspectives-and-extension-roadmap-towards-a-panoramic-view-of-dtn-routing-and-control-plane-evolution">Article 10 — Perspectives and Extension Roadmap: Towards a Panoramic View of DTN Routing and Control Plane Evolution<a class="headerlink" href="#article-10-perspectives-and-extension-roadmap-towards-a-panoramic-view-of-dtn-routing-and-control-plane-evolution" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Authors:</strong> DTN &amp; Ad-Hoc Mesh Systems Research Team<br />
+<strong>Technical Series:</strong> Transposing Mesh &amp; Opportunistic Algorithms to Bundle Protocol v7 (BPv7)<br />
+<strong>Previous Articles:</strong><br />
+- <a href="../article-0-intro.en/">Article 0 — Foundations of DTN Routing with Open Policy Agent</a><br />
+- <a href="../article-1-aprs.en/">Article 1 — Transposing APRS Digipeating (AX.25 WIDE n-N) to DTN</a><br />
+- <a href="../article-2-flood.en/">Article 2 — Taming Flooding in DTN: Spray and Wait &amp; Meshtastic</a><br />
+- <a href="../article-3-prophet.en/">Article 3 — Opportunistic Routing and History of Encounters: PRoPHET</a><br />
+- <a href="../article-4-maxprop.en/">Article 4 — Probabilistic Routing and Buffer Scheduling: MaxProp &amp; HP-MaxProp</a><br />
+- <a href="../article-5-reticulum.en/">Article 5 — Hybrid Routing, Distance Vector, and Cryptographic Addressing: Reticulum</a><br />
+- <a href="../article-6-babel-aredn.en/">Article 6 — Proactive Mesh Networks and MANET-DTN Hybrids: AREDN &amp; Babel</a><br />
+- <a href="../article-7-cgr.en/">Article 7 — Deterministic Space Routing: Contact Graph Routing (CGR / SABR)</a><br />
+- <a href="../article-8-geodtn.en/">Article 8 — Geographic Routing and Geocasting in DTN: GeoDTN</a><br />
+- <a href="../article-9-synthese-architecture.en/">Article 9 — Architectural Synthesis: Policy-Driven DTN Routing with OPA</a><br />
+<strong>CDDL Specifications:</strong> <a href="../mesh-algo-extension-block.cddl">mesh-algo-extension-block.cddl</a>, <a href="../prophet.cddl">prophet.cddl</a>, <a href="../maxprop.cddl">maxprop.cddl</a>, <a href="../reticulum.cddl">reticulum.cddl</a>, <a href="../babel.cddl">babel.cddl</a>, <a href="../cgr.cddl">cgr.cddl</a></p>
+<p>ℹ️ <strong>Editorial Transparency Note (EU AI Act Alignment):</strong> This article was generated with AI assistance under the editorial direction and structuring of a human author, who assumes responsibility for its technical review, verification, and content (ongoing proofreading).</p>
+</blockquote>
+<hr />
+<h2 id="1-introduction-completing-the-panoramic-view-of-dtn-routing">1. Introduction: Completing the Panoramic View of DTN Routing<a class="headerlink" href="#1-introduction-completing-the-panoramic-view-of-dtn-routing" title="Permanent link">&para;</a></h2>
+<p>Through Articles 0 to 9, this project has demonstrated that it is possible to formalize, transpose, and execute a wide spectrum of opportunistic and mesh routing algorithms on top of <strong>Bundle Protocol version 7 (BPv7 - RFC 9171)</strong> using the <strong>Open Policy Agent (OPA)</strong> declarative policy engine.</p>
+<p>However, scientific literature on <strong>Delay- and Disruption-Tolerant Networks (DTNs)</strong> is immensely rich. As shown by seminal survey papers (notably <strong>Modi &amp; Singh 2017</strong>, the survey on social DTN routing by <strong>Jain &amp; Soares 2021</strong>, synthesis work from the <strong>IETF DTN WG</strong>, and <strong>Wikipedia DTN Routing</strong> classifications), operational DTN environments span diverse use cases:
+- Satellite constellations and deep-space probes (<em>Contact Graph Routing / CGR</em>).
+- Tactical ad-hoc and mesh networks (<em>Babel, Reticulum, APRS</em>).
+- Urban vehicular networks (<em>VANET, GeoMob, DAWN</em>).
+- Human-carried social networks (<em>Pocket Switched Networks / PSN, Bubble Rap, SimBet</em>).
+- Underwater or environmental sensor networks (<em>UWSN, Q-Learning, LMS Filters</em>).</p>
+<p>The objective of this <strong>Article 10</strong> is twofold:
+1. Provide a <strong>complete 360° panoramic view</strong> of all DTN routing algorithm families identified in literature, mapping what is covered by our reference implementation against future extension targets.
+2. Demonstrate that the <strong>Control Plane</strong> must never be designed as a rigid or monolithic schema, but as an <strong>extensible grammar</strong> (defined in CDDL and JSON Schema) capable of dynamically accommodating new telemetries without breaking backward compatibility over constrained radio links.</p>
+<hr />
+<h2 id="2-panoramic-mapping-and-gap-analysis">2. Panoramic Mapping and Gap Analysis<a class="headerlink" href="#2-panoramic-mapping-and-gap-analysis" title="Permanent link">&para;</a></h2>
+<p>The table below summarizes all DTN routing families identified in literature and their mapping to the <em>DTN Mesh Algorithm</em> architecture:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Routing Family</th>
+<th style="text-align: left;">Representative Protocols in Literature</th>
+<th style="text-align: left;">Coverage Status in Repository</th>
+<th style="text-align: left;">Associated CDDL Specifications &amp; Rego Policies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>1. BOUNDED / UNBOUNDED Flooding &amp; Replication</strong></td>
+<td style="text-align: left;">Epidemic, Spray &amp; Wait, APRS Digipeating WIDE n-N, Meshtastic</td>
+<td style="text-align: left;"><strong>100% Covered</strong></td>
+<td style="text-align: left;"><a href="../article-1-aprs.en/">article-1-aprs.en.md</a>, <a href="../article-2-flood.en/">article-2-flood.en.md</a><br><code>policies/aprs/</code>, <code>policies/flood/</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>2. Probabilistic &amp; Encounter History</strong></td>
+<td style="text-align: left;">PRoPHET (RFC 6693), MaxProp, HP-MaxProp, RAPID</td>
+<td style="text-align: left;"><strong>100% Covered</strong></td>
+<td style="text-align: left;"><a href="../article-3-prophet.en/">article-3-prophet.en.md</a>, <a href="../article-4-maxprop.en/">article-4-maxprop.en.md</a><br><code>prophet.cddl</code>, <code>maxprop.cddl</code>, <code>policies/prophet/</code>, <code>policies/maxprop/</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>3. Distance Vector &amp; MANET-DTN Hybrid</strong></td>
+<td style="text-align: left;">Reticulum (RNS), Babel (RFC 8966), AREDN, HYMAD</td>
+<td style="text-align: left;"><strong>100% Covered</strong></td>
+<td style="text-align: left;"><a href="../article-5-reticulum.en/">article-5-reticulum.en.md</a>, <a href="../article-6-babel-aredn.en/">article-6-babel-aredn.en.md</a><br><code>reticulum.cddl</code>, <code>babel.cddl</code>, <code>policies/reticulum/</code>, <code>policies/babel/</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>4. Deterministic &amp; Spatial (Scheduled Contacts)</strong></td>
+<td style="text-align: left;">Contact Graph Routing (CGR / SABR - CCSDS 734.3-B-1)</td>
+<td style="text-align: left;"><strong>100% Covered</strong></td>
+<td style="text-align: left;"><a href="../article-7-cgr.en/">article-7-cgr.en.md</a><br><code>cgr.cddl</code>, <code>policies/cgr/</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>5. Geographic &amp; Kinematic</strong></td>
+<td style="text-align: left;">GeoDTN (Greedy/Perimeter), Geocasting, CaD (Converge-and-Diverge), GeoMob</td>
+<td style="text-align: left;"><strong>Family Covered</strong> <em>(Kinematic extensibility proposed in Section 3)</em></td>
+<td style="text-align: left;"><a href="../article-8-geodtn.en/">article-8-geodtn.en.md</a><br><code>policies/geodtn/</code>, <code>mesh-algo-extension-block.cddl</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>6. Social &amp; Community Routing</strong></td>
+<td style="text-align: left;">Bubble Rap, SimBet, Label Routing, SOSIM, SEBAR, EpSoc, HiBOp</td>
+<td style="text-align: left;"><strong>Family Covered via Utility Metrics</strong> <em>(Support for $k$-clique graphs proposed in Section 3)</em></td>
+<td style="text-align: left;">Utility primitives in <code>policies/maxprop/</code> and <code>policies/prophet/</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>7. Density, Channel &amp; Storage Aware</strong></td>
+<td style="text-align: left;">GSTAR (Storage Aware), DAWN (Density Adaptive with Deadline)</td>
+<td style="text-align: left;"><strong>Family Covered</strong> <em>(Channel load &amp; storage metrics formalized in Section 3)</em></td>
+<td style="text-align: left;"><code>policies/storage.rego</code>, <code>prophet.cddl</code> (<code>available-storage-bytes</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>8. Adaptive Routing &amp; Machine Learning</strong></td>
+<td style="text-align: left;">LMS Filters, Q-Learning for underwater DTNs (UWSN)</td>
+<td style="text-align: left;"><strong>Future Perspectives</strong> <em>(Roadmap Phase 3)</em></td>
+<td style="text-align: left;">Exponential predictability in PRoPHET</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>9. Spatio-Temporal Link State &amp; Non-Cooperative</strong></td>
+<td style="text-align: left;">DTLSR (DTN Link State), Game Theory Routing (Incentives / Tokens / Reputation)</td>
+<td style="text-align: left;"><strong>Future Perspectives</strong> <em>(Roadmap Phase 3)</em></td>
+<td style="text-align: left;">Deduplication and <code>blacklist_sources</code> filters in <code>policies/ingress.rego</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-demonstrating-control-plane-extensibility">3. Demonstrating Control Plane Extensibility<a class="headerlink" href="#3-demonstrating-control-plane-extensibility" title="Permanent link">&para;</a></h2>
+<p>One of the key takeaways of our work is the <strong>strict separation between the Wire Format and OPA's Policy Evaluation Input</strong>.</p>
+<h3 id="a-principle-of-cddl-extensibility">A. Principle of CDDL Extensibility<a class="headerlink" href="#a-principle-of-cddl-extensibility" title="Permanent link">&para;</a></h3>
+<p>To avoid overloading constrained radio links (LoRa, VHF/AX.25, HF), wire-format signaling (Extension Block Type 200) carries only minimal intention primitives. In contrast, local modem measurements (SNR, RSSI), node health (battery, buffer occupation), and neighbor telemetry are injected into the local control plane as extensible CBOR/JSON maps via optional keys (<code>? key =&gt; type</code>).</p>
+<p>Here is how the <a href="../mesh-algo-extension-block.cddl">mesh-algo-extension-block.cddl</a> specification naturally expands to accommodate new requirements identified in research literature:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">; ==============================================================================</span>
+<span class="c1">; EXTENSION OF OPA EVALUATION CONTEXT (input) FOR NEW ALGORITHM FAMILIES</span>
+<span class="c1">; ==============================================================================</span>
+
+<span class="nc">policy-evaluation-input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s">bundle</span><span class="p">:</span><span class="w"> </span><span class="nc">bundle-context</span><span class="p">,</span>
+<span class="w">    </span><span class="s">node</span><span class="p">:</span><span class="w"> </span><span class="nc">local-node-context</span><span class="p">,</span>
+<span class="w">    </span><span class="s">current_dtn_time_ms</span><span class="p">:</span><span class="w"> </span><span class="nb">uint</span><span class="p">,</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="s">ingress</span><span class="p">:</span><span class="w"> </span><span class="nc">ingress-telemetry-context</span><span class="p">,</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="s">contact</span><span class="p">:</span><span class="w"> </span><span class="nc">contact-opportunity-context</span><span class="p">,</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="s">social</span><span class="p">:</span><span class="w"> </span><span class="nc">social-network-context</span><span class="p">,</span><span class="w">          </span><span class="c1">; [NEW] Social Routing Extension</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="s">kinematics</span><span class="p">:</span><span class="w"> </span><span class="nc">node-kinematics-context</span><span class="p">,</span><span class="w">      </span><span class="c1">; [NEW] Kinematic / GeoMob Extension</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="s">channel</span><span class="p">:</span><span class="w"> </span><span class="nc">channel-capacity-context</span><span class="w">         </span><span class="c1">; [NEW] Density &amp; Channel DAWN Extension</span>
+<span class="p">}</span>
+
+<span class="c1">; ------------------------------------------------------------------------------</span>
+<span class="c1">; 1. SOCIAL ROUTING EXTENSION (Bubble Rap, SimBet, SOSIM, SEBAR)</span>
+<span class="c1">; ------------------------------------------------------------------------------</span>
+<span class="nc">social-network-context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="s">local_community_id</span><span class="p">:</span><span class="w"> </span><span class="nb">tstr</span><span class="p">,</span><span class="w">                 </span><span class="c1">; Local k-clique cluster identifier</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="s">labels</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="o">*</span><span class="w"> </span><span class="nb">tstr</span><span class="p">],</span><span class="w">                         </span><span class="c1">; Set of social labels</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="s">degree_centrality</span><span class="p">:</span><span class="w"> </span><span class="nb">float</span><span class="p">,</span><span class="w">                </span><span class="c1">; Degree centrality (unique contacts count)</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="s">betweenness_centrality</span><span class="p">:</span><span class="w"> </span><span class="nb">float</span><span class="p">,</span><span class="w">           </span><span class="c1">; Betweenness centrality (bridge between communities)</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="s">interest_profile_hash</span><span class="p">:</span><span class="w"> </span><span class="nb">bytes</span><span class="w"> </span><span class="ow">.size</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w">    </span><span class="c1">; Hash of interest profile (SOSIM)</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="s">peer_social_metrics</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">tstr</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w">        </span><span class="c1">; Social metrics received from neighbors</span>
+<span class="w">        </span><span class="s">community_id</span><span class="p">:</span><span class="w"> </span><span class="nb">tstr</span><span class="p">,</span>
+<span class="w">        </span><span class="s">betweenness</span><span class="p">:</span><span class="w"> </span><span class="nb">float</span><span class="p">,</span>
+<span class="w">        </span><span class="s">degree</span><span class="p">:</span><span class="w"> </span><span class="nb">float</span>
+<span class="w">    </span><span class="p">}}</span>
+<span class="p">}</span>
+
+<span class="c1">; ------------------------------------------------------------------------------</span>
+<span class="c1">; 2. ADVANCED KINEMATIC &amp; GEOGRAPHIC EXTENSION (CaD, GeoMob, VANET)</span>
+<span class="c1">; ------------------------------------------------------------------------------</span>
+<span class="nc">node-kinematics-context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s">speed_meters_per_sec</span><span class="p">:</span><span class="w"> </span><span class="nb">float</span><span class="p">,</span><span class="w">                </span><span class="c1">; Instantaneous scalar speed</span>
+<span class="w">    </span><span class="s">heading_degrees</span><span class="p">:</span><span class="w"> </span><span class="nb">float</span><span class="w"> </span><span class="ow">.within</span><span class="w"> </span><span class="p">(</span><span class="mf">0.0</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="mf">360.0</span><span class="p">),</span><span class="w"> </span><span class="c1">; Kinematic heading / direction (0-360°)</span>
+<span class="w">    </span><span class="s">gps_error_meters</span><span class="p">:</span><span class="w"> </span><span class="nb">float</span><span class="p">,</span><span class="w">                    </span><span class="c1">; GPS measurement uncertainty (HDOP precision)</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="s">predicted_trajectory_vector</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="nb">float</span><span class="p">,</span><span class="w"> </span><span class="nb">float</span><span class="p">]</span><span class="w"> </span><span class="c1">; Estimated displacement vector (dx/dt, dy/dt)</span>
+<span class="p">}</span>
+
+<span class="c1">; ------------------------------------------------------------------------------</span>
+<span class="c1">; 3. NEIGHBORHOOD DENSITY &amp; CHANNEL CAPACITY EXTENSION (DAWN, GSTAR)</span>
+<span class="c1">; ------------------------------------------------------------------------------</span>
+<span class="nc">channel-capacity-context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s">neighbor_density_count</span><span class="p">:</span><span class="w"> </span><span class="nb">uint</span><span class="p">,</span><span class="w">               </span><span class="c1">; Number of active neighbors in radio range</span>
+<span class="w">    </span><span class="s">channel_duty_cycle_pct</span><span class="p">:</span><span class="w"> </span><span class="nb">float</span><span class="p">,</span><span class="w">              </span><span class="c1">; Radio channel duty cycle (0 to 100%)</span>
+<span class="w">    </span><span class="s">ambient_rssi_floor_dbm</span><span class="p">:</span><span class="w"> </span><span class="nb">float</span><span class="p">,</span><span class="w">              </span><span class="c1">; Measured background noise floor</span>
+<span class="w">    </span><span class="s">storage_pressure_state</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="p">(</span><span class="w">                  </span><span class="c1">; Buffer pressure state enum</span>
+<span class="w">        </span><span class="s">state-normal</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="s">state-warning</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="s">state-critical</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">        </span><span class="s">state-full</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">    </span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<hr />
+<h2 id="4-alignment-with-ietf-standardization-ietf-sand-draft-ietf-dtn-bp-sand-04">4. Alignment with IETF Standardization (IETF SAND <code>draft-ietf-dtn-bp-sand-04</code>)<a class="headerlink" href="#4-alignment-with-ietf-standardization-ietf-sand-draft-ietf-dtn-bp-sand-04" title="Permanent link">&para;</a></h2>
+<p>To allow signaling information to flow between heterogeneous nodes without proprietary protocols, we recommend expanding the <strong>IETF SAND (Secure Advertisement and Neighborhood Discovery)</strong> specification.</p>
+<p>As detailed in our technical proposal document <a href="../comments-ietf-dtn-bp-sand-04/">comments-ietf-dtn-bp-sand-04.md</a>, the IANA registry <code>SAND Routing Types</code> (Table 25) and <code>nbr-metrics</code> structures (Table 26) can be extended as follows:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">; CDDL Extension Proposal for draft-ietf-dtn-bp-sand-04</span>
+<span class="nc">$sand-routing-types</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="o">&amp;</span><span class="p">(</span>
+<span class="w">    </span><span class="s">sand-rtm-sabr</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">       </span><span class="c1">; CCSDS CGR / SABR (existing)</span>
+<span class="w">    </span><span class="s">sand-rtm-prophet</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">    </span><span class="c1">; PRoPHET RFC 6693</span>
+<span class="w">    </span><span class="s">sand-rtm-maxprop</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">    </span><span class="c1">; MaxProp</span>
+<span class="w">    </span><span class="s">sand-rtm-babel</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">      </span><span class="c1">; Babel MANET / AREDN</span>
+<span class="w">    </span><span class="s">sand-rtm-reticulum</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">  </span><span class="c1">; Reticulum Cryptographic Mesh</span>
+<span class="w">    </span><span class="s">sand-rtm-geodtn</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">     </span><span class="c1">; GeoDTN &amp; Kinematic Routing</span>
+<span class="w">    </span><span class="s">sand-rtm-social</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">      </span><span class="c1">; Social-Based Routing (Bubble Rap / SimBet)</span>
+<span class="p">)</span>
+
+<span class="c1">; Extension of neighbor metrics transmitted in SAND Router Advertisements</span>
+<span class="nc">$nbr-metrics</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nc">nbr-metrics-base</span><span class="p">&lt;</span><span class="mi">6</span><span class="p">&gt;,</span><span class="w"> </span><span class="c1">; Geographic &amp; Kinematic Metrics (GeoDTN / CaD)</span>
+<span class="w">    </span><span class="nc">nbr-rtm-geo-latitude</span><span class="p">,</span>
+<span class="w">    </span><span class="nc">nbr-rtm-geo-longitude</span><span class="p">,</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="nc">nbr-rtm-kinematic-speed</span><span class="p">,</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="nc">nbr-rtm-kinematic-heading</span>
+<span class="p">}</span>
+
+<span class="nc">$nbr-metrics</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nc">nbr-metrics-base</span><span class="p">&lt;</span><span class="mi">7</span><span class="p">&gt;,</span><span class="w"> </span><span class="c1">; Social Metrics (Bubble Rap / SimBet)</span>
+<span class="w">    </span><span class="nc">nbr-rtm-social-community-id</span><span class="p">,</span>
+<span class="w">    </span><span class="nc">nbr-rtm-social-betweenness</span><span class="p">,</span>
+<span class="w">    </span><span class="nc">nbr-rtm-social-degree</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<hr />
+<h2 id="5-step-by-step-implementation-roadmap">5. Step-by-Step Implementation Roadmap<a class="headerlink" href="#5-step-by-step-implementation-roadmap" title="Permanent link">&para;</a></h2>
+<p>To extend the <em>DTN Mesh Algorithm</em> architecture towards full native coverage of the entire scientific landscape, we define a <strong>3-phase roadmap</strong>:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">flowchart</span><span class="w"> </span><span class="n">TD</span>
+<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="n">Phase</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="n">Short</span><span class="w"> </span><span class="n">Term</span>
+<span class="w">        </span><span class="n">P1A</span><span class="p">[</span><span class="s">"Kinematic Telemetry (Speed, Heading, GPS Error)"</span><span class="p">]</span>
+<span class="w">        </span><span class="n">P1B</span><span class="p">[</span><span class="s">"Channel Load &amp; Density Metrics (DAWN/GSTAR)"</span><span class="p">]</span>
+<span class="w">        </span><span class="n">P1C</span><span class="p">[</span><span class="s">"Delivery ACK &amp; Distributed Buffer Purge"</span><span class="p">]</span>
+<span class="w">    </span><span class="kd">end</span>
+
+<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="n">Phase</span><span class="w"> </span><span class="mi">2</span><span class="o">:</span><span class="w"> </span><span class="n">Medium</span><span class="w"> </span><span class="n">Term</span>
+<span class="w">        </span><span class="n">P2A</span><span class="p">[</span><span class="s">"Social Routing Extensions (Bubble Rap, SimBet, SOSIM)"</span><span class="p">]</span>
+<span class="w">        </span><span class="n">P2B</span><span class="p">[</span><span class="s">"Distributed K-Clique Community Discovery"</span><span class="p">]</span>
+<span class="w">        </span><span class="n">P2C</span><span class="p">[</span><span class="s">"Dynamic CGR Contact Plan Distribution via SAND"</span><span class="p">]</span>
+<span class="w">    </span><span class="kd">end</span>
+
+<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="n">Phase</span><span class="w"> </span><span class="mi">3</span><span class="o">:</span><span class="w"> </span><span class="n">Long</span><span class="w"> </span><span class="n">Term</span>
+<span class="w">        </span><span class="n">P3A</span><span class="p">[</span><span class="s">"Distributed Reinforcement Learning (Q-Learning / LMS)"</span><span class="p">]</span>
+<span class="w">        </span><span class="n">P3B</span><span class="p">[</span><span class="s">"Non-Cooperative Routing via Cryptographic Tokens &amp; Reputation"</span><span class="p">]</span>
+<span class="w">        </span><span class="n">P3C</span><span class="p">[</span><span class="s">"Spatio-Temporal LSAs (DTLSR Link-State DTN)"</span><span class="p">]</span>
+<span class="w">    </span><span class="kd">end</span>
+
+<span class="w">    </span><span class="n">Phase</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Phase</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Phase</span><span class="w"> </span><span class="mi">3</span>
+</code></pre></div>
+
+<hr />
+<h2 id="6-technical-series-conclusion">6. Technical Series Conclusion<a class="headerlink" href="#6-technical-series-conclusion" title="Permanent link">&para;</a></h2>
+<p>With <strong>Article 10</strong>, the technical series of the <em>DTN Mesh Algorithm</em> project provides a <strong>complete, rigorous, and forward-looking panoramic view</strong> of routing engineering in delay-tolerant and constrained mesh networks.</p>
+<p>By demonstrating that complex algorithms (whether probabilistic like PRoPHET/MaxProp, deterministic like CGR, geometric like GeoDTN, cryptographic like Reticulum, or social like Bubble Rap) express themselves transparently through <strong>declarative OPA policies built on an extensible Control Plane</strong>, this work lays the foundation for next-generation disruption-tolerant telecommunication standards.</p>
+<hr />
+<p>🏁 <strong>End of the Technical Series.</strong><br />
+Explore full source code, CDDL specs, declarative policies, and the roadmap in the <a href="../">DTN Mesh Algorithm Project Repository</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

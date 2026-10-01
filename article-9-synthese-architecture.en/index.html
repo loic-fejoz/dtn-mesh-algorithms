@@ -1,0 +1,2869 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7) sous OPA">
+      
+      
+        <meta name="author" content="Loïc & DTN Mesh Algorithm Team">
+      
+      
+        <link rel="canonical" href="https://loic-fejoz.github.io/sdtn/article-9-synthese-architecture.en/">
+      
+      
+        <link rel="prev" href="../article-8-geodtn.en/">
+      
+      
+        <link rel="next" href="../article-10-roadmap-extensions.en/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Art. 9 — Architectural Synthesis - DTN Mesh Algorithm</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#article-9-architectural-synthesis-policy-driven-dtn-routing-with-opa-modular-extension-block-and-control-plane-unification" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href=".." title="DTN Mesh Algorithm" class="md-header__button md-logo" aria-label="DTN Mesh Algorithm" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DTN Mesh Algorithm
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Art. 9 — Architectural Synthesis
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Passage au mode sombre"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Passage au mode sombre" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Passage au mode clair"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Passage au mode clair" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Onglets" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../article-0-intro/" class="md-tabs__link">
+          
+  
+  
+  🇫🇷 Articles (FR)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../article-0-intro.en/" class="md-tabs__link">
+          
+  
+  
+  🇬🇧 Articles (EN)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../mesh-algo-extension-block.cddl" class="md-tabs__link">
+          
+  
+  
+  Spécifications CDDL
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../BUNDLE-BLOCK-TYPE/" class="md-tabs__link">
+          
+  
+  
+  Documents & Propositions IETF
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="DTN Mesh Algorithm" class="md-nav__button md-logo" aria-label="DTN Mesh Algorithm" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DTN Mesh Algorithm
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🇫🇷 Accueil (FR)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🇬🇧 Home (EN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🇫🇷 Articles (FR)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    🇫🇷 Articles (FR)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-0-intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 0 — Fondations DTN & OPA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-1-aprs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 1 — APRS AX.25 Digipeating
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-2-flood/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 2 — Flood, Spray & Wait, Meshtastic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-3-prophet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 3 — PRoPHET (RFC 6693)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-4-maxprop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 4 — MaxProp & HP-MaxProp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-5-reticulum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 5 — Reticulum (RNS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-6-babel-aredn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 6 — Babel (RFC 8966) & HYMAD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-7-cgr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 7 — CGR / SABR (CCSDS 734.3-B-1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-8-geodtn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 8 — GeoDTN & Geocasting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-9-synthese-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 9 — Synthèse Architecturale
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-10-roadmap-extensions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 10 — Feuille de Route & Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🇬🇧 Articles (EN)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    🇬🇧 Articles (EN)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-0-intro.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 0 — DTN & OPA Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-1-aprs.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 1 — APRS AX.25 Digipeating
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-2-flood.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 2 — Flood, Spray & Wait, Meshtastic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-3-prophet.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 3 — PRoPHET (RFC 6693)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-4-maxprop.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 4 — MaxProp & HP-MaxProp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-5-reticulum.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 5 — Reticulum (RNS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-6-babel-aredn.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 6 — Babel (RFC 8966) & HYMAD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-7-cgr.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 7 — CGR / SABR (CCSDS 734.3-B-1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-8-geodtn.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 8 — GeoDTN & Geocasting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 9 — Architectural Synthesis
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 9 — Architectural Synthesis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduction-the-convergence-of-routing-paradigms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introduction: The Convergence of Routing Paradigms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-opa-dtn-engine-decoupling-and-the-type-200-modular-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The OPA / DTN Engine Decoupling and the Type 200 Modular Block
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The OPA / DTN Engine Decoupling and the Type 200 Modular Block">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-the-complete-decoupling-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1. The Complete Decoupling Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-the-type-200-modular-block-orthogonal-primitives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2. The Type 200 Modular Block: Orthogonal Primitives
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-major-finding-zero-wire-block-for-advanced-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3. Major Finding: Zero Wire Block for Advanced Protocols
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-comparative-analysis-and-reconciliation-of-control-messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Comparative Analysis and Reconciliation of Control Messages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Comparative Analysis and Reconciliation of Control Messages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-comparative-table-of-control-primitives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1. Comparative Table of Control Primitives
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-reconciliation-proposal-a-generic-signaling-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2. Reconciliation Proposal: A Generic Signaling Protocol
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2. Reconciliation Proposal: A Generic Signaling Protocol">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cddl-modeling-of-a-unified-control-plane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CDDL Modeling of a Unified Control Plane
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-required-native-functions-in-the-opa-evaluation-environment-custom-builtins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Required Native Functions in the OPA Evaluation Environment (Custom Builtins)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Required Native Functions in the OPA Evaluation Environment (Custom Builtins)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-asymmetric-cryptography-and-high-performance-hashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1. Asymmetric Cryptography and High-Performance Hashing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-graph-algorithms-and-operational-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2. Graph Algorithms and Operational Research
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-spherical-geometry-and-geodesy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3. Spherical Geometry and Geodesy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-transcendent-and-floating-point-mathematics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4. Transcendent and Floating-Point Mathematics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-operational-benefits-from-tactical-field-to-research-laboratories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Operational Benefits: From Tactical Field to Research Laboratories
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Operational Benefits: From Tactical Field to Research Laboratories">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-on-the-ground-tactical-networks-emergency-rescue-and-citizen-resilience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1. On the Ground: Tactical Networks, Emergency Rescue, and Citizen Resilience
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-for-research-integration-into-simulators-and-hardy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2. For Research: Integration into Simulators and Hardy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-alignment-with-ietf-drafts-and-recognized-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Alignment with IETF Drafts and Recognized Extensions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Alignment with IETF Drafts and Recognized Extensions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-nasa-ions-snw-spray-and-wait-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1. NASA / ION's SNW (Spray and Wait) Block
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-draft-ietf-dtn-bp-sand-secure-advertisement-and-neighborhood-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2. draft-ietf-dtn-bp-sand (Secure Advertisement and Neighborhood Discovery)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-draft-burleigh-dtn-ecos-extended-class-of-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3. draft-burleigh-dtn-ecos (Extended Class of Service)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-bpq-bundle-protocol-query-extension-block-irtf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4. BPQ (Bundle Protocol Query Extension Block - IRTF)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-general-series-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. General Series Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-conclusion-towards-a-declarative-delay-tolerant-internet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Conclusion: Towards a Declarative Delay-Tolerant Internet
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../article-10-roadmap-extensions.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Art. 10 — Roadmap & Future Work
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spécifications CDDL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Spécifications CDDL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mesh-algo-extension-block.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Type 200 Modular Extension Block
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prophet.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PRoPHET Control Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../maxprop.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MaxProp Control Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reticulum.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reticulum Control Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../babel.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Babel Control Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cgr.cddl" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CGR Contact Plan Messages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documents & Propositions IETF
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Documents & Propositions IETF
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BUNDLE-BLOCK-TYPE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spécifications de Bloc DTN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../comments-ietf-dtn-bp-sand-04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Commentaires IETF BP-SAND
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduction-the-convergence-of-routing-paradigms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introduction: The Convergence of Routing Paradigms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-opa-dtn-engine-decoupling-and-the-type-200-modular-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The OPA / DTN Engine Decoupling and the Type 200 Modular Block
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The OPA / DTN Engine Decoupling and the Type 200 Modular Block">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-the-complete-decoupling-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1. The Complete Decoupling Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-the-type-200-modular-block-orthogonal-primitives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2. The Type 200 Modular Block: Orthogonal Primitives
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-major-finding-zero-wire-block-for-advanced-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3. Major Finding: Zero Wire Block for Advanced Protocols
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-comparative-analysis-and-reconciliation-of-control-messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Comparative Analysis and Reconciliation of Control Messages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Comparative Analysis and Reconciliation of Control Messages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-comparative-table-of-control-primitives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1. Comparative Table of Control Primitives
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-reconciliation-proposal-a-generic-signaling-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2. Reconciliation Proposal: A Generic Signaling Protocol
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2. Reconciliation Proposal: A Generic Signaling Protocol">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cddl-modeling-of-a-unified-control-plane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CDDL Modeling of a Unified Control Plane
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-required-native-functions-in-the-opa-evaluation-environment-custom-builtins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Required Native Functions in the OPA Evaluation Environment (Custom Builtins)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Required Native Functions in the OPA Evaluation Environment (Custom Builtins)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-asymmetric-cryptography-and-high-performance-hashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1. Asymmetric Cryptography and High-Performance Hashing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-graph-algorithms-and-operational-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2. Graph Algorithms and Operational Research
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-spherical-geometry-and-geodesy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3. Spherical Geometry and Geodesy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-transcendent-and-floating-point-mathematics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4. Transcendent and Floating-Point Mathematics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-operational-benefits-from-tactical-field-to-research-laboratories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Operational Benefits: From Tactical Field to Research Laboratories
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Operational Benefits: From Tactical Field to Research Laboratories">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-on-the-ground-tactical-networks-emergency-rescue-and-citizen-resilience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1. On the Ground: Tactical Networks, Emergency Rescue, and Citizen Resilience
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-for-research-integration-into-simulators-and-hardy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2. For Research: Integration into Simulators and Hardy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-alignment-with-ietf-drafts-and-recognized-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Alignment with IETF Drafts and Recognized Extensions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Alignment with IETF Drafts and Recognized Extensions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-nasa-ions-snw-spray-and-wait-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1. NASA / ION's SNW (Spray and Wait) Block
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-draft-ietf-dtn-bp-sand-secure-advertisement-and-neighborhood-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2. draft-ietf-dtn-bp-sand (Secure Advertisement and Neighborhood Discovery)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-draft-burleigh-dtn-ecos-extended-class-of-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3. draft-burleigh-dtn-ecos (Extended Class of Service)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-bpq-bundle-protocol-query-extension-block-irtf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4. BPQ (Bundle Protocol Query Extension Block - IRTF)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-general-series-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. General Series Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-conclusion-towards-a-declarative-delay-tolerant-internet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Conclusion: Towards a Declarative Delay-Tolerant Internet
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="article-9-architectural-synthesis-policy-driven-dtn-routing-with-opa-modular-extension-block-and-control-plane-unification">Article 9 — Architectural Synthesis: Policy-Driven DTN Routing with OPA, Modular Extension Block, and Control Plane Unification<a class="headerlink" href="#article-9-architectural-synthesis-policy-driven-dtn-routing-with-opa-modular-extension-block-and-control-plane-unification" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Authors:</strong> DTN &amp; Ad-Hoc Mesh Systems Research Team<br />
+<strong>Technical Series:</strong> Transposing Mesh &amp; Opportunistic Algorithms to Bundle Protocol v7 (BPv7)<br />
+<strong>Previous Articles:</strong><br />
+- <a href="../article-0-intro.en/">Article 0 — Foundations of DTN Routing with Open Policy Agent</a><br />
+- <a href="../article-1-aprs.en/">Article 1 — Transposing APRS Digipeating (AX.25 WIDE n-N) to DTN</a><br />
+- <a href="../article-2-flood.en/">Article 2 — Taming the Flood in DTN: Spray and Wait and Meshtastic</a><br />
+- <a href="../article-3-prophet.en/">Article 3 — Opportunistic Routing and Encounter History: PRoPHET</a><br />
+- <a href="../article-4-maxprop.en/">Article 4 — Probabilistic Routing and Buffer Scheduling: MaxProp &amp; HP-MaxProp</a><br />
+- <a href="../article-5-reticulum.en/">Article 5 — Hybrid Routing, Distance Vector, and Cryptographic Addressing: Reticulum</a><br />
+- <a href="../article-6-babel-aredn.en/">Article 6 — Proactive Mesh Networks and MANET-DTN Hybrids: AREDN &amp; Babel</a><br />
+- <a href="../article-7-cgr.en/">Article 7 — Spatial Deterministic Routing: Contact Graph Routing (CGR / SABR)</a><br />
+- <a href="../article-8-geodtn.en/">Article 8 — Geographic Routing and Geocasting in DTN: GeoDTN</a><br />
+<strong>CDDL Specifications:</strong> <a href="../mesh-algo-extension-block.cddl">mesh-algo-extension-block.cddl</a>, <a href="../prophet.cddl">prophet.cddl</a>, <a href="../maxprop.cddl">maxprop.cddl</a>, <a href="../reticulum.cddl">reticulum.cddl</a>, <a href="../babel.cddl">babel.cddl</a>, <a href="../cgr.cddl">cgr.cddl</a><br />
+<strong>Policy Code:</strong> <a href="./policies/">policies/</a> (140 validated OPA unit tests)</p>
+<p>ℹ️ <strong>Editorial Transparency Note (EU AI Act Alignment):</strong> This article was generated with AI assistance under the editorial direction and structuring of a human author, who assumes responsibility for its technical review, verification, and content (ongoing proofreading).</p>
+</blockquote>
+<hr />
+<h2 id="1-introduction-the-convergence-of-routing-paradigms">1. Introduction: The Convergence of Routing Paradigms<a class="headerlink" href="#1-introduction-the-convergence-of-routing-paradigms" title="Permanent link">&para;</a></h2>
+<p>Throughout the first eight installments of this series, we explored a spectacular range of routing algorithms, spanning from amateur radio protocols born in the 1980s (APRS AX.25) to modern resilient architectures (Reticulum, Meshtastic) and interplanetary Internet standards (Contact Graph Routing - CCSDS 734.3-B-1 / SABR).</p>
+<p>Each of these algorithms was originally designed in its own isolated ecosystem, with its proprietary binary frame formats, ad-hoc metrics, and specific hardware assumptions.</p>
+<p>In this project, we pursued a dual ambition:
+1. <strong>Demonstrate the universality of Bundle Protocol version 7 (<a href="https://www.rfc-editor.org/rfc/rfc9171.html">RFC 9171</a>)</strong> as a common metamodel capable of encapsulating and unifying any routing semantics.
+2. <strong>Completely decouple arbitration logic from the transport engine</strong> using the <strong>Rego</strong> declarative language and the <strong>Open Policy Agent (OPA)</strong> policy engine.</p>
+<p>This concluding article provides the architectural synthesis of our work, delves deeper into the design of the Type 200 modular block (<a href="../mesh-algo-extension-block.cddl"><code>mesh-algo-extension-block.cddl</code></a>), analyzes the potential reconciliation of control messages, identifies the native functions indispensable to the Rego engine, and examines the scope of this approach for field operations, research, and alignment with ongoing standardization work at the IETF.</p>
+<hr />
+<h2 id="2-the-opa-dtn-engine-decoupling-and-the-type-200-modular-block">2. The OPA / DTN Engine Decoupling and the Type 200 Modular Block<a class="headerlink" href="#2-the-opa-dtn-engine-decoupling-and-the-type-200-modular-block" title="Permanent link">&para;</a></h2>
+<h3 id="21-the-complete-decoupling-architecture">2.1. The Complete Decoupling Architecture<a class="headerlink" href="#21-the-complete-decoupling-architecture" title="Permanent link">&para;</a></h3>
+<p>The traditional architecture of DTN daemons (such as ION, IBR-DTN, μPCN, or dtn7-rs) typically integrates routing logic in the form of modules compiled in C, C++, or Rust. This rigidity mandates service recompilation or restarts for every algorithmic adjustment, and makes dynamic protocol hybridization on a single node nearly impossible.</p>
+<p>Our approach strictly separates the system into two orthogonal planes:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">flowchart</span><span class="w"> </span><span class="n">TD</span>
+<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="ss">"DTN Data &amp; Transport Plane (Rust / C / Go)"</span>
+<span class="w">        </span><span class="n">CLA</span><span class="o">[</span><span class="n">Convergence Layer Adapters\nLoRa / TCPCL / AX.25 / BLE</span><span class="o">]</span><span class="w"> </span><span class="o">&lt;</span><span class="c1">--&gt; Storage[(Persistent Storage\nStore-Carry-and-Forward)]</span>
+<span class="w">        </span><span class="n">CLA</span><span class="w"> </span><span class="o">&lt;</span><span class="c1">--&gt; Serializer[CBOR Serializer / Deserializer\nRFC 9171]</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="ss">"JSON / CBOR Declarative Interface"</span>
+<span class="w">        </span><span class="n">InputBuilder</span><span class="o">[</span><span class="n">Input Context Builder\nNode State + Bundle + CLA Telemetry</span><span class="o">]</span>
+<span class="w">        </span><span class="n">ActionExec</span><span class="o">[</span><span class="n">Output Action Executor\nMutations + Forward + Drops + Status Reports</span><span class="o">]</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="ss">"OPA Decision Plane (Open Policy Agent)"</span>
+<span class="w">        </span><span class="n">PolicyEngine</span><span class="o">[</span><span class="n">Rego Evaluation Engine</span><span class="o">]</span>
+<span class="w">        </span><span class="n">Policies</span><span class="o">[</span><span class="n">(Declarative Policies\nIngress / Contact / Storage)</span><span class="o">]</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="n">Serializer</span><span class="w"> </span><span class="c1">--&gt; InputBuilder</span>
+<span class="w">    </span><span class="n">Storage</span><span class="w"> </span><span class="c1">--&gt; InputBuilder</span>
+<span class="w">    </span><span class="n">InputBuilder</span><span class="w"> </span><span class="c1">--&gt; PolicyEngine</span>
+<span class="w">    </span><span class="n">Policies</span><span class="w"> </span><span class="c1">--&gt; PolicyEngine</span>
+<span class="w">    </span><span class="n">PolicyEngine</span><span class="w"> </span><span class="c1">--&gt; ActionExec</span>
+<span class="w">    </span><span class="n">ActionExec</span><span class="w"> </span><span class="c1">--&gt; CLA</span>
+<span class="w">    </span><span class="n">ActionExec</span><span class="w"> </span><span class="c1">--&gt; Storage</span>
+</code></pre></div>
+
+<ol>
+<li><strong>The Host DTN Engine</strong> manages low-level, high-performance tasks: listening on physical interfaces (LoRa modems, AX.25 TNCs, TCP/UDP sockets), RFC 9171-compliant CBOR serialization, persistence on flash memory/NVRAM, and clock management.</li>
+<li><strong>The OPA Engine</strong> receives a structured projection (<code>input</code>) during three key lifecycle events:</li>
+<li><strong><code>ingress</code>:</strong> Decision to accept, immediately drop, or locally deliver upon receiving a bundle.</li>
+<li><strong><code>contact</code>:</strong> Decision regarding forwarding opportunity, replication eligibility, and calculation of mutations upon detecting a CLA neighbor.</li>
+<li><strong><code>storage</code>:</strong> Decision regarding scheduling, retention, relative age refresh, and preventive eviction facing buffer saturation.</li>
+</ol>
+<h3 id="22-the-type-200-modular-block-orthogonal-primitives">2.2. The Type 200 Modular Block: Orthogonal Primitives<a class="headerlink" href="#22-the-type-200-modular-block-orthogonal-primitives" title="Permanent link">&para;</a></h3>
+<p>Instead of designing a distinct BPv7 extension block for each protocol, we formalized in <a href="../mesh-algo-extension-block.cddl"><strong><code>mesh-algo-extension-block.cddl</code></strong></a> a generic extension block (<strong>Type 200</strong>, reserved in the IANA experimental range <code>192–255</code>) structured around orthogonal facets:</p>
+<div class="codehilite"><pre><span></span><code><span class="nc">mesh-routing-data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">legacy-bridge-id</span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="nb">bytes</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">uint</span><span class="p">),</span><span class="w"> </span><span class="c1">; External footprint (LoRa/AX.25 gateway)</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nc">replication-control</span><span class="p">,</span><span class="w">              </span><span class="c1">; Spray &amp; Wait, HYMAD quotas</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nc">trajectory-control</span><span class="p">,</span><span class="w">               </span><span class="c1">; Ordered hops, APRS WIDE n-N, Source Route</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">opportunistic-threshold</span><span class="p">:</span><span class="w"> </span><span class="nb">float</span><span class="p">,</span><span class="w">   </span><span class="c1">; Opportunistic utility threshold (PRoPHET)</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nc">spatial-scope</span><span class="p">,</span><span class="w">                    </span><span class="c1">; Geocasting spatial perimeter (GeoDTN)</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">custom-attributes</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="nb">uint</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">tstr</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">any</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>This block provides unprecedented flexibility:
+- An <strong>APRS</strong> packet activates facet 3 (<code>trajectory-control</code>) to decrement its <code>WIDE n-N</code> aliases.
+- A <strong>Spray &amp; Wait</strong> packet activates facet 2 (<code>replication-control</code>) to manage the binary division of its quota $L$.
+- A <strong>GeoDTN</strong> packet activates facet 5 (<code>spatial_scope</code>) to delimit the boundary of its geocasting.
+- Two protocols can even compose these facets: a quota-distributed geocast packet will combine <code>spatial_scope</code> and <code>replication_control</code> in the same block!</p>
+<h3 id="23-major-finding-zero-wire-block-for-advanced-protocols">2.3. Major Finding: Zero Wire Block for Advanced Protocols<a class="headerlink" href="#23-major-finding-zero-wire-block-for-advanced-protocols" title="Permanent link">&para;</a></h3>
+<p>One of the most striking insights from our experiments is summarized in this table:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Protocol Studied</th>
+<th style="text-align: left;">Wire Extension Block on the Cable for Data</th>
+<th style="text-align: left;">Technical Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>APRS Digipeating</strong></td>
+<td style="text-align: left;"><strong>Type 200 Block</strong> (<code>trajectory_control</code>)</td>
+<td style="text-align: left;">Required to mutate aliases (<code>WIDE1-1 -&gt; WIDE1*</code>) in flight.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Spray &amp; Wait</strong></td>
+<td style="text-align: left;"><strong>Type 200 Block</strong> (<code>replication_control</code>)</td>
+<td style="text-align: left;">Required to split copy quotas $L \leftarrow \lfloor L/2 \rfloor$.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>GeoDTN Geocast</strong></td>
+<td style="text-align: left;"><strong>Type 200 Block</strong> (<code>spatial_scope</code>)</td>
+<td style="text-align: left;">Required to define center and radius of the target zone.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Meshtastic</strong></td>
+<td style="text-align: left;"><strong>ZERO proprietary block</strong> (Pure BPv7)</td>
+<td style="text-align: left;">Deduplication by canonical Bundle ID, TTL by standard Hop Count Type 10.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>PRoPHET (RFC 6693)</strong></td>
+<td style="text-align: left;"><strong>ZERO proprietary block</strong> (Pure BPv7)</td>
+<td style="text-align: left;">Only control exchanges $P(a, b)$; data travels standard.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>MaxProp / HP-MaxProp</strong></td>
+<td style="text-align: left;"><strong>ZERO proprietary block</strong> (Pure BPv7)</td>
+<td style="text-align: left;">Buffer sorting calculated locally from standard Hop Count Type 10.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Reticulum (RNS)</strong></td>
+<td style="text-align: left;"><strong>ZERO proprietary block</strong> (Pure BPv7)</td>
+<td style="text-align: left;">Next hop resolved in local memory from hashed destination EID.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Babel / AREDN</strong></td>
+<td style="text-align: left;"><strong>ZERO proprietary block</strong> (Pure BPv7)</td>
+<td style="text-align: left;">Pure proactive forwarding or MANET-DTN ferry gateway.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>CGR (CCSDS SABR)</strong></td>
+<td style="text-align: left;"><strong>ZERO proprietary block</strong> (Pure BPv7)</td>
+<td style="text-align: left;">Deterministic contact plan resolved by host node via temporal Dijkstra.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[!IMPORTANT]
+<strong>Local telemetry has no place on the radio link.</strong><br />
+Signal-to-noise ratio metrics (measured SNR in dB), received signal strength (RSSI in dBm), physical channel backoff delays ($Backoff_{SNR}$), memory occupancy in bytes, and neighbor topology <strong>must never be serialized into data bundles</strong>.<br />
+They reside exclusively in OPA's evaluation environment (<code>input.ingress</code>, <code>input.contact</code>, <code>input.node</code>), thereby preserving maximum useful bandwidth on constrained links (LoRa, VHF, satellite).</p>
+</blockquote>
+<hr />
+<h2 id="3-comparative-analysis-and-reconciliation-of-control-messages">3. Comparative Analysis and Reconciliation of Control Messages<a class="headerlink" href="#3-comparative-analysis-and-reconciliation-of-control-messages" title="Permanent link">&para;</a></h2>
+<p>While data bundles can travel in standard BPv7 format, several of our algorithms require bilateral information exchanges between neighboring nodes during contact opportunities.</p>
+<p>By examining our CDDL specifications (<a href="../prophet.cddl"><code>prophet.cddl</code></a>, <a href="../maxprop.cddl"><code>maxprop.cddl</code></a>, <a href="../reticulum.cddl"><code>reticulum.cddl</code></a>, <a href="../babel.cddl"><code>babel.cddl</code></a>, <a href="../cgr.cddl"><code>cgr.cddl</code></a>), we observe a clear structural redundancy across these protocols.</p>
+<h3 id="31-comparative-table-of-control-primitives">3.1. Comparative Table of Control Primitives<a class="headerlink" href="#31-comparative-table-of-control-primitives" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Control Feature</th>
+<th style="text-align: left;">PRoPHET (<a href="../prophet.cddl"><code>prophet.cddl</code></a>)</th>
+<th style="text-align: left;">MaxProp (<a href="../maxprop.cddl"><code>maxprop.cddl</code></a>)</th>
+<th style="text-align: left;">Reticulum (<a href="../reticulum.cddl"><code>reticulum.cddl</code></a>)</th>
+<th style="text-align: left;">Babel (<a href="../babel.cddl"><code>babel.cddl</code></a>)</th>
+<th style="text-align: left;">CGR (<a href="../cgr.cddl"><code>cgr.cddl</code></a>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Heartbeat &amp; Discovery</strong></td>
+<td style="text-align: left;"><code>msg-hello</code> (parameters $\beta, \gamma$, sender EID)</td>
+<td style="text-align: left;">Implicit via <code>msg-prob-vector</code> or CLA beacon</td>
+<td style="text-align: left;"><code>msg-announce</code> (public key, hops, random salt)</td>
+<td style="text-align: left;"><code>msg-hello</code> (seqno, interval ms, TX cost) + <code>msg-ihu</code></td>
+<td style="text-align: left;">Implicit via schedule or <code>msg-contact-plan-update</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Bidirectional Link Confirmation</strong></td>
+<td style="text-align: left;">Implicit by CLA session</td>
+<td style="text-align: left;">Implicit by CLA session</td>
+<td style="text-align: left;">Cryptographic proof (<code>msg-proof</code>)</td>
+<td style="text-align: left;"><strong>Explicit: <code>msg-ihu</code></strong> (<em>I Heard You</em>) with RX cost</td>
+<td style="text-align: left;">Scheduled bidirectional contact</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Topological State / Routing Vector</strong></td>
+<td style="text-align: left;"><code>msg-rib-update</code> (list of $P(sender, dest)$)</td>
+<td style="text-align: left;"><code>msg-prob-vector</code> (EID map $\to$ probabilities $P$)</td>
+<td style="text-align: left;"><code>msg-announce</code> (destination hash, next-hop)</td>
+<td style="text-align: left;"><code>msg-update</code> (prefix, seqno, metric, router-id)</td>
+<td style="text-align: left;"><code>msg-contact-plan-update</code> (intervals, data rates, OWLT)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Inventory of Stored Bundles</strong></td>
+<td style="text-align: left;"><code>msg-summary-vector</code> (list of Bundle IDs)</td>
+<td style="text-align: left;">Merged in handshake</td>
+<td style="text-align: left;">None (unicast routing without duplication)</td>
+<td style="text-align: left;">None (MANET routing without persistent buffer)</td>
+<td style="text-align: left;">Resolved locally by volume tracking</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Distributed Buffer Cleanup</strong></td>
+<td style="text-align: left;"><code>msg-delivery-ack</code> (list of delivered bundles)</td>
+<td style="text-align: left;"><strong><code>msg-cleared-list</code></strong> (list of delivered Bundle IDs)</td>
+<td style="text-align: left;">End-to-end delivery acknowledgment (<code>msg-proof</code>)</td>
+<td style="text-align: left;">Non-existent (routing without delay-tolerant storage)</td>
+<td style="text-align: left;">Automatic eviction at window expiration</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-reconciliation-proposal-a-generic-signaling-protocol">3.2. Reconciliation Proposal: A Generic Signaling Protocol<a class="headerlink" href="#32-reconciliation-proposal-a-generic-signaling-protocol" title="Permanent link">&para;</a></h3>
+<p>Given this functional convergence, we can design a <strong>Unified DTN-Mesh Control Grammar</strong> that reconciles all these needs within a standardized CBOR frame:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">classDiagram</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="n">UnifiedControlBundle</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="o">+</span><span class="n">uint</span><span class="w"> </span><span class="n">protocol_version</span>
+<span class="w">        </span><span class="o">+</span><span class="n">uint</span><span class="w"> </span><span class="n">message_type</span>
+<span class="w">        </span><span class="o">+</span><span class="n">tstr</span><span class="w"> </span><span class="n">sender_node_id</span>
+<span class="w">        </span><span class="o">+</span><span class="n">uint</span><span class="w"> </span><span class="n">timestamp_ms</span>
+<span class="w">        </span><span class="o">+</span><span class="n">uint</span><span class="w"> </span><span class="n">sequence_number</span>
+<span class="w">        </span><span class="o">+</span><span class="n">ControlPayload</span><span class="w"> </span><span class="n">payload</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="n">HeartbeatPayload</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="o">+</span><span class="n">uint</span><span class="w"> </span><span class="n">interval_ms</span>
+<span class="w">        </span><span class="o">+</span><span class="n">uint</span><span class="w"> </span><span class="n">tx_metric</span>
+<span class="w">        </span><span class="o">+</span><span class="n">Capabilities</span><span class="w"> </span><span class="n">capabilities</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="n">LinkValidationPayload</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="o">+</span><span class="n">tstr</span><span class="w"> </span><span class="n">heard_peer_id</span>
+<span class="w">        </span><span class="o">+</span><span class="n">uint</span><span class="w"> </span><span class="n">rx_metric</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="n">TopologyVectorPayload</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="o">+</span><span class="n">TopologyEntry</span><span class="p">[]</span><span class="w"> </span><span class="n">entries</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="n">InventorySummaryPayload</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="o">+</span><span class="n">CanonicalBundleId</span><span class="p">[]</span><span class="w"> </span><span class="n">held_bundle_ids</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="n">PurgeAckPayload</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="o">+</span><span class="n">CanonicalBundleId</span><span class="p">[]</span><span class="w"> </span><span class="n">delivered_bundle_ids</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">UnifiedControlBundle</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">HeartbeatPayload</span>
+<span class="w">    </span><span class="n">UnifiedControlBundle</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">LinkValidationPayload</span>
+<span class="w">    </span><span class="n">UnifiedControlBundle</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">TopologyVectorPayload</span>
+<span class="w">    </span><span class="n">UnifiedControlBundle</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">InventorySummaryPayload</span>
+<span class="w">    </span><span class="n">UnifiedControlBundle</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">PurgeAckPayload</span>
+</code></pre></div>
+
+<h4 id="cddl-modeling-of-a-unified-control-plane">CDDL Modeling of a Unified Control Plane<a class="headerlink" href="#cddl-modeling-of-a-unified-control-plane" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span><code><span class="nc">unified-mesh-control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">version</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">message-type</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="p">(</span>
+<span class="w">        </span><span class="s">type-heartbeat</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">      </span><span class="c1">; 1-way discovery &amp; heartbeat</span>
+<span class="w">        </span><span class="s">type-link-confirm</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">   </span><span class="c1">; 2-way validation (IHU / RTT)</span>
+<span class="w">        </span><span class="s">type-topology-vector</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="c1">; Routing vector (Probabilities, Metrics, or Contacts)</span>
+<span class="w">        </span><span class="s">type-inventory-summary</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="c1">; Summary Vector of held bundles</span>
+<span class="w">        </span><span class="s">type-purge-ack</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">       </span><span class="c1">; Distributed Cleared List / Delivery ACKs</span>
+<span class="w">    </span><span class="p">),</span>
+<span class="w">    </span><span class="mi">3</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">sender-id</span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="nb">tstr</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">bytes</span><span class="w"> </span><span class="ow">.size</span><span class="w"> </span><span class="mi">16</span><span class="p">),</span><span class="w"> </span><span class="c1">; EID URI or Reticulum Hash</span>
+<span class="w">    </span><span class="mi">4</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">timestamp-ms</span><span class="p">:</span><span class="w"> </span><span class="nb">uint</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">5</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">seqno</span><span class="p">:</span><span class="w"> </span><span class="nb">uint</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">6</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">payload</span><span class="p">:</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="nc">unified-heartbeat</span><span class="w"> </span><span class="o">/</span>
+<span class="w">        </span><span class="nc">unified-link-confirm</span><span class="w"> </span><span class="o">/</span>
+<span class="w">        </span><span class="nc">unified-topology-vector</span><span class="w"> </span><span class="o">/</span>
+<span class="w">        </span><span class="nc">unified-inventory</span><span class="w"> </span><span class="o">/</span>
+<span class="w">        </span><span class="nc">unified-purge-ack</span>
+<span class="w">    </span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nc">unified-heartbeat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">interval-ms</span><span class="p">:</span><span class="w"> </span><span class="nb">uint</span><span class="p">,</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">tx-cost</span><span class="p">:</span><span class="w"> </span><span class="nb">uint</span><span class="p">,</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">capabilities</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="o">*</span><span class="w"> </span><span class="nb">tstr</span><span class="p">]</span><span class="w"> </span><span class="c1">; Ex: ["prophet", "maxprop", "cgr", "ferry"]</span>
+<span class="p">}</span>
+
+<span class="nc">unified-link-confirm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">peer-id</span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="nb">tstr</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">bytes</span><span class="w"> </span><span class="ow">.size</span><span class="w"> </span><span class="mi">16</span><span class="p">),</span>
+<span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">rx-cost</span><span class="p">:</span><span class="w"> </span><span class="nb">uint</span><span class="p">,</span>
+<span class="w">    </span><span class="o">?</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">measured-snr-db</span><span class="p">:</span><span class="w"> </span><span class="nb">float</span>
+<span class="p">}</span>
+
+<span class="nc">unified-topology-vector</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">metric-type</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="p">(</span><span class="s">probabilistic</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">distance-vector</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s">contact-plan</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">),</span>
+<span class="w">    </span><span class="mi">2</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">entries</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="mi">1</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">target</span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="nb">tstr</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">bytes</span><span class="w"> </span><span class="ow">.size</span><span class="w"> </span><span class="mi">16</span><span class="p">),</span>
+<span class="w">        </span><span class="mi">2</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">metric-value</span><span class="p">:</span><span class="w"> </span><span class="nb">float</span><span class="p">,</span><span class="w"> </span><span class="c1">; Probability [0-1] or Bellman-Ford Cost</span>
+<span class="w">        </span><span class="o">?</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">seqno</span><span class="p">:</span><span class="w"> </span><span class="nb">uint</span><span class="p">,</span><span class="w">       </span><span class="c1">; Babel-style loop avoidance</span>
+<span class="w">        </span><span class="o">?</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">valid-until</span><span class="p">:</span><span class="w"> </span><span class="nb">uint</span><span class="w">  </span><span class="c1">; Temporal validity window</span>
+<span class="w">    </span><span class="p">}]</span>
+<span class="p">}</span>
+
+<span class="nc">unified-inventory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">held-bundles</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="o">*</span><span class="w"> </span><span class="nc">canonical-bundle-id</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="nc">unified-purge-ack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">cleared-bundles</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="o">*</span><span class="w"> </span><span class="nc">canonical-bundle-id</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="nc">canonical-bundle-id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s">source</span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="nb">tstr</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">bytes</span><span class="w"> </span><span class="ow">.size</span><span class="w"> </span><span class="mi">16</span><span class="p">),</span>
+<span class="w">    </span><span class="s">creation-time</span><span class="p">:</span><span class="w"> </span><span class="nb">uint</span><span class="p">,</span>
+<span class="w">    </span><span class="s">sequence-number</span><span class="p">:</span><span class="w"> </span><span class="nb">uint</span>
+<span class="p">]</span>
+</code></pre></div>
+
+<p>Such reconciliation provides a major advantage: <strong>a single CBOR parser and a single link signaling state machine</strong> suffice to feed any underlying algorithm.</p>
+<hr />
+<h2 id="4-required-native-functions-in-the-opa-evaluation-environment-custom-builtins">4. Required Native Functions in the OPA Evaluation Environment (Custom Builtins)<a class="headerlink" href="#4-required-native-functions-in-the-opa-evaluation-environment-custom-builtins" title="Permanent link">&para;</a></h2>
+<p>The <strong>Open Policy Agent (OPA)</strong> policy engine was originally designed to evaluate HTTP authorization requests, Kubernetes objects, or cloud infrastructure IAM rules. Its Rego engine intentionally lacks traditional imperative loops and favors set comprehensions.</p>
+<p>In our DTN modeling, the majority of simple arithmetic calculations (predictability multiplication, quota decrements, scalar comparisons) are expressed perfectly in pure Rego. However, deploying this architecture at scale on actual hardware requires that <strong>certain operations cannot be modeled as static JSON data</strong> and mandate native functions implemented directly by the execution host (in C, Rust, or Go) as OPA Custom Builtins.</p>
+<h3 id="41-asymmetric-cryptography-and-high-performance-hashing">4.1. Asymmetric Cryptography and High-Performance Hashing<a class="headerlink" href="#41-asymmetric-cryptography-and-high-performance-hashing" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Proposed Builtin Function</th>
+<th style="text-align: left;">Role and Algorithmic Necessity</th>
+<th style="text-align: left;">Target Protocol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>crypto.ed25519.verify(pubkey, message, signature)</code></td>
+<td style="text-align: left;">Mathematical verification of a path announcement signature. Impossible to perform securely and efficiently in pure Rego.</td>
+<td style="text-align: left;"><strong>Reticulum</strong> (<a href="../policies/reticulum/ingress.rego"><code>reticulum.rego</code></a>), <strong>BPSec (RFC 9172)</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>crypto.sha256_truncated(data, 16)</code></td>
+<td style="text-align: left;">Calculation of a 128-bit cryptographic hash for a destination or packet. Required to validate address authenticity without plain text.</td>
+<td style="text-align: left;"><strong>Reticulum</strong>, <strong>Meshtastic packet ID</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>crypto.constant_time_compare(a, b)</code></td>
+<td style="text-align: left;">Comparison of cryptographic digests protected against side-channel timing attacks.</td>
+<td style="text-align: left;">Global Ingress Security</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42-graph-algorithms-and-operational-research">4.2. Graph Algorithms and Operational Research<a class="headerlink" href="#42-graph-algorithms-and-operational-research" title="Permanent link">&para;</a></h3>
+<p>For small topology sizes (fewer than 10 nodes), set traversal in Rego is feasible. Beyond that, the complexity limits of the rule engine become apparent:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Proposed Builtin Function</th>
+<th style="text-align: left;">Signature &amp; Role</th>
+<th style="text-align: left;">Target Protocols</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>graph.dijkstra_time_expanded(contacts, ranges, source, dest, now)</code></td>
+<td style="text-align: left;">Executes future-oriented time-expanded Dijkstra, incorporating one-way propagation delay ($OWLT$) and window capacity. Returns the hop sequence and <em>Earliest Delivery Time</em> ($EDT$).</td>
+<td style="text-align: left;"><strong>CGR / SABR (CCSDS 734.3-B-1)</strong> (<a href="../policies/cgr/contact.rego"><code>cgr.rego</code></a>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>graph.dijkstra_log_cost(prob_matrix, source, dest, epsilon)</code></td>
+<td style="text-align: left;">Calculates the probabilistic shortest path by applying the information metric $-\log(P + \epsilon)$ and returning total path cost $C$.</td>
+<td style="text-align: left;"><strong>MaxProp &amp; HP-MaxProp</strong> (<a href="../policies/maxprop/contact.rego"><code>maxprop.rego</code></a>)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[!NOTE]
+<strong>Why delegate graph traversal to a host builtin?</strong><br />
+In pure Rego, recursive graph traversal requires set constructs with expensive joins ($O(V^3)$ in the worst case).<br />
+A compiled builtin in Rust or C utilizing a min-heap priority queue solves the problem in $O(E + V \log V)$, bringing execution time down below 50 microseconds, even on an ARM Cortex-M4 microcontroller or ESP32.</p>
+</blockquote>
+<h3 id="43-spherical-geometry-and-geodesy">4.3. Spherical Geometry and Geodesy<a class="headerlink" href="#43-spherical-geometry-and-geodesy" title="Permanent link">&para;</a></h3>
+<p>In our preliminary tests in <a href="../article-8-geodtn.en/">Article 8</a>, we used a simplified planar Euclidean distance ($\sqrt{\Delta x^2 + \Delta y^2}$). On terrestrial terrain, this approximation becomes inaccurate as distance increases:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Proposed Builtin Function</th>
+<th style="text-align: left;">Mathematical Role</th>
+<th style="text-align: left;">Target Protocol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>geo.haversine_distance(lat1, lon1, lat2, lon2)</code></td>
+<td style="text-align: left;">Calculates true great-circle distance on the Earth's surface taking into account spherical curvature ($R = 6371\text{ km}$).</td>
+<td style="text-align: left;"><strong>GeoDTN &amp; Geocasting</strong> (<a href="../policies/geodtn/contact.rego"><code>geodtn.rego</code></a>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>geo.point_in_polygon(lat, lon, polygon_coordinates)</code></td>
+<td style="text-align: left;">Verifies inclusion of a beacon or node inside a non-circular geographic area (e.g., polygonal disaster area).</td>
+<td style="text-align: left;"><strong>Emergency Geocasting (SAR)</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="44-transcendent-and-floating-point-mathematics">4.4. Transcendent and Floating-Point Mathematics<a class="headerlink" href="#44-transcendent-and-floating-point-mathematics" title="Permanent link">&para;</a></h3>
+<p>Rego supports basic arithmetic operations, but lacks standard transcendent functions in its default runtime:
+- <code>math.ln(x)</code> and <code>math.log10(x)</code>: MaxProp logarithmic cost $-\log(P + \epsilon)$.
+- <code>math.exp(x)</code>: Continuous temporal decay of PRoPHET aging:
+  $$P_{(A, B)} \leftarrow P_{(A, B)} \times e^{-\alpha \cdot \Delta t}$$
+- <code>math.sin(x)</code>, <code>math.cos(x)</code>, <code>math.atan2(y, x)</code>: Geodesic calculations and directional antenna bearings.</p>
+<hr />
+<h2 id="5-operational-benefits-from-tactical-field-to-research-laboratories">5. Operational Benefits: From Tactical Field to Research Laboratories<a class="headerlink" href="#5-operational-benefits-from-tactical-field-to-research-laboratories" title="Permanent link">&para;</a></h2>
+<p>The strict separation between the DTN transport engine and declarative decision logic radically transforms two often disconnected worlds: operational deployments in hostile environments and academic scientific research.</p>
+<h3 id="51-on-the-ground-tactical-networks-emergency-rescue-and-citizen-resilience">5.1. On the Ground: Tactical Networks, Emergency Rescue, and Citizen Resilience<a class="headerlink" href="#51-on-the-ground-tactical-networks-emergency-rescue-and-citizen-resilience" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="n">flowchart</span><span class="w"> </span><span class="n">LR</span>
+<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="s">"Unforeseen Field Events"</span>
+<span class="w">        </span><span class="n">E1</span><span class="p">[</span><span class="n">Forest</span><span class="w"> </span><span class="n">Fire</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Sinister</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Sensor</span><span class="p">[</span><span class="n">LoRa</span><span class="w"> </span><span class="n">Sensors</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">Drones</span><span class="p">]</span>
+<span class="w">        </span><span class="n">E2</span><span class="p">[</span><span class="n">Massive</span><span class="w"> </span><span class="n">Radio</span><span class="w"> </span><span class="n">Jamming</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Radio</span><span class="p">[</span><span class="n">VHF</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">HF</span><span class="w"> </span><span class="n">Modems</span><span class="p">]</span>
+<span class="w">        </span><span class="n">E3</span><span class="p">[</span><span class="n">Helicopter</span><span class="w"> </span><span class="n">Arrival</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Ferry</span><span class="p">[</span><span class="n">Data</span><span class="w"> </span><span class="n">Mule</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Ferry</span><span class="p">]</span>
+<span class="w">    </span><span class="n">end</span>
+
+<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="s">"Deployed DTN Engine"</span>
+<span class="w">        </span><span class="n">Node</span><span class="p">[</span><span class="n">All</span><span class="o">-</span><span class="n">Terrain</span><span class="w"> </span><span class="n">Hybrid</span><span class="w"> </span><span class="n">Node</span><span class="p">]</span>
+<span class="w">    </span><span class="n">end</span>
+
+<span class="w">    </span><span class="n">subgraph</span><span class="w"> </span><span class="s">"Live OPA Governance"</span>
+<span class="w">        </span><span class="n">P1</span><span class="p">[</span><span class="n">Emergency</span><span class="w"> </span><span class="n">Geocast</span><span class="w"> </span><span class="n">Switch</span><span class="p">]</span>
+<span class="w">        </span><span class="n">P2</span><span class="p">[</span><span class="n">Meshtastic</span><span class="w"> </span><span class="n">Anti</span><span class="o">-</span><span class="n">Storm</span><span class="w"> </span><span class="n">Regulation</span><span class="p">]</span>
+<span class="w">        </span><span class="n">P3</span><span class="p">[</span><span class="n">CGR</span><span class="o">/</span><span class="n">Ferry</span><span class="w"> </span><span class="n">Opportunistic</span><span class="w"> </span><span class="n">Offloading</span><span class="p">]</span>
+<span class="w">    </span><span class="n">end</span>
+
+<span class="w">    </span><span class="n">Sensor</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Node</span>
+<span class="w">    </span><span class="n">Radio</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Node</span>
+<span class="w">    </span><span class="n">Ferry</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Node</span>
+<span class="w">    </span><span class="n">P1</span><span class="w"> </span><span class="o">-</span><span class="p">.</span><span class="o">-&gt;|</span><span class="n">Live</span><span class="w"> </span><span class="n">policy</span><span class="w"> </span><span class="n">injection</span><span class="o">|</span><span class="w"> </span><span class="n">Node</span>
+<span class="w">    </span><span class="n">P2</span><span class="w"> </span><span class="o">-</span><span class="p">.</span><span class="o">-&gt;|</span><span class="n">Zero</span><span class="w"> </span><span class="n">downtime</span><span class="w"> </span><span class="n">restart</span><span class="o">|</span><span class="w"> </span><span class="n">Node</span>
+<span class="w">    </span><span class="n">P3</span><span class="w"> </span><span class="o">-</span><span class="p">.</span><span class="o">-&gt;|</span><span class="n">Full</span><span class="w"> </span><span class="n">auditability</span><span class="o">|</span><span class="w"> </span><span class="n">Node</span>
+</code></pre></div>
+
+<ol>
+<li><strong>Live Dynamic Reconfiguration (Zero Downtime):</strong><br />
+   In an emergency rescue operation, a node initially configured as a high-bandwidth Babel/AREDN repeater may lose its Wi-Fi links following a power failure. The operator can inject a new declarative policy over the air to instantly switch it into a Spray &amp; Wait opportunistic relay or GeoDTN node, <strong>without recompiling firmware, without restarting processes, and without risking corruption of stored data</strong>.</li>
+<li><strong>Native Protection Against Denial of Service and Spam:</strong><br />
+   Dynamic rule injection in <code>blacklist_sources</code> (introduced in <a href="../article-0-intro.en/">Article 0</a>) allows immediate containment of malicious or failing equipment saturating shared LoRa bandwidth.</li>
+<li><strong>Auditability and Operational Traceability:</strong><br />
+   Every decision made by OPA is accompanied by a full explanatory trace (<code>decision.reason</code>). Communications officers or emergency coordinators have an unalterable log showing exactly why a critical packet was forwarded, held, or evicted from the storage buffer.</li>
+</ol>
+<h3 id="52-for-research-integration-into-simulators-and-hardy">5.2. For Research: Integration into Simulators and Hardy<a class="headerlink" href="#52-for-research-integration-into-simulators-and-hardy" title="Permanent link">&para;</a></h3>
+<p>The historical gap between research in opportunistic networks and real deployments has always been a major hurdle. Researchers write algorithms in Java in <strong>The ONE Simulator</strong> or C++ in <strong>ns-3</strong>, while system engineers develop completely different architectures in C or Rust.</p>
+<p>Our unified architecture bridges this gap permanently:</p>
+<ol>
+<li><strong>Integration into The ONE or ns-3 Simulators:</strong><br />
+   By embedding a Rego evaluation engine (via WebAssembly bindings or C FFI) into the simulator, the exact same policy files (<a href="./policies/prophet/"><code>policies/prophet/</code></a>, <a href="./policies/maxprop/"><code>policies/maxprop/</code></a>, <a href="./policies/geodtn/"><code>policies/geodtn/</code></a>) can be executed directly in academic simulation across thousands of virtual nodes. Measured delivery metrics in simulation faithfully mirror production code behavior.</li>
+<li><strong>Integration into the Hardy Reference Implementation (Rust):</strong><br />
+<strong>Hardy</strong> is a modern, high-speed, secure implementation of Bundle Protocol v7 written in Rust. By compiling our OPA policies into <strong>WebAssembly artifacts (<code>opa build -t wasm</code>)</strong>, Hardy can load the Wasm virtual machine directly into its async Tokio pipeline:</li>
+<li>Ingress policy evaluation time: <strong>$&lt; 10\ \mu s$</strong>.</li>
+<li>Total memory isolation (sandboxing): a corrupted policy cannot crash the transport daemon.</li>
+<li>Cross-platform compatibility: the exact same Wasm binary runs on a Linux x86_64 server, a Raspberry Pi gateway, or a hardened embedded system.</li>
+</ol>
+<hr />
+<h2 id="6-alignment-with-ietf-drafts-and-recognized-extensions">6. Alignment with IETF Drafts and Recognized Extensions<a class="headerlink" href="#6-alignment-with-ietf-drafts-and-recognized-extensions" title="Permanent link">&para;</a></h2>
+<p>Our work on the experimental Type 200 block and OPA routing policies directly aligns with active discussions in the <strong>IETF DTN (Delay-Tolerant Networking Working Group)</strong> and the <strong>IRTF</strong>.</p>
+<h3 id="61-nasa-ions-snw-spray-and-wait-block">6.1. NASA / ION's SNW (Spray and Wait) Block<a class="headerlink" href="#61-nasa-ions-snw-spray-and-wait-block" title="Permanent link">&para;</a></h3>
+<p>The reference implementation <strong>ION (Interplanetary Overlay Network)</strong> maintained by JPL / NASA features an experimental extension dedicated to the Spray and Wait algorithm:
+- In ION, this extension occupies a private code in the unassigned IANA experimental range and encapsulates a simple integer representing remaining copies ($L$).
+- <strong>Comparison with our approach:</strong> Our <code>replication_control</code> facet (defined in <a href="../mesh-algo-extension-block.cddl#L34-L39"><code>mesh-algo-extension-block.cddl</code></a>) generalizes NASA's approach:
+  - It supports both source mode (unit decrement $L \leftarrow L - 1$) and optimized binary mode ($L \leftarrow \lfloor L/2 \rfloor$).
+  - It formalizes explicit state transitions between dissemination phase (<code>phase-disseminate: 1</code>) and direct waiting phase (<code>phase-wait: 2</code>).
+  - It incorporates a generation counter (<code>generation: uint</code>) essential for auditing replication trees during prolonged network partitioning.</p>
+<h3 id="62-draft-ietf-dtn-bp-sand-secure-advertisement-and-neighborhood-discovery">6.2. <code>draft-ietf-dtn-bp-sand</code> (Secure Advertisement and Neighborhood Discovery)<a class="headerlink" href="#62-draft-ietf-dtn-bp-sand-secure-advertisement-and-neighborhood-discovery" title="Permanent link">&para;</a></h3>
+<p>The active draft <strong><code>draft-ietf-dtn-bp-sand</code></strong> represents a major advancement at the IETF: it formalizes a standardized protocol for exchanging neighborhood metrics and topological discovery for the BPv7 control plane.</p>
+<p>There is a near one-to-one correspondence between <code>bp-sand</code> objectives and our architecture:
+- <code>bp-sand</code> standardizes bilateral exchanges of physical metrics (link quality, available bandwidth, 1-hop neighborhood).
+- In our model, these exact metrics constitute the raw material injected into OPA's <code>input.contact</code> and <code>input.neighbors</code> objects!
+- The proposed control reconciliation in Section 3 (<a href="#cddl-modeling-of-a-unified-control-plane"><code>unified-mesh-control</code></a>) provides a compact, CBOR-encoded implementation fully aligned with <code>bp-sand</code> principles.</p>
+<h3 id="63-draft-burleigh-dtn-ecos-extended-class-of-service">6.3. <code>draft-burleigh-dtn-ecos</code> (Extended Class of Service)<a class="headerlink" href="#63-draft-burleigh-dtn-ecos-extended-class-of-service" title="Permanent link">&para;</a></h3>
+<p>Authored by Scott Burleigh (one of DTN's pioneers), <strong><code>draft-burleigh-dtn-ecos</code></strong> proposes extending BPv7 Primary Block Quality of Service (QoS) semantics. It introduces parameters for preferential forwarding, critical urgency, and storage retention priority.</p>
+<p>Throughout our series, we demonstrated how these requirements are governed:
+- In <a href="../article-4-maxprop.en/">Article 4 (MaxProp)</a>, the storage eviction queue is no longer a destructive FIFO: it sorts bundles based on the sum of their theoretical information cost and QoS priority.
+- ECOS attributes (<code>criticality</code>, <code>flow-label</code>, <code>ordinal</code>) naturally inject into the Primary Block or <code>custom-attributes</code> of our Type 200 block, enabling Rego storage policies (<a href="../policies/storage.rego"><code>policies/storage.rego</code></a>) to evict non-urgent telemetry before touching vital distress messages.</p>
+<h3 id="64-bpq-bundle-protocol-query-extension-block-irtf">6.4. BPQ (Bundle Protocol Query Extension Block - IRTF)<a class="headerlink" href="#64-bpq-bundle-protocol-query-extension-block-irtf" title="Permanent link">&para;</a></h3>
+<p>Emerging from foundational DTNRG work (<strong><code>draft-irtf-dtnrg-bpq</code></strong>, by S. Farrell, A. Lynch, D. Kutscher, and A. Lindgren), the <strong>BPQ</strong> extension block defines a standard mechanism enabling intermediate nodes to query peer storage for bundle presence or synchronize data collections without redundant transmission.</p>
+<p>Our work operationalizes and extends this concept:
+- <strong>Summary Vectors</strong> formalized in <a href="../prophet.cddl"><code>prophet.cddl</code></a> and <a href="../maxprop.cddl"><code>maxprop.cddl</code></a> achieve this query mechanism by comparing canonical identifiers <code>(source, time, seq)</code>.
+- <strong>Cleared Lists</strong> complement BPQ by propagating destruction acknowledgments to collectively purge network storage buffers.</p>
+<hr />
+<h2 id="7-general-series-overview">7. General Series Overview<a class="headerlink" href="#7-general-series-overview" title="Permanent link">&para;</a></h2>
+<p>To conclude this architectural journey, here is the master summary matrix linking all 9 articles, their theoretical foundations, wire structures, and OPA declarative rules:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Article &amp; Protocol</th>
+<th style="text-align: left;">Key Paradigm</th>
+<th style="text-align: left;">Addressing Format</th>
+<th style="text-align: left;">Type 200 Block Role</th>
+<th style="text-align: left;">Control Signaling</th>
+<th style="text-align: left;">OPA Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><a href="../article-0-intro.en/">Art. 0 — Foundations</a></strong></td>
+<td style="text-align: left;">BPv7 Standard &amp; OPA</td>
+<td style="text-align: left;">EID RFC 9171</td>
+<td style="text-align: left;">Architectural foundation</td>
+<td style="text-align: left;">Standard BPv7 Status Reports</td>
+<td style="text-align: left;">14/14</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><a href="../article-1-aprs.en/">Art. 1 — APRS AX.25</a></strong></td>
+<td style="text-align: left;">Source routing &amp; alias</td>
+<td style="text-align: left;">Radio Callsigns</td>
+<td style="text-align: left;"><code>trajectory_control</code></td>
+<td style="text-align: left;">None (blind broadcast)</td>
+<td style="text-align: left;">13/13</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><a href="../article-2-flood.en/">Art. 2 — Spray &amp; Wait &amp; Meshtastic</a></strong></td>
+<td style="text-align: left;">Quotas &amp; SNR Contention</td>
+<td style="text-align: left;">EID / NodeNum</td>
+<td style="text-align: left;"><code>replication_control</code> / Zero block</td>
+<td style="text-align: left;">Local physical contention</td>
+<td style="text-align: left;">17/17</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><a href="../article-3-prophet.en/">Art. 3 — PRoPHET</a></strong></td>
+<td style="text-align: left;">Probabilistic opportunistic</td>
+<td style="text-align: left;">Canonical EID</td>
+<td style="text-align: left;">Optional (<code>opportunistic_threshold</code>)</td>
+<td style="text-align: left;">Handshake RIB &amp; SV (<a href="../prophet.cddl"><code>prophet.cddl</code></a>)</td>
+<td style="text-align: left;">16/16</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><a href="../article-4-maxprop.en/">Art. 4 — MaxProp &amp; HP-MaxProp</a></strong></td>
+<td style="text-align: left;">Log cost &amp; Buffer Sorting</td>
+<td style="text-align: left;">Canonical EID</td>
+<td style="text-align: left;">ZERO data wire block</td>
+<td style="text-align: left;">Prob-Vector &amp; Cleared List (<a href="../maxprop.cddl"><code>maxprop.cddl</code></a>)</td>
+<td style="text-align: left;">16/16</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><a href="../article-5-reticulum.en/">Art. 5 — Reticulum</a></strong></td>
+<td style="text-align: left;">Reactive distance vector</td>
+<td style="text-align: left;">16-byte hash</td>
+<td style="text-align: left;">ZERO data wire block</td>
+<td style="text-align: left;">Signed Announces (<a href="../reticulum.cddl"><code>reticulum.cddl</code></a>)</td>
+<td style="text-align: left;">16/16</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><a href="../article-6-babel-aredn.en/">Art. 6 — Babel / AREDN / HYMAD</a></strong></td>
+<td style="text-align: left;">Loop-free proactive &amp; Ferry</td>
+<td style="text-align: left;">EID / Subnet</td>
+<td style="text-align: left;">ZERO data wire block</td>
+<td style="text-align: left;">Hellos, IHU, Updates (<a href="../babel.cddl"><code>babel.cddl</code></a>)</td>
+<td style="text-align: left;">16/16</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><a href="../article-7-cgr.en/">Art. 7 — CGR (CCSDS SABR)</a></strong></td>
+<td style="text-align: left;">Spatial deterministic</td>
+<td style="text-align: left;">Interplanetary EID</td>
+<td style="text-align: left;">ZERO data wire block</td>
+<td style="text-align: left;">Contact Plan Updates (<a href="../cgr.cddl"><code>cgr.cddl</code></a>)</td>
+<td style="text-align: left;">16/16</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><a href="../article-8-geodtn.en/">Art. 8 — GeoDTN &amp; Geocast</a></strong></td>
+<td style="text-align: left;">Geographic Greedy &amp; SCF</td>
+<td style="text-align: left;">GPS Coordinates</td>
+<td style="text-align: left;"><code>spatial_scope</code></td>
+<td style="text-align: left;">Zero signaling required</td>
+<td style="text-align: left;">16/16</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><a href="./">Art. 9 — Synthesis</a></strong></td>
+<td style="text-align: left;"><strong>Unified OPA Architecture</strong></td>
+<td style="text-align: left;"><strong>Multi-addressing</strong></td>
+<td style="text-align: left;"><strong>Modular Type 200</strong></td>
+<td style="text-align: left;"><strong>Reconciled Control Grammar</strong></td>
+<td style="text-align: left;"><strong>140/140</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="8-conclusion-towards-a-declarative-delay-tolerant-internet">8. Conclusion: Towards a Declarative Delay-Tolerant Internet<a class="headerlink" href="#8-conclusion-towards-a-declarative-delay-tolerant-internet" title="Permanent link">&para;</a></h2>
+<p>The combination of <strong>Bundle Protocol version 7</strong> and a declarative policy engine like <strong>Open Policy Agent</strong> brings a decisive answer to the historical challenges of constrained and opportunistic networks.</p>
+<p>By permanently separating binary plumbing (CBOR, modems, radio interfaces, physical storage) from forwarding intelligence, we transformed the DTN router into an <strong>agnostic, highly reconfigurable expert system</strong>. Whether saving lives during an earthquake, connecting remote LoRa communities, securing tactical communications under jamming, or orchestrating probe constellations around Mars, decision rules are written with the same declarative clarity.</p>
+<p>The CDDL specifications, Rego rules, and automated test suite provided in this repository offer a rigorous, open, and ready-to-use foundation for next-generation reference implementations.</p>
+<hr />
+<p>👉 <strong>Continue Reading:</strong><br />
+<a href="../article-10-roadmap-extensions.en/">Article 10 — Perspectives and Extension Roadmap: Towards a Panoramic View of DTN Routing and Control Plane Evolution</a></p>
+<p>🏁 Explore the full source code, CDDL specifications, and declarative policies in the <a href="../index.en/">DTN Mesh Algorithm Project Repository</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

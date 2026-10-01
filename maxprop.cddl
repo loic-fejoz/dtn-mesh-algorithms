@@ -1,0 +1,81 @@
+; ==============================================================================
+; MaxProp & HP-MaxProp (High-Performance 2-Hop) over DTN - CDDL Specification
+;
+; Formalise les structures de données sérialisées en CBOR pour l'adaptation de
+; l'algorithme MaxProp (Burgess et al., 2006) et de ses optimisations
+; (coût logarithmique d'information, pénalité de saut fluide et commérage à 2 sauts)
+; au-dessus du Bundle Protocol v7 (BPv7 - RFC 9171).
+;
+; Principes fondamentaux :
+; 1. Échange de vecteurs de probabilités de contact (1-hop / 2-hop).
+; 2. Coût de lien logarithmique : Coût = -log(P + epsilon).
+; 3. Priorisation fluide de file : Coût_Tri = Coût_Dijkstra + 0.01 * HopCount.
+; 4. Cleared List (ACKs distribués) : liste des bundles livrés pour purge mémoire.
+; ==============================================================================
+
+; Message de contrôle MaxProp transporté dans le payload d'un bundle administratif
+maxprop-control-bundle = {
+    1 => message-type: maxprop-message-type,
+    2 => sender-eid: tstr,                  ; EID du nœud émetteur
+    3 => timestamp-ms: uint,                ; Horloge DTN d'émission
+    4 => payload: maxprop-payload           ; Charge utile selon le type
+}
+
+maxprop-message-type = &(
+    msg-prob-vector: 1,   ; Vecteur de probabilités de contact (1-hop / direct)
+    msg-cleared-list: 2,  ; Liste des bundles livrés à purger (Cleared List)
+    msg-combined: 3       ; Message fusionné (Probabilités + Cleared List)
+)
+
+maxprop-payload = (
+    prob-vector-payload /
+    cleared-list-payload /
+    combined-payload
+)
+
+; ------------------------------------------------------------------------------
+; 1. VECTEUR DE PROBABILITÉS DE CONTACT (Probabilities Vector)
+; Dans la variante optimisée 2-Hop (2H-HP-MaxProp), chaque nœud n'émet que ses
+; probabilités de rencontre directes (complexité O(N) au lieu de O(N^2)).
+; ------------------------------------------------------------------------------
+prob-vector-payload = {
+    1 => probabilities: { * tstr => float }, ; Map: destination EID => probabilité [0.0 - 1.0]
+    ? 2 => total-encounters: uint            ; Nombre total de rencontres enregistrées
+}
+
+; ------------------------------------------------------------------------------
+; 2. CLEARED LIST : Liste des bundles livrés (Distribution des ACKs)
+; Permet à tous les relais intermédiaires d'évacuer immédiatement les répliques
+; devenues inutiles de leur mémoire tampon.
+; ------------------------------------------------------------------------------
+cleared-list-payload = {
+    1 => cleared-bundle-ids: [ * canonical-bundle-id ]
+}
+
+canonical-bundle-id = [
+    source-eid: tstr,
+    creation-time: uint,
+    sequence-number: uint
+]
+
+; ------------------------------------------------------------------------------
+; 3. MESSAGE COMBINÉ (Optimisation pour canaux radio contraints)
+; Fusionne les probabilités et la cleared list dans un seul bundle CBOR.
+; ------------------------------------------------------------------------------
+combined-payload = {
+    1 => prob-vector: prob-vector-payload,
+    2 => cleared-list: cleared-list-payload
+}
+
+; ------------------------------------------------------------------------------
+; 4. Métadonnées d'Ordonnancement et d'Éviction du Buffer (Contexte OPA)
+; Modélise l'état calculé pour l'évaluation dans input.bundle et input.node.
+; ------------------------------------------------------------------------------
+maxprop-bundle-evaluation = {
+    canonical-id: canonical-bundle-id,
+    hop-count: uint,
+    destination-eid: tstr,
+    dijkstra-cost: float,                   ; Somme des -log(P + epsilon) sur le chemin
+    sorting-cost: float,                    ; dijkstra-cost + (0.01 * hop-count)
+    is-cleared: bool                        ; True si présent dans la cleared list
+}
