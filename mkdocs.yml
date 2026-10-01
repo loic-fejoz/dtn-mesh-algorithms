@@ -1,6 +1,6 @@
-site_name: DTN Mesh Algorithm
+site_name: DTN Mesh Algorithms
 site_description: Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7) sous OPA
-site_author: Loïc & DTN Mesh Algorithm Team
+site_author: Loïc Fejoz
 site_url: https://loic-fejoz.github.io/sdtn/
 
 theme:

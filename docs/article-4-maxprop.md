@@ -1,14 +1,6 @@
 # Article 4 — Routage Probabiliste et Gestion de Mémoire sous Contrainte : MaxProp et ses Optimisations Théoriques (HP-MaxProp)
 
-> **Série :** *Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7)*  
-> **Articles précédents :**  
-> - [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](./article-0-intro.md)  
-> - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)](./article-1-aprs.md)  
-> - [Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic](./article-2-flood.md)  
-> - [Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET (RFC 6693) sous Open Policy Agent](./article-3-prophet.md)  
 > **Articles suivants :**  
-> - [Article 5 — Routage Hybride, Vecteur de Distance et Adressage Cryptographique : Reticulum (RNS) transposé en DTN](./article-5-reticulum.md)  
-> - [Article 6 — Réseaux Maillés Proactifs et Hybridation MANET-DTN : AREDN, Babel (RFC 8966) et l'Architecture HYMAD sous Open Policy Agent](./article-6-babel-aredn.md)  
 > **Spécifications CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl) & [maxprop.cddl](./maxprop.cddl)  
 > **Code des politiques :** [policies/maxprop/](./policies/maxprop/) ([ingress.rego](./policies/maxprop/ingress.rego), [contact.rego](./policies/maxprop/contact.rego), [storage.rego](./policies/maxprop/storage.rego), [helpers.rego](./policies/maxprop/helpers.rego), [constants.rego](./policies/maxprop/constants.rego), [maxprop_test.rego](./policies/maxprop/maxprop_test.rego))
 

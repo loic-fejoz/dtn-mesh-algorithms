@@ -1,9 +1,5 @@
 # Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic
 
-> **Série :** *Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7)*  
-> **Articles précédents :**  
-> - [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](./article-0-intro.md)  
-> - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)](./article-1-aprs.md)  
 > **Spécification CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl)  
 > **Code des politiques :** [policies/flood/](./policies/flood/) ([ingress.rego](./policies/flood/ingress.rego), [contact.rego](./policies/flood/contact.rego), [helpers.rego](./policies/flood/helpers.rego), [constants.rego](./policies/flood/constants.rego), [flood_test.rego](./policies/flood/flood_test.rego))
 

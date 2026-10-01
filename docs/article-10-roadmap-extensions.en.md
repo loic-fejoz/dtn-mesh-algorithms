@@ -1,18 +1,5 @@
 # Article 10 — Perspectives and Extension Roadmap: Towards a Panoramic View of DTN Routing and Control Plane Evolution
 
-> **Authors:** DTN & Ad-Hoc Mesh Systems Research Team  
-> **Technical Series:** Transposing Mesh & Opportunistic Algorithms to Bundle Protocol v7 (BPv7)  
-> **Previous Articles:**  
-> - [Article 0 — Foundations of DTN Routing with Open Policy Agent](./article-0-intro.en.md)  
-> - [Article 1 — Transposing APRS Digipeating (AX.25 WIDE n-N) to DTN](./article-1-aprs.en.md)  
-> - [Article 2 — Taming Flooding in DTN: Spray and Wait & Meshtastic](./article-2-flood.en.md)  
-> - [Article 3 — Opportunistic Routing and History of Encounters: PRoPHET](./article-3-prophet.en.md)  
-> - [Article 4 — Probabilistic Routing and Buffer Scheduling: MaxProp & HP-MaxProp](./article-4-maxprop.en.md)  
-> - [Article 5 — Hybrid Routing, Distance Vector, and Cryptographic Addressing: Reticulum](./article-5-reticulum.en.md)  
-> - [Article 6 — Proactive Mesh Networks and MANET-DTN Hybrids: AREDN & Babel](./article-6-babel-aredn.en.md)  
-> - [Article 7 — Deterministic Space Routing: Contact Graph Routing (CGR / SABR)](./article-7-cgr.en.md)  
-> - [Article 8 — Geographic Routing and Geocasting in DTN: GeoDTN](./article-8-geodtn.en.md)  
-> - [Article 9 — Architectural Synthesis: Policy-Driven DTN Routing with OPA](./article-9-synthese-architecture.en.md)  
 > **CDDL Specifications:** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl), [maxprop.cddl](./maxprop.cddl), [reticulum.cddl](./reticulum.cddl), [babel.cddl](./babel.cddl), [cgr.cddl](./cgr.cddl)
 
 > ℹ️ **Editorial Transparency Note (EU AI Act Alignment):** This article was generated with AI assistance under the editorial direction and structuring of a human author, who assumes responsibility for its technical review, verification, and content (ongoing proofreading).

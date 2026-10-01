@@ -75,6 +75,10 @@ jobs:
           chmod +x scripts/prepare_docs.sh
           bash scripts/prepare_docs.sh
 
+      - name: Verify Documentation Links
+        run: |
+          python scripts/verify_links.py
+
       - name: Build Documentation Site
         run: |
           mkdocs build --strict

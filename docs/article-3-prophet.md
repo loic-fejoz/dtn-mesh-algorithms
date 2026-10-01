@@ -1,10 +1,5 @@
 # Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET (RFC 6693) sous Open Policy Agent
 
-> **Série :** *Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7)*  
-> **Articles précédents :**  
-> - [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](./article-0-intro.md)  
-> - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)](./article-1-aprs.md)  
-> - [Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic](./article-2-flood.md)  
 > **Spécifications CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl) & [prophet.cddl](./prophet.cddl)  
 > **Code des politiques :** [policies/prophet/](./policies/prophet/) ([ingress.rego](./policies/prophet/ingress.rego), [contact.rego](./policies/prophet/contact.rego), [storage.rego](./policies/prophet/storage.rego), [helpers.rego](./policies/prophet/helpers.rego), [constants.rego](./policies/prophet/constants.rego), [prophet_test.rego](./policies/prophet/prophet_test.rego))
 

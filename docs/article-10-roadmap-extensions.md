@@ -1,18 +1,5 @@
 # Article 10 — Perspectives et Roadmap d'Extension : Vers une Vision Panoramique du Routage DTN et l'Évolution Extensible du Plan de Contrôle
 
-> **Auteurs :** Équipe de Recherche DTN & Systèmes Maillés Ad-Hoc  
-> **Série technique :** Transposition des Algorithmes Mesh & Opportunistes vers le Bundle Protocol v7 (BPv7)  
-> **Articles précédents :**  
-> - [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](./article-0-intro.md)  
-> - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN](./article-1-aprs.md)  
-> - [Article 2 — Dompter l'Inondation en DTN : Spray and Wait et Meshtastic](./article-2-flood.md)  
-> - [Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET](./article-3-prophet.md)  
-> - [Article 4 — Routage Probabiliste et Ordonnancement de Buffer : MaxProp & HP-MaxProp](./article-4-maxprop.md)  
-> - [Article 5 — Routage Hybride, Vecteur de Distance et Adressage Cryptographique : Reticulum](./article-5-reticulum.md)  
-> - [Article 6 — Réseaux Maillés Proactifs et Hybridation MANET-DTN : AREDN & Babel](./article-6-babel-aredn.md)  
-> - [Article 7 — Routage Déterministe Spatial : Contact Graph Routing (CGR / SABR)](./article-7-cgr.md)  
-> - [Article 8 — Routage Géographique et Geocasting en DTN : GeoDTN](./article-8-geodtn.md)  
-> - [Article 9 — Synthèse Architecturale : Routage DTN Piloté par Politiques OPA](./article-9-synthese-architecture.md)  
 > **Spécifications CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl), [maxprop.cddl](./maxprop.cddl), [reticulum.cddl](./reticulum.cddl), [babel.cddl](./babel.cddl), [cgr.cddl](./cgr.cddl)
 
 > ℹ️ **Transparence Éditoriale (Conformité EU AI Act) :** Cet article a été rédigé avec l'assistance d'une IA sous la direction éditoriale et la structuration d'un auteur humain, qui en assure la relecture, la vérification technique et la responsabilité du contenu (relecture en cours).

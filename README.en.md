@@ -1,5 +1,8 @@
 # DTN Mesh Algorithm: Transposing Mesh & Opportunistic Routing Algorithms to DTN (BPv7)
 
+> 🇬🇧 📖 **Online Documentation:** Read the full study, interactive articles, and complete documentation at **[w.fejoz.net/dtn-mesh-algorithms/en/](http://w.fejoz.net/dtn-mesh-algorithms/en/)**.
+> 🇫🇷 📖 **Documentation en ligne :** Retrouvez l'intégralité de cette étude, ses articles interactifs et sa documentation complète sur **[w.fejoz.net/dtn-mesh-algorithms/](http://w.fejoz.net/dtn-mesh-algorithms/)**.
+
 > ℹ️ **Editorial Transparency Note (EU AI Act Alignment):** This article was generated with AI assistance under the editorial direction and structuring of a human author, who assumes responsibility for its technical review, verification, and content (ongoing proofreading).
 
 This research and experimentation project aims to explore the transposition, adaptation, and unification of routing algorithms from diverse domains (ad-hoc mesh networks, tactical networks, amateur radio, LPWAN/IoT protocols, and academic DTN literature) within the **DTN (Delay/Disruption Tolerant Networking)** architecture based on the **Bundle Protocol version 7 ([RFC 9171](https://www.rfc-editor.org/rfc/rfc9171.html))**.

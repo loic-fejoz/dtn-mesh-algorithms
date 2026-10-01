@@ -7,11 +7,7 @@ ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 echo "=== Preparing documentation build in ${ROOT_DIR}/docs ==="
 
-# 1. Copy README landing pages to docs/index.md and docs/index.en.md
-cp "${ROOT_DIR}/README.md" "${ROOT_DIR}/docs/index.md"
-cp "${ROOT_DIR}/README.en.md" "${ROOT_DIR}/docs/index.en.md"
-
-# 2. Copy CDDL files to docs/ so MkDocs includes them in navigation
+# 1. Copy CDDL files to docs/ so MkDocs includes them in navigation
 for cddl_file in "${ROOT_DIR}"/*.cddl; do
   if [ -f "${cddl_file}" ]; then
     cp "${cddl_file}" "${ROOT_DIR}/docs/"

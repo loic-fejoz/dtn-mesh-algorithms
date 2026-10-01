@@ -1,13 +1,5 @@
 # Article 6 — Proactive Mesh Networks and MANET-DTN Hybrids: AREDN, Babel (RFC 8966), and the HYMAD Architecture under Open Policy Agent
 
-> **Series:** *Transposing Mesh & Opportunistic Routing Algorithms to DTN (BPv7)*  
-> **Previous Articles:**  
-> - [Article 0 — The Foundations of DTN Routing with Open Policy Agent](./article-0-intro.en.md)  
-> - [Article 1 — Transposing APRS Digipeating (AX.25 WIDE n-N) to DTN (BPv7)](./article-1-aprs.en.md)  
-> - [Article 2 — Taming Flooding in DTN: From Epidemic to Spray and Wait and Meshtastic Managed Flooding](./article-2-flood.en.md)  
-> - [Article 3 — Opportunistic Routing and Encounter History: PRoPHET (RFC 6693) under Open Policy Agent](./article-3-prophet.en.md)  
-> - [Article 4 — Probabilistic Routing and Resource-Constrained Buffer Management: MaxProp and its Theoretical Optimizations (HP-MaxProp)](./article-4-maxprop.en.md)  
-> - [Article 5 — Hybrid Routing, Distance-Vector, and Cryptographic Addressing: Reticulum (RNS) Transposed to DTN](./article-5-reticulum.en.md)  
 > **CDDL Specifications:** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl), [reticulum.cddl](./reticulum.cddl) & [babel.cddl](./babel.cddl)  
 > **Policy Code:** [policies/babel/](./policies/babel/) ([ingress.rego](./policies/babel/ingress.rego), [contact.rego](./policies/babel/contact.rego), [storage.rego](./policies/babel/storage.rego), [helpers.rego](./policies/babel/helpers.rego), [constants.rego](./policies/babel/constants.rego), [babel_test.rego](./policies/babel/babel_test.rego))
 

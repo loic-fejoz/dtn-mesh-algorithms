@@ -1,9 +1,6 @@
 # Article 2 — Taming Flooding in DTN: From Epidemic to Spray and Wait and Meshtastic Managed Flooding
 
-> **Series:** *Porting Mesh & Opportunistic Routing Algorithms to DTN (BPv7)*  
 > **Previous articles:**  
-> - [Article 0 — Foundations of DTN Routing with Open Policy Agent](./article-0-intro.en.md)  
-> - [Article 1 — Porting APRS Digipeating (AX.25 WIDE n-N) to DTN (BPv7)](./article-1-aprs.en.md)  
 > **CDDL Specification:** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl)  
 > **Policy Code:** [policies/flood/](./policies/flood/) ([ingress.rego](./policies/flood/ingress.rego), [contact.rego](./policies/flood/contact.rego), [helpers.rego](./policies/flood/helpers.rego), [constants.rego](./policies/flood/constants.rego), [flood_test.rego](./policies/flood/flood_test.rego))
 

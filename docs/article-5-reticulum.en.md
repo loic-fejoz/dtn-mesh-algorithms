@@ -1,14 +1,5 @@
 # Article 5 — Hybrid Routing, Distance-Vector, and Cryptographic Addressing: Reticulum (RNS) Transposed to DTN
 
-> **Series:** *Transposing Mesh & Opportunistic Routing Algorithms to DTN (BPv7)*  
-> **Previous Articles:**  
-> - [Article 0 — The Foundations of DTN Routing with Open Policy Agent](./article-0-intro.en.md)  
-> - [Article 1 — Transposing APRS Digipeating (AX.25 WIDE n-N) to DTN (BPv7)](./article-1-aprs.en.md)  
-> - [Article 2 — Taming Flooding in DTN: From Epidemic to Spray and Wait and Meshtastic Managed Flooding](./article-2-flood.en.md)  
-> - [Article 3 — Opportunistic Routing and Encounter History: PRoPHET (RFC 6693) under Open Policy Agent](./article-3-prophet.en.md)  
-> - [Article 4 — Probabilistic Routing and Resource-Constrained Buffer Management: MaxProp and its Theoretical Optimizations (HP-MaxProp)](./article-4-maxprop.en.md)  
-> **Next Article:**  
-> - [Article 6 — Proactive Mesh Networks and MANET-DTN Hybrids: AREDN, Babel (RFC 8966), and the HYMAD Architecture under Open Policy Agent](./article-6-babel-aredn.en.md)  
 > **CDDL Specifications:** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl) & [reticulum.cddl](./reticulum.cddl)  
 > **Policy Code:** [policies/reticulum/](./policies/reticulum/) ([ingress.rego](./policies/reticulum/ingress.rego), [contact.rego](./policies/reticulum/contact.rego), [storage.rego](./policies/reticulum/storage.rego), [helpers.rego](./policies/reticulum/helpers.rego), [constants.rego](./policies/reticulum/constants.rego), [reticulum_test.rego](./policies/reticulum/reticulum_test.rego))
 

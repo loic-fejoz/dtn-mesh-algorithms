@@ -1,7 +1,5 @@
 # Article 0 — Les Fondations du Routage DTN avec Open Policy Agent : Cycle de Vie, Hop Limit et Expiration
 
-> **Série :** *Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7)*  
-> **Auteur :** Recherche & Ingénierie DTN Mesh  
 > **Code associé :** [policies/](./policies) ([ingress.rego](./policies/ingress.rego), [storage.rego](./policies/storage.rego), [contact.rego](./policies/contact.rego), [helpers.rego](./policies/helpers.rego), [dtn_constants.rego](./policies/dtn_constants.rego))
 
 > ℹ️ **Transparence Éditoriale (Conformité EU AI Act) :** Cet article a été rédigé avec l'assistance d'une IA sous la direction éditoriale et la structuration d'un auteur humain, qui en assure la relecture, la vérification technique et la responsabilité du contenu (relecture en cours).

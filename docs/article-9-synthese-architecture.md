@@ -1,17 +1,5 @@
 # Article 9 — Synthèse Architecturale : Routage DTN Piloté par Politiques OPA, Bloc d'Extension Modulaire et Unification du Plan de Contrôle
 
-> **Auteurs :** Équipe de Recherche DTN & Systèmes Maillés Ad-Hoc  
-> **Série technique :** Transposition des Algorithmes Mesh & Opportunistes vers le Bundle Protocol v7 (BPv7)  
-> **Articles précédents :**  
-> - [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](./article-0-intro.md)  
-> - [Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN](./article-1-aprs.md)  
-> - [Article 2 — Dompter l'Inondation en DTN : Spray and Wait et Meshtastic](./article-2-flood.md)  
-> - [Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET](./article-3-prophet.md)  
-> - [Article 4 — Routage Probabiliste et Ordonnancement de Buffer : MaxProp & HP-MaxProp](./article-4-maxprop.md)  
-> - [Article 5 — Routage Hybride, Vecteur de Distance et Adressage Cryptographique : Reticulum](./article-5-reticulum.md)  
-> - [Article 6 — Réseaux Maillés Proactifs et Hybridation MANET-DTN : AREDN & Babel](./article-6-babel-aredn.md)  
-> - [Article 7 — Routage Déterministe Spatial : Contact Graph Routing (CGR / SABR)](./article-7-cgr.md)  
-> - [Article 8 — Routage Géographique et Geocasting en DTN : GeoDTN](./article-8-geodtn.md)  
 > **Spécifications CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl), [maxprop.cddl](./maxprop.cddl), [reticulum.cddl](./reticulum.cddl), [babel.cddl](./babel.cddl), [cgr.cddl](./cgr.cddl)  
 > **Code des politiques :** [policies/](./policies/) (140 tests unitaires OPA validés)
 
@@ -360,7 +348,7 @@ Le brouillon actif **`draft-ietf-dtn-bp-sand`** représente une avancée majeure
 Il existe une correspondance presque terme à terme entre les objectifs de `bp-sand` et notre architecture :
 - `bp-sand` standardise l'échange bilatéral de métriques physiques (qualité de lien, débits disponibles, voisinage à un saut).
 - Dans notre modèle, ces données constituent précisément la matière première injectée dans l'objet `input.contact` et `input.neighbors` d'OPA !
-- La réconciliation de contrôle proposée à la Section 3 ([`unified-mesh-control`](#modélisation-cddl-dun-plan-de-contrôle-unifié)) fournit une implémentation concrète et compacte en CBOR directement compatible avec l'esprit de `bp-sand`.
+- La réconciliation de contrôle proposée à la Section 3 ([`unified-mesh-control`](#modelisation-cddl-dun-plan-de-controle-unifie)) fournit une implémentation concrète et compacte en CBOR directement compatible avec l'esprit de `bp-sand`.
 
 ### 6.3. `draft-burleigh-dtn-ecos` (Extended Class of Service)
 

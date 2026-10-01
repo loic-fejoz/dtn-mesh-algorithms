@@ -1,7 +1,5 @@
 # Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7) avec Open Policy Agent
 
-> **Série :** *Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7)*  
-> **Article précédent :** [Article 0 — Les Fondations du Routage DTN avec Open Policy Agent](./article-0-intro.md)  
 > **Spécification CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl)  
 > **Code des politiques :** [policies/aprs/](./policies/aprs/) ([ingress.rego](./policies/aprs/ingress.rego), [contact.rego](./policies/aprs/contact.rego), [helpers.rego](./policies/aprs/helpers.rego), [constants.rego](./policies/aprs/constants.rego), [aprs_test.rego](./policies/aprs/aprs_test.rego))
 
