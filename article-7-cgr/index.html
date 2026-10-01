@@ -9,7 +9,7 @@
         <meta name="description" content="Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7) sous OPA">
       
       
-        <meta name="author" content="Loïc & DTN Mesh Algorithm Team">
+        <meta name="author" content="Loïc Fejoz">
       
       
         <link rel="canonical" href="https://loic-fejoz.github.io/sdtn/article-7-cgr/">
@@ -29,7 +29,7 @@
     
     
       
-        <title>Art. 7 — CGR / SABR (CCSDS 734.3-B-1) - DTN Mesh Algorithm</title>
+        <title>Art. 7 — CGR / SABR (CCSDS 734.3-B-1) - DTN Mesh Algorithms</title>
       
     
     
@@ -94,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="En-tête">
-    <a href=".." title="DTN Mesh Algorithm" class="md-header__button md-logo" aria-label="DTN Mesh Algorithm" data-md-component="logo">
+    <a href=".." title="DTN Mesh Algorithms" class="md-header__button md-logo" aria-label="DTN Mesh Algorithms" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +108,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            DTN Mesh Algorithm
+            DTN Mesh Algorithms
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -333,13 +333,13 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="DTN Mesh Algorithm" class="md-nav__button md-logo" aria-label="DTN Mesh Algorithm" data-md-component="logo">
+    <a href=".." title="DTN Mesh Algorithms" class="md-nav__button md-logo" aria-label="DTN Mesh Algorithms" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    DTN Mesh Algorithm
+    DTN Mesh Algorithms
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1920,16 +1920,7 @@
 
 <h1 id="article-7-le-routage-deterministe-spatial-contact-graph-routing-cgr-sabr-ccsds-7343-b-1-sous-open-policy-agent">Article 7 — Le Routage Déterministe Spatial : Contact Graph Routing (CGR / SABR - CCSDS 734.3-B-1) sous Open Policy Agent<a class="headerlink" href="#article-7-le-routage-deterministe-spatial-contact-graph-routing-cgr-sabr-ccsds-7343-b-1-sous-open-policy-agent" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Série :</strong> <em>Transposition d'algorithmes de routage mesh &amp; opportunistes vers DTN (BPv7)</em><br />
-<strong>Articles précédents :</strong><br />
-- <a href="../article-0-intro/">Article 0 — Les Fondations du Routage DTN avec Open Policy Agent</a><br />
-- <a href="../article-1-aprs/">Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)</a><br />
-- <a href="../article-2-flood/">Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic</a><br />
-- <a href="../article-3-prophet/">Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET (RFC 6693) sous Open Policy Agent</a><br />
-- <a href="../article-4-maxprop/">Article 4 — Routage Probabiliste et Gestion de Mémoire sous Contrainte : MaxProp et ses Optimisations Théoriques (HP-MaxProp)</a><br />
-- <a href="../article-5-reticulum/">Article 5 — Routage Hybride, Vecteur de Distance et Adressage Cryptographique : Reticulum (RNS) transposé en DTN</a><br />
-- <a href="../article-6-babel-aredn/">Article 6 — Réseaux Maillés Proactifs et Hybridation MANET-DTN : AREDN, Babel (RFC 8966) et l'Architecture HYMAD sous Open Policy Agent</a><br />
-<strong>Spécifications CDDL :</strong> <a href="../mesh-algo-extension-block.cddl">mesh-algo-extension-block.cddl</a>, <a href="../prophet.cddl">prophet.cddl</a>, <a href="../maxprop.cddl">maxprop.cddl</a>, <a href="../reticulum.cddl">reticulum.cddl</a>, <a href="../babel.cddl">babel.cddl</a> &amp; <a href="../cgr.cddl">cgr.cddl</a><br />
+<p><strong>Spécifications CDDL :</strong> <a href="../mesh-algo-extension-block.cddl">mesh-algo-extension-block.cddl</a>, <a href="../prophet.cddl">prophet.cddl</a>, <a href="../maxprop.cddl">maxprop.cddl</a>, <a href="../reticulum.cddl">reticulum.cddl</a>, <a href="../babel.cddl">babel.cddl</a> &amp; <a href="../cgr.cddl">cgr.cddl</a><br />
 <strong>Code des politiques :</strong> <a href="./policies/cgr/">policies/cgr/</a> (<a href="../policies/cgr/ingress.rego">ingress.rego</a>, <a href="../policies/cgr/contact.rego">contact.rego</a>, <a href="../policies/cgr/storage.rego">storage.rego</a>, <a href="../policies/cgr/helpers.rego">helpers.rego</a>, <a href="../policies/cgr/constants.rego">constants.rego</a>, <a href="../policies/cgr/cgr_test.rego">cgr_test.rego</a>)</p>
 <p>ℹ️ <strong>Transparence Éditoriale (Conformité EU AI Act) :</strong> Cet article a été rédigé avec l'assistance d'une IA sous la direction éditoriale et la structuration d'un auteur humain, qui en assure la relecture, la vérification technique et la responsabilité du contenu (relecture en cours).</p>
 </blockquote>

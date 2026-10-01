@@ -9,7 +9,7 @@
         <meta name="description" content="Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7) sous OPA">
       
       
-        <meta name="author" content="Loïc & DTN Mesh Algorithm Team">
+        <meta name="author" content="Loïc Fejoz">
       
       
         <link rel="canonical" href="https://loic-fejoz.github.io/sdtn/article-9-synthese-architecture/">
@@ -29,7 +29,7 @@
     
     
       
-        <title>Art. 9 — Synthèse Architecturale - DTN Mesh Algorithm</title>
+        <title>Art. 9 — Synthèse Architecturale - DTN Mesh Algorithms</title>
       
     
     
@@ -94,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="En-tête">
-    <a href=".." title="DTN Mesh Algorithm" class="md-header__button md-logo" aria-label="DTN Mesh Algorithm" data-md-component="logo">
+    <a href=".." title="DTN Mesh Algorithms" class="md-header__button md-logo" aria-label="DTN Mesh Algorithms" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +108,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            DTN Mesh Algorithm
+            DTN Mesh Algorithms
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -333,13 +333,13 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="DTN Mesh Algorithm" class="md-nav__button md-logo" aria-label="DTN Mesh Algorithm" data-md-component="logo">
+    <a href=".." title="DTN Mesh Algorithms" class="md-nav__button md-logo" aria-label="DTN Mesh Algorithms" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    DTN Mesh Algorithm
+    DTN Mesh Algorithms
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -2232,19 +2232,7 @@
 
 <h1 id="article-9-synthese-architecturale-routage-dtn-pilote-par-politiques-opa-bloc-dextension-modulaire-et-unification-du-plan-de-controle">Article 9 — Synthèse Architecturale : Routage DTN Piloté par Politiques OPA, Bloc d'Extension Modulaire et Unification du Plan de Contrôle<a class="headerlink" href="#article-9-synthese-architecturale-routage-dtn-pilote-par-politiques-opa-bloc-dextension-modulaire-et-unification-du-plan-de-controle" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Auteurs :</strong> Équipe de Recherche DTN &amp; Systèmes Maillés Ad-Hoc<br />
-<strong>Série technique :</strong> Transposition des Algorithmes Mesh &amp; Opportunistes vers le Bundle Protocol v7 (BPv7)<br />
-<strong>Articles précédents :</strong><br />
-- <a href="../article-0-intro/">Article 0 — Les Fondations du Routage DTN avec Open Policy Agent</a><br />
-- <a href="../article-1-aprs/">Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN</a><br />
-- <a href="../article-2-flood/">Article 2 — Dompter l'Inondation en DTN : Spray and Wait et Meshtastic</a><br />
-- <a href="../article-3-prophet/">Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET</a><br />
-- <a href="../article-4-maxprop/">Article 4 — Routage Probabiliste et Ordonnancement de Buffer : MaxProp &amp; HP-MaxProp</a><br />
-- <a href="../article-5-reticulum/">Article 5 — Routage Hybride, Vecteur de Distance et Adressage Cryptographique : Reticulum</a><br />
-- <a href="../article-6-babel-aredn/">Article 6 — Réseaux Maillés Proactifs et Hybridation MANET-DTN : AREDN &amp; Babel</a><br />
-- <a href="../article-7-cgr/">Article 7 — Routage Déterministe Spatial : Contact Graph Routing (CGR / SABR)</a><br />
-- <a href="../article-8-geodtn/">Article 8 — Routage Géographique et Geocasting en DTN : GeoDTN</a><br />
-<strong>Spécifications CDDL :</strong> <a href="../mesh-algo-extension-block.cddl">mesh-algo-extension-block.cddl</a>, <a href="../prophet.cddl">prophet.cddl</a>, <a href="../maxprop.cddl">maxprop.cddl</a>, <a href="../reticulum.cddl">reticulum.cddl</a>, <a href="../babel.cddl">babel.cddl</a>, <a href="../cgr.cddl">cgr.cddl</a><br />
+<p><strong>Spécifications CDDL :</strong> <a href="../mesh-algo-extension-block.cddl">mesh-algo-extension-block.cddl</a>, <a href="../prophet.cddl">prophet.cddl</a>, <a href="../maxprop.cddl">maxprop.cddl</a>, <a href="../reticulum.cddl">reticulum.cddl</a>, <a href="../babel.cddl">babel.cddl</a>, <a href="../cgr.cddl">cgr.cddl</a><br />
 <strong>Code des politiques :</strong> <a href="./policies/">policies/</a> (140 tests unitaires OPA validés)</p>
 <p>ℹ️ <strong>Transparence Éditoriale (Conformité EU AI Act) :</strong> Cet article a été rédigé avec l'assistance d'une IA sous la direction éditoriale et la structuration d'un auteur humain, qui en assure la relecture, la vérification technique et la responsabilité du contenu (relecture en cours).</p>
 </blockquote>
@@ -2683,7 +2671,7 @@ Un builtin compilé en Rust ou en C exploitant un tas binaire (<em>min-heap prio
 <p>Il existe une correspondance presque terme à terme entre les objectifs de <code>bp-sand</code> et notre architecture :
 - <code>bp-sand</code> standardise l'échange bilatéral de métriques physiques (qualité de lien, débits disponibles, voisinage à un saut).
 - Dans notre modèle, ces données constituent précisément la matière première injectée dans l'objet <code>input.contact</code> et <code>input.neighbors</code> d'OPA !
-- La réconciliation de contrôle proposée à la Section 3 (<a href="#modélisation-cddl-dun-plan-de-contrôle-unifié"><code>unified-mesh-control</code></a>) fournit une implémentation concrète et compacte en CBOR directement compatible avec l'esprit de <code>bp-sand</code>.</p>
+- La réconciliation de contrôle proposée à la Section 3 (<a href="#modelisation-cddl-dun-plan-de-controle-unifie"><code>unified-mesh-control</code></a>) fournit une implémentation concrète et compacte en CBOR directement compatible avec l'esprit de <code>bp-sand</code>.</p>
 <h3 id="63-draft-burleigh-dtn-ecos-extended-class-of-service">6.3. <code>draft-burleigh-dtn-ecos</code> (Extended Class of Service)<a class="headerlink" href="#63-draft-burleigh-dtn-ecos-extended-class-of-service" title="Permanent link">&para;</a></h3>
 <p>Rédigé par Scott Burleigh (l'un des pionniers du DTN), le brouillon <strong><code>draft-burleigh-dtn-ecos</code></strong> propose d'étendre la sémantique de classe de service (QoS) du Primary Block de BPv7. Il introduit des paramètres d'acheminement préférentiel, d'urgence critique et de priorité de rétention mémoire.</p>
 <p>Dans notre série d'articles, nous avons démontré comment ces exigences sont gouvernées :

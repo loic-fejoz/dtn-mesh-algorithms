@@ -9,7 +9,7 @@
         <meta name="description" content="Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7) sous OPA">
       
       
-        <meta name="author" content="Loïc & DTN Mesh Algorithm Team">
+        <meta name="author" content="Loïc Fejoz">
       
       
         <link rel="canonical" href="https://loic-fejoz.github.io/sdtn/">
@@ -27,7 +27,7 @@
     
     
       
-        <title>🇫🇷 Accueil (FR) - DTN Mesh Algorithm</title>
+        <title>🇫🇷 Accueil (FR) - DTN Mesh Algorithms</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#dtn-mesh-algorithm-transposition-dalgorithmes-de-routage-mesh-opportunistes-vers-dtn-bpv7" class="md-skip">
+        <a href="#etude-darchitecture-routage-dtn-politiques-opportunistes-avec-opa" class="md-skip">
           Aller au contenu
         </a>
       
@@ -92,7 +92,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="En-tête">
-    <a href="." title="DTN Mesh Algorithm" class="md-header__button md-logo" aria-label="DTN Mesh Algorithm" data-md-component="logo">
+    <a href="." title="DTN Mesh Algorithms" class="md-header__button md-logo" aria-label="DTN Mesh Algorithms" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -106,7 +106,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            DTN Mesh Algorithm
+            DTN Mesh Algorithms
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -331,13 +331,13 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="DTN Mesh Algorithm" class="md-nav__button md-logo" aria-label="DTN Mesh Algorithm" data-md-component="logo">
+    <a href="." title="DTN Mesh Algorithms" class="md-nav__button md-logo" aria-label="DTN Mesh Algorithms" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    DTN Mesh Algorithm
+    DTN Mesh Algorithms
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -466,10 +466,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-objectifs-du-projet" class="md-nav__link">
+  <a href="#objectif-et-paradigme-de-letude" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Objectifs du projet
+        🚀 Objectif et Paradigme de l'Étude
       
     </span>
   </a>
@@ -477,138 +477,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-protocoles-a-letude" class="md-nav__link">
+  <a href="#sommaire-des-articles-de-la-serie" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Protocoles à l'étude
+        📚 Sommaire des Articles de la Série
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="2. Protocoles à l&#39;étude">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-protocoles-proposes-initialement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A. Protocoles proposés initialement
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-protocoles-recommandes-en-complement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        B. Protocoles recommandés en complément
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-bundle-block-types-a-exploiter-et-a-concevoir" class="md-nav__link">
+  <a href="#specifications-cddl-politiques-rego" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Bundle Block Types à exploiter et à concevoir
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Bundle Block Types à exploiter et à concevoir">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-blocs-bpv7-standards-et-brouillons-ietf-a-mobiliser" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A. Blocs BPv7 standards et brouillons IETF à mobiliser
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-le-bloc-dextension-generique-modulaire-mesh-algo-extension-blockcddl" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        B. Le Bloc d'Extension Générique Modulaire (mesh-algo-extension-block.cddl)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-modelisation-et-prise-de-decision-via-open-policy-agent-opa" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Modélisation et prise de décision via Open Policy Agent (OPA)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="4. Modélisation et prise de décision via Open Policy Agent (OPA)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-architecture-de-decouplage-opa-moteur-dtn" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A. Architecture de découplage OPA / Moteur DTN
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-informations-requises-en-entree-dopa-input" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        B. Informations requises en entrée d'OPA (input)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-actions-retournees-par-opa-output" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        C. Actions retournées par OPA (output)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-feuille-de-route-et-livrables" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Feuille de route et livrables
+        🛠️ Spécifications CDDL &amp; Politiques Rego
       
     </span>
   </a>
@@ -1762,10 +1645,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-objectifs-du-projet" class="md-nav__link">
+  <a href="#objectif-et-paradigme-de-letude" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Objectifs du projet
+        🚀 Objectif et Paradigme de l'Étude
       
     </span>
   </a>
@@ -1773,138 +1656,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-protocoles-a-letude" class="md-nav__link">
+  <a href="#sommaire-des-articles-de-la-serie" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Protocoles à l'étude
+        📚 Sommaire des Articles de la Série
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="2. Protocoles à l&#39;étude">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-protocoles-proposes-initialement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A. Protocoles proposés initialement
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-protocoles-recommandes-en-complement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        B. Protocoles recommandés en complément
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-bundle-block-types-a-exploiter-et-a-concevoir" class="md-nav__link">
+  <a href="#specifications-cddl-politiques-rego" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Bundle Block Types à exploiter et à concevoir
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Bundle Block Types à exploiter et à concevoir">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-blocs-bpv7-standards-et-brouillons-ietf-a-mobiliser" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A. Blocs BPv7 standards et brouillons IETF à mobiliser
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-le-bloc-dextension-generique-modulaire-mesh-algo-extension-blockcddl" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        B. Le Bloc d'Extension Générique Modulaire (mesh-algo-extension-block.cddl)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-modelisation-et-prise-de-decision-via-open-policy-agent-opa" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Modélisation et prise de décision via Open Policy Agent (OPA)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="4. Modélisation et prise de décision via Open Policy Agent (OPA)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-architecture-de-decouplage-opa-moteur-dtn" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A. Architecture de découplage OPA / Moteur DTN
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-informations-requises-en-entree-dopa-input" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        B. Informations requises en entrée d'OPA (input)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-actions-retournees-par-opa-output" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        C. Actions retournées par OPA (output)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-feuille-de-route-et-livrables" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Feuille de route et livrables
+        🛠️ Spécifications CDDL &amp; Politiques Rego
       
     </span>
   </a>
@@ -1928,310 +1694,87 @@
 
 
 
-<p>🌐 <strong>English version:</strong> <a href="index.en/">Read in English</a></p>
-<h1 id="dtn-mesh-algorithm-transposition-dalgorithmes-de-routage-mesh-opportunistes-vers-dtn-bpv7">DTN Mesh Algorithm: Transposition d'algorithmes de routage mesh &amp; opportunistes vers DTN (BPv7)<a class="headerlink" href="#dtn-mesh-algorithm-transposition-dalgorithmes-de-routage-mesh-opportunistes-vers-dtn-bpv7" title="Permanent link">&para;</a></h1>
+<h1 id="etude-darchitecture-routage-dtn-politiques-opportunistes-avec-opa">Étude d'Architecture : Routage DTN &amp; Politiques Opportunistes avec OPA<a class="headerlink" href="#etude-darchitecture-routage-dtn-politiques-opportunistes-avec-opa" title="Permanent link">&para;</a></h1>
+<p>Bienvenue sur le portail de documentation dédié à l'étude d'architecture et de modélisation de la transposition d'algorithmes de routage opportunistes et maillés vers le <strong>Bundle Protocol v7 (BPv7 - RFC 9171)</strong> via des politiques déclaratives <strong>Open Policy Agent (OPA)</strong> et le langage de schéma <strong>CDDL (RFC 8610)</strong>.</p>
 <blockquote>
+<p>📖 <strong>Dépôt GitHub du Projet :</strong> <a href="https://github.com/loic-fejoz/dtn-mesh-algorithms">github.com/loic-fejoz/dtn-mesh-algorithms</a></p>
 <p>ℹ️ <strong>Transparence Éditoriale (Conformité EU AI Act) :</strong> Cet article a été rédigé avec l'assistance d'une IA sous la direction éditoriale et la structuration d'un auteur humain, qui en assure la relecture, la vérification technique, et la responsabilité du contenu (relecture en cours).</p>
 </blockquote>
-<p>Ce projet de recherche et d'expérimentation vise à explorer la transposition, l'adaptation et l'unification d'algorithmes de routage issus de divers horizons (réseaux maillés ad-hoc, réseaux tactiques, radioamateurs, protocoles LPWAN/IoT et littérature DTN académique) au sein de l'architecture <strong>DTN (Delay/Disruption Tolerant Networking)</strong> basée sur le <strong>Bundle Protocol version 7 (<a href="https://www.rfc-editor.org/rfc/rfc9171.html">RFC 9171</a>)</strong>.</p>
-<p>Le projet sert de socle pour des réflexions théoriques, des spécifications d'extensions de blocs (<a href="BUNDLE-BLOCK-TYPE/">BUNDLE-BLOCK-TYPE.md</a>), des modélisations de politiques de routage via <strong>Open Policy Agent (OPA / Rego)</strong>, ainsi qu'une série d'articles de blog techniques et d'implémentations de référence.</p>
 <hr />
-<h2 id="1-objectifs-du-projet">1. Objectifs du projet<a class="headerlink" href="#1-objectifs-du-projet" title="Permanent link">&para;</a></h2>
-<ol>
-<li><strong>Cartographier et analyser les algorithmes de routage hétérogènes :</strong></li>
-<li>Identifier les paradigmes fondamentaux : inondation contrôlée (<em>flooding</em>), vecteur de distance, état de liens, routage opportuniste/probabiliste, routage par contact programmé, routage à la source et routage géographique.</li>
-<li>
-<p>Analyser comment ces approches gèrent les ruptures de liens, la mémoire tampon (<em>buffer management</em>), l'énergie et la bande passante contrainte.</p>
-</li>
-<li>
-<p><strong>Transposer ces protocoles sur le Bundle Protocol v7 (BPv7) :</strong></p>
-</li>
-<li>Mapper les primitives protocolaires spécifiques sur les blocs standards et expérimentaux de BPv7.</li>
-<li>
-<p>Concevoir et spécifier de nouveaux <strong>Bundle Block Types</strong> (plage expérimentale IANA <code>192–255</code>) pour encapsuler les métadonnées de routage requises (ex: quotas de réplication, chemins futurs WIDE-n-N, métriques de prédictibilité, coordonnées géographiques).</p>
-</li>
-<li>
-<p><strong>Évaluer et implémenter le routage piloté par politiques avec OPA (Open Policy Agent) :</strong></p>
-</li>
-<li>Découpler le moteur de transport DTN (gestion des CLA, du stockage et de l'encapsulation CBOR) de la logique de décision d'acheminement (<em>forwarding engine</em>).</li>
-<li>
-<p>Formaliser les règles de routage sous forme de règles déclaratives <strong>Rego</strong> alimentées par des contextes structurés (état du bundle, topologie locale, métriques radio, voisinage CLA).</p>
-</li>
-<li>
-<p><strong>Diffuser les résultats :</strong></p>
-</li>
-<li>Rédiger des articles de blog détaillant la modélisation mathématique/conceptuelle, le format CBOR des blocs et des démonstrateurs d'implémentation.</li>
-</ol>
-<hr />
-<h2 id="2-protocoles-a-letude">2. Protocoles à l'étude<a class="headerlink" href="#2-protocoles-a-letude" title="Permanent link">&para;</a></h2>
-<h3 id="a-protocoles-proposes-initialement">A. Protocoles proposés initialement<a class="headerlink" href="#a-protocoles-proposes-initialement" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Protocole</th>
-<th style="text-align: left;">Domaine d'origine</th>
-<th style="text-align: left;">Paradigme principal</th>
-<th style="text-align: left;">Caractéristiques clés</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Spray and Wait</strong></td>
-<td style="text-align: left;">Littérature DTN (Spyropoulos et al.)</td>
-<td style="text-align: left;">Opportuniste / Quota-based</td>
-<td style="text-align: left;">Phase <em>Spray</em> (distribution contrôlée de $L$ copies, normal ou binaire) puis phase <em>Wait</em> (livraison directe par les porteurs).</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>PRoPHET</strong></td>
-<td style="text-align: left;">RFC 6693 (DTNRG)</td>
-<td style="text-align: left;">Probabiliste / Historique</td>
-<td style="text-align: left;">Calcul d'une métrique d'acheminement probabiliste basée sur l'historique des rencontres, le vieillissement (<em>aging</em>) et la transitivité.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>HYMAD</strong></td>
-<td style="text-align: left;">Réseaux hybrides DTN-MANET</td>
-<td style="text-align: left;">Hybride multi-niveaux</td>
-<td style="text-align: left;">Découpage en groupes MANET locaux et routage DTN (ex: Spray and Wait) entre groupes disjoints.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>AREDN (Ancien : OLSRv1)</strong></td>
-<td style="text-align: left;">Radioamateur / Mesh Wi-Fi</td>
-<td style="text-align: left;">Proactif / État de liens</td>
-<td style="text-align: left;">Diffusion périodique d'états de liens optimisée par des relais multipoints (MPR - <em>Multi-Point Relays</em>).</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>AREDN (Nouveau : Babel)</strong></td>
-<td style="text-align: left;">Radioamateur / Mesh</td>
-<td style="text-align: left;">Vecteur de distance / Métriques mixtes</td>
-<td style="text-align: left;">Algorithme Bellman-Ford sans boucle (<a href="https://www.rfc-editor.org/rfc/rfc8966.html">RFC 8966</a>), gestion de métriques diverses (ETX, RTT, radio).</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Reticulum</strong></td>
-<td style="text-align: left;">Réseau résilient / Cryptographique</td>
-<td style="text-align: left;">Vecteur de distance / Annonces</td>
-<td style="text-align: left;">Adressage par hash cryptographique (16 octets), propagation d'annonces de destination (<em>Next Hop</em>), routage sans infrastructure centrale.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Meshtastic</strong></td>
-<td style="text-align: left;">Réseau LoRa mesh citoyen</td>
-<td style="text-align: left;">Inondation gérée (<em>Managed Flooding</em>)</td>
-<td style="text-align: left;">Déduplication par hash de paquet, décrément de hop-limit, temporisation de rediffusion pondérée par le SNR/canal.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>APRS (Digipeating AX.25)</strong></td>
-<td style="text-align: left;">Radioamateur</td>
-<td style="text-align: left;">Routage à la source &amp; Alias</td>
-<td style="text-align: left;">Inondation contrôlée avec consommation d'alias d'acheminement (<code>WIDE1-1</code>, <code>WIDE2-2</code>), traçabilité des nœuds traversés et suppression des boucles immédiates.</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="b-protocoles-recommandes-en-complement">B. Protocoles recommandés en complément<a class="headerlink" href="#b-protocoles-recommandes-en-complement" title="Permanent link">&para;</a></h3>
-<p>Afin d'obtenir une vision exhaustive des architectures de routage applicables au DTN, les protocoles suivants enrichissent l'étude :</p>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Protocole</th>
-<th style="text-align: left;">Domaine d'origine</th>
-<th style="text-align: left;">Paradigme principal</th>
-<th style="text-align: left;">Pourquoi l'intégrer ?</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Epidemic Routing</strong></td>
-<td style="text-align: left;">Littérature DTN fondatrice (Vahdat &amp; Becker)</td>
-<td style="text-align: left;">Inondation aveugle (<em>Full flooding</em>)</td>
-<td style="text-align: left;">Sert d'étalon supérieur (<em>upper bound</em>) en taux de livraison et de référence pour tester les limites de saturation de stockage/buffer.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Contact Graph Routing (CGR / SABR)</strong></td>
-<td style="text-align: left;">Spatial / CCSDS 734.3-B-1</td>
-<td style="text-align: left;">Déterministe planifié</td>
-<td style="text-align: left;">Le standard de facto du DTN spatial (NASA/ESA). Permet de comparer les approches purement opportunistes aux approches basées sur un calendrier de contacts (<em>contact plan</em>).</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>MaxProp</strong></td>
-<td style="text-align: left;">Réseaux véhiculaires DTN (Burgess et al.)</td>
-<td style="text-align: left;">Probabiliste + Priorisation de buffer</td>
-<td style="text-align: left;">Très efficace sous forte contrainte de mémoire. Priorise les bundles selon la probabilité de chemin restant, l'âge et le saut, avec échange de listes de paquets déjà livrés.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>B.A.T.M.A.N. (batman-adv)</strong></td>
-<td style="text-align: left;">Réseaux maillés communautaires (Freifunk)</td>
-<td style="text-align: left;">Vecteur de distance L2 distribué</td>
-<td style="text-align: left;">Détection d'originator (OGM) pour calculer la qualité des liens vers chaque nœud sans maintenir la topologie globale.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Geographic / Geocast DTN (ex: GeoDTN, GPSR-DTN)</strong></td>
-<td style="text-align: left;">Réseaux de capteurs / Ad-hoc mobiles</td>
-<td style="text-align: left;">Géographique / Position</td>
-<td style="text-align: left;">Décision de routage basée sur les coordonnées GPS relatives du nœud émetteur, du porteur et de la zone cible (ex: secours, urgence).</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Briar (Bramble Transport)</strong></td>
-<td style="text-align: left;">Messagerie sécurisée P2P / Hors-ligne</td>
-<td style="text-align: left;">Synchronisation de graphe / Epidemic local</td>
-<td style="text-align: left;">Routage et synchronisation de données chiffrées de proche en proche via Bluetooth, Wi-Fi local et Tor, avec transport agnostique.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Disaster Radio (Disaster Mesh)</strong></td>
-<td style="text-align: left;">Réseau de secours d'urgence</td>
-<td style="text-align: left;">Inondation LoRa allégée</td>
-<td style="text-align: left;">Protocole ultra-léger pour microcontrôleurs à faible mémoire, orienté résilience extrême lors de catastrophes naturelles.</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="3-bundle-block-types-a-exploiter-et-a-concevoir">3. Bundle Block Types à exploiter et à concevoir<a class="headerlink" href="#3-bundle-block-types-a-exploiter-et-a-concevoir" title="Permanent link">&para;</a></h2>
-<p>Pour implémenter ces comportements dans le respect de la spécification <strong>BPv7 (<a href="https://www.rfc-editor.org/rfc/rfc9171.html">RFC 9171</a>)</strong>, nous croisons les blocs standardisés avec de nouveaux blocs d'extension expérimentaux.</p>
-<p>Consulter l'état de l'art détaillé des blocs dans le document : <strong><a href="BUNDLE-BLOCK-TYPE/">BUNDLE-BLOCK-TYPE.md</a></strong>.</p>
-<div class="codehilite"><pre><span></span><code><span class="nb">+-----------------------------------------------------------------------+</span>
-<span class="c">|                             PRIMARY BLOCK                             |</span>
-<span class="c">|       (Source EID</span><span class="nt">,</span><span class="c"> Destination EID</span><span class="nt">,</span><span class="c"> Lifetime</span><span class="nt">,</span><span class="c"> Creation Timestamp)     |</span>
-<span class="nb">+-----------------------------------------------------------------------+</span>
-<span class="c">|  </span><span class="k">[</span><span class="c">Standard</span><span class="k">]</span><span class="c"> Hop Count Block (Type 10) / Bundle Age Block (Type 7)     |</span>
-<span class="nb">+-----------------------------------------------------------------------+</span>
-<span class="c">|  </span><span class="k">[</span><span class="c">IETF Draft</span><span class="k">]</span><span class="c"> Traceroute Block (TREB) </span><span class="nb">-</span><span class="nv">&gt;</span><span class="c"> Historique des sauts passés  |</span>
-<span class="nb">+-----------------------------------------------------------------------+</span>
-<span class="c">|  </span><span class="k">[</span><span class="c">Nouveau Bloc Proposé</span><span class="k">]</span><span class="c"> Route &amp; Path Control Block                    |</span>
-<span class="c">|   </span><span class="nb">-</span><span class="nv">&gt;</span><span class="c"> APRS Future Path (WIDE</span><span class="nb">-</span><span class="c">n</span><span class="nb">-</span><span class="c">N)</span><span class="nt">,</span><span class="c"> Source Route</span><span class="nt">,</span><span class="c"> Quota Spray &amp; Wait    |</span>
-<span class="nb">+-----------------------------------------------------------------------+</span>
-<span class="c">|                         BUNDLE PAYLOAD BLOCK                          |</span>
-<span class="nb">+-----------------------------------------------------------------------+</span>
+<h2 id="objectif-et-paradigme-de-letude">🚀 Objectif et Paradigme de l'Étude<a class="headerlink" href="#objectif-et-paradigme-de-letude" title="Permanent link">&para;</a></h2>
+<p>Les réseaux tolérants aux interruptions (<em>Delay &amp; Disruption Tolerant Networking - DTN</em>) et les réseaux maillés (<em>Mesh / MANET</em>) partagent le besoin d'acheminer des messages dans des environnements contraints et partiellement connectés.</p>
+<p>Cette étude introduit pas à pas les algorithmes classiques et routage dans les réseaux mesh. Elle démontre aussi qu'il est possible de <strong>découpler totalement la politique d'acheminement du moteur de routage hôte</strong> en confiant les décisions d'Ingress, d'Egress (Contact CLA) et de gestion de stockage à des règles déclaratives évaluables en temps réel par Open Policy Agent (OPA).</p>
+<div class="codehilite"><pre><span></span><code><span class="c"> </span><span class="nb">+-------------------------------------------------------------------+</span>
+<span class="c"> |                    Plan de Contrôle Déclaratif                     |</span>
+<span class="c"> |        Politiques OPA / Rego (Ingress</span><span class="nt">,</span><span class="c"> Egress Contact</span><span class="nt">,</span><span class="c"> Storage)   |</span>
+<span class="c"> </span><span class="nb">+-------------------------------------------------------------------+</span>
+<span class="c">                                   │ Évaluation des règles Rego</span>
+<span class="c">                                   ▼</span>
+<span class="c"> </span><span class="nb">+-------------------------------------------------------------------+</span>
+<span class="c"> |                       Plan de Données Hôte                        |</span>
+<span class="c"> |         Moteur BPv7 (Hardy</span><span class="nt">,</span><span class="c"> uDTN</span><span class="nt">,</span><span class="c"> IBR</span><span class="nb">-</span><span class="c">DTN</span><span class="nt">,</span><span class="c"> ION</span><span class="nt">,</span><span class="c"> HDTN)            |</span>
+<span class="c"> </span><span class="nb">+-------------------------------------------------------------------+</span>
 </code></pre></div>
 
-<h3 id="a-blocs-bpv7-standards-et-brouillons-ietf-a-mobiliser">A. Blocs BPv7 standards et brouillons IETF à mobiliser<a class="headerlink" href="#a-blocs-bpv7-standards-et-brouillons-ietf-a-mobiliser" title="Permanent link">&para;</a></h3>
-<ol>
-<li><strong>Hop Count Block (Type 10 - RFC 9171) :</strong></li>
-<li>Prévention des boucles et contrôle du rayon de diffusion (analogue au TTL/Hop Limit de Meshtastic, Reticulum, AX.25).</li>
-<li><strong>Previous Node Insertion Block (Type 6 - RFC 9171) :</strong></li>
-<li>Identification immédiate du nœud amont (<em>proximate sender</em>) pour éviter de lui renvoyer le bundle en echo (<em>split horizon</em> / déduplication immédiate).</li>
-<li><strong>Bundle Age Block (Type 7 - RFC 9171) :</strong></li>
-<li>Crucial pour les nœuds sans horloge temps réel (RTC) synchronisée par GPS/NTP (très fréquent en microcontrôleurs LoRa ou réseau tactique).</li>
-<li><strong>Traceroute Extension Block (TREB - IETF Draft) :</strong></li>
-<li>Enregistrement chronologique du chemin parcouru, temps de séjour sur chaque nœud et métriques de liaison observées (remplace le traçage ad-hoc d'APRS).</li>
-</ol>
 <hr />
-<h3 id="b-le-bloc-dextension-generique-modulaire-mesh-algo-extension-blockcddl">B. Le Bloc d'Extension Générique Modulaire (<a href="mesh-algo-extension-block.cddl">mesh-algo-extension-block.cddl</a>)<a class="headerlink" href="#b-le-bloc-dextension-generique-modulaire-mesh-algo-extension-blockcddl" title="Permanent link">&para;</a></h3>
-<p>Plutôt que de figer des formats rigides par protocole, nous avons conçu un <strong>bloc d'extension de routage mesh unifié (Type 200)</strong> fondé sur des <strong>facettes et dimensions orthogonales</strong>. N'importe quel protocole présent ou futur peut activer et composer un sous-ensemble de ces primitives CBOR :</p>
+<h2 id="sommaire-des-articles-de-la-serie">📚 Sommaire des Articles de la Série<a class="headerlink" href="#sommaire-des-articles-de-la-serie" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Facette filaire (Wire Format)</th>
-<th style="text-align: left;">Rôle &amp; Contenu CBOR sur le câble</th>
-<th style="text-align: left;">Protocoles / Usages</th>
+<th style="text-align: left;">Article</th>
+<th style="text-align: left;">Titre &amp; Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong><code>legacy_bridge_id</code></strong></td>
-<td style="text-align: left;">Identifiant externe optionnel (bytes ou entier).</td>
-<td style="text-align: left;">Passerelles vers réseaux non-DTN (LoRa, AX.25). En DTN natif, le <strong>Bundle ID canonique</strong> <code>(source, time, seq)</code> suffit.</td>
+<td style="text-align: left;"><strong><a href="article-0-intro/">Article 0 — Fondations</a></strong></td>
+<td style="text-align: left;">Principes architecturaux, découplage plan de contrôle/données, et intégration d'OPA dans BPv7.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong><code>replication_control</code></strong></td>
-<td style="text-align: left;">Quota $L$ de copies allouées (<code>quota</code>), mode de réplication (<code>mode</code>: source ou binaire $L/2$), et phase active (<code>phase</code>: SPRAY ou WAIT).</td>
-<td style="text-align: left;">Contingentement strict de répliques : Spray &amp; Wait, HYMAD, MaxProp.</td>
+<td style="text-align: left;"><strong><a href="article-1-aprs/">Article 1 — Digipeating APRS</a></strong></td>
+<td style="text-align: left;">Transposition de l'algorithme radioamateur AX.25 WIDE n-N vers BPv7.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong><code>trajectory_control</code></strong></td>
-<td style="text-align: left;">Vecteur de sauts futurs ordonnés (<code>path_elements</code>), index actif (<code>active_hop_index</code>), étapes strictes (<code>strict_target</code>) ou étapes à portée générique (<code>scoped_alias</code>).</td>
-<td style="text-align: left;">Routage à la source, digipeating APRS (WIDE n-N), chemins explicites. Complémentaire au <strong>Traceroute Extension Block (TREB)</strong> qui consigne le passé.</td>
+<td style="text-align: left;"><strong><a href="article-2-flood/">Article 2 — Flooding &amp; Spray and Wait</a></strong></td>
+<td style="text-align: left;">Diffusion économe, contrôle de réplication binaire/source, et gestion radio Meshtastic.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong><code>opportunistic_threshold</code></strong></td>
-<td style="text-align: left;">Seuil d'utilité minimal requis (<code>float</code>).</td>
-<td style="text-align: left;">Routage opportuniste probabiliste : PRoPHET, MaxProp, EBR.</td>
+<td style="text-align: left;"><strong><a href="article-3-prophet/">Article 3 — PRoPHET v2</a></strong></td>
+<td style="text-align: left;">Routage probabiliste par historique d'rencontres (RFC 6693), calculs de transitivité et d'âge.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong><code>spatial_scope</code></strong></td>
-<td style="text-align: left;">Centre géographique (lat, lon, altitude) et rayon d'action (<code>radius_meters</code>).</td>
-<td style="text-align: left;">Geocast, SAR secours, routage géographique (GeoDTN, GPSR).</td>
+<td style="text-align: left;"><strong><a href="article-4-maxprop/">Article 4 — MaxProp &amp; HP-MaxProp</a></strong></td>
+<td style="text-align: left;">Calcul de coût Dijkstra logarithmique, priorisation fluide et Cleared List distribuée.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><a href="article-5-reticulum/">Article 5 — Reticulum Stack (RNS)</a></strong></td>
+<td style="text-align: left;">Adressage cryptographique 128-bit, annonces signées Ed25519 et découverte de chemin.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><a href="article-6-babel-aredn/">Article 6 — Babel &amp; AREDN</a></strong></td>
+<td style="text-align: left;">Vecteur de distance proactif Bellman-Ford (RFC 8966), Feasible Distance et passerelle HYMAD.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><a href="article-7-cgr/">Article 7 — Contact Graph Routing (CGR)</a></strong></td>
+<td style="text-align: left;">Routage spatial déterministe par calendrier de contact (CCSDS 734.3-B-1) et OWLT.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><a href="article-8-geodtn/">Article 8 — GeoDTN</a></strong></td>
+<td style="text-align: left;">Routage géographique greedy/perimeter (GPSR) et diffusion spatialement délimitée (Geocast).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><a href="article-9-synthese-architecture/">Article 9 — Synthèse &amp; Architecture</a></strong></td>
+<td style="text-align: left;">Matrice comparative, benchmark OPA, sécurité et plan de déploiement Over-The-Air (OTA).</td>
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p><strong>Le cas d'école de Meshtastic (Zéro bloc filaire custom) :</strong><br />
-L'inondation gérée de Meshtastic ne nécessite aucun bloc propriétaire sur le câble. Le contrôle de sauts repose sur le <strong>Hop Count Block (Type 10)</strong> standard BPv7, la déduplication sur le <strong>Bundle ID canonique</strong>, la ségrégation de canal sur les <strong>whitelists d'EID</strong>, et le calcul de temporisation $Backoff(SNR)$ ainsi que l'annulation par écoute sont gouvernés localement par OPA via la télémétrie (<code>input.ingress.snr_db</code>, <code>input.node.cancelled_rebroadcasts</code>).</p>
-<p><strong>Séparation Filaire vs Contexte d'Évaluation OPA :</strong><br />
-Les métriques physiques locales (SNR radio mesuré, RSSI en dBm, calcul de temporisation de backoff en ms, état mémoire du buffer) <strong>ne sont jamais sérialisées sur le câble radio</strong> pour préserver la bande passante. Elles sont injectées directement dans l'environnement d'évaluation d'OPA (<code>input.ingress</code>, <code>input.contact</code>, <code>input.node</code>), également formalisé dans la Partie 2 de <a href="mesh-algo-extension-block.cddl">mesh-algo-extension-block.cddl</a>.</p>
-</blockquote>
 <hr />
-<h2 id="4-modelisation-et-prise-de-decision-via-open-policy-agent-opa">4. Modélisation et prise de décision via Open Policy Agent (OPA)<a class="headerlink" href="#4-modelisation-et-prise-de-decision-via-open-policy-agent-opa" title="Permanent link">&para;</a></h2>
-<p>Une étape centrale de ce projet consiste à formaliser les décisions de routage DTN sous forme de règles déclaratives avec <strong>OPA (Open Policy Agent)</strong> en langage <strong>Rego</strong>.</p>
-<h3 id="a-architecture-de-decouplage-opa-moteur-dtn">A. Architecture de découplage OPA / Moteur DTN<a class="headerlink" href="#a-architecture-de-decouplage-opa-moteur-dtn" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="n">flowchart</span><span class="w"> </span><span class="n">LR</span>
-<span class="w">    </span><span class="n">A</span><span class="p">[</span><span class="n">Bundle</span><span class="w"> </span><span class="n">entrant</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="err">É</span><span class="n">vénement</span><span class="w"> </span><span class="n">CLA</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">Moteur</span><span class="w"> </span><span class="n">DTN</span><span class="w"> </span><span class="n">BPv7</span><span class="p">]</span>
-<span class="w">    </span><span class="n">B</span><span class="w"> </span><span class="o">--&gt;|</span><span class="n">Construit</span><span class="w"> </span><span class="n">le</span><span class="w"> </span><span class="n">contexte</span><span class="w"> </span><span class="n">JSON</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">CBOR</span><span class="o">|</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">Moteur</span><span class="w"> </span><span class="n">OPA</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Rego</span><span class="p">]</span>
-<span class="w">    </span><span class="n">C</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">É</span><span class="n">value</span><span class="w"> </span><span class="n">les</span><span class="w"> </span><span class="n">politiques</span><span class="w"> </span><span class="n">de</span><span class="w"> </span><span class="n">routage</span><span class="o">|</span><span class="w"> </span><span class="n">C</span>
-<span class="w">    </span><span class="n">C</span><span class="w"> </span><span class="o">--&gt;|</span><span class="n">Retourne</span><span class="w"> </span><span class="n">une</span><span class="w"> </span><span class="n">décision</span><span class="w"> </span><span class="n">d</span><span class="s">'action| B</span>
-<span class="s">    B --&gt;|Forward / Store / Drop / Mutate| D[Convergence Layer Adapters / Storage]</span>
-</code></pre></div>
-
-<h3 id="b-informations-requises-en-entree-dopa-input">B. Informations requises en entrée d'OPA (<code>input</code>)<a class="headerlink" href="#b-informations-requises-en-entree-dopa-input" title="Permanent link">&para;</a></h3>
-<p>Pour prendre une décision d'acheminement, OPA reçoit une projection JSON complète :</p>
-<ol>
-<li><strong>Attributs du bundle (<code>input.bundle</code>) :</strong></li>
-<li>Primary Block : source, destination, flags (custody, singleton), lifetime, création.</li>
-<li>Extension Blocks : hop count, âge relatif, traceroute passé, quota de réplication, chemin futur (APRS / source route).</li>
-<li>Taille du bundle et priorité de classe de service (QoS).</li>
-<li><strong>État du nœud local (<code>input.node</code>) :</strong></li>
-<li>EID du nœud local, coordonnées GPS actuelles.</li>
-<li>Capacité de stockage restante et état de la mémoire tampon (<em>buffer occupancy</em>).</li>
-<li>Niveau de batterie et contraintes énergétiques.</li>
-<li><strong>Table des voisins et canaux de convergence (<code>input.neighbors</code>) :</strong></li>
-<li>Voisins actuellement connectés / joignables via les CLA (TCP, UDP, LoRa, Bluetooth, AX.25).</li>
-<li>Métriques de lien : SNR, RSSI, taux de perte, bande passante disponible.</li>
-<li>Données historiques : matrice de probabilité de rencontre (ex: table PRoPHET), dernier contact.</li>
-<li><strong>Politique opérationnelle locale (<code>data.policies</code>) :</strong></li>
-<li>Rôles autorisés (ex: le nœud accepte-t-il d'être digipeater APRS ? relais SprayAndWait ?).</li>
-<li>Quotas globaux d'inondation et listes noires / blanches d'EID.</li>
-</ol>
-<h3 id="c-actions-retournees-par-opa-output">C. Actions retournées par OPA (<code>output</code>)<a class="headerlink" href="#c-actions-retournees-par-opa-output" title="Permanent link">&para;</a></h3>
-<p>L'évaluation de la politique Rego produit un ensemble d'actions directes pour le moteur DTN :
-- <code>action</code>: <code>"FORWARD"</code>, <code>"STORE_AND_FORWARD"</code>, <code>"DROP"</code>, <code>"DELIVER_LOCAL"</code>.
-- <code>forward_targets</code>: Liste de couples <code>(neighbor_eid, cla_interface)</code>.
-- <code>mutations</code>: Modifications à appliquer aux blocs du bundle avant transmission :
-  - Décrémenter <code>hop_count</code>.
-  - Mettre à jour le quota $L$ dans le <code>Replication Quota Block</code>.
-  - Mettre à jour le pointeur de saut dans le <code>Digipeat Block</code>.
-  - Ajouter l'EID local dans le <code>Traceroute Block</code>.
-- <code>drop_reason</code>: Code de rejet si le paquet est abandonné (pour émission d'un Status Report éventuel).</p>
-<hr />
-<h2 id="5-feuille-de-route-et-livrables">5. Feuille de route et livrables<a class="headerlink" href="#5-feuille-de-route-et-livrables" title="Permanent link">&para;</a></h2>
-<ol>
-<li><strong>Articles de vulgarisation &amp; études de cas :</strong></li>
-<li><a href="article-0-intro/">Article 0 — Les Fondations du Routage DTN avec Open Policy Agent</a> (Architecture BPv7, blocs standards Type 10 &amp; 7, déduplication, status reports et défense DoS <code>blacklist_sources</code>).</li>
-<li><a href="article-1-aprs/">Article 1 — Transposer le Digipeating APRS (AX.25 WIDE n-N) en DTN (BPv7)</a> (Routage à la source, consommation d'alias, conformité Dire Wolf).</li>
-<li><a href="article-2-flood/">Article 2 — Dompter l'Inondation en DTN : D'Epidemic à Spray and Wait et au Flooding Géré de Meshtastic</a> (Quotas stricts, backoff SNR LoRa, démonstration du zéro bloc filaire pour Meshtastic).</li>
-<li><a href="article-3-prophet/">Article 3 — Routage Opportuniste et Historique des Rencontres : PRoPHET (RFC 6693) sous Open Policy Agent</a> (Mathématiques différentielles de prévisibilité, signalisation inter-nœuds, éviction de buffer).</li>
-<li><a href="article-4-maxprop/">Article 4 — Routage Probabiliste et Gestion de Mémoire sous Contrainte : MaxProp et ses Optimisations Théoriques (HP-MaxProp)</a> (Coût logarithmique de l'information, pénalité de saut fluide, commérage local à 2 sauts et purge par Cleared List).</li>
-<li><a href="article-5-reticulum/">Article 5 — Routage Hybride, Vecteur de Distance et Adressage Cryptographique : Reticulum (RNS) transposé en DTN</a> (Adressage cryptographique 16 octets, annonces de chemin signées, zéro bloc filaire de données et persistance Store-Carry-and-Forward).</li>
-<li><a href="article-6-babel-aredn/">Article 6 — Réseaux Maillés Proactifs et Hybridation MANET-DTN : AREDN, Babel (RFC 8966) et l'Architecture HYMAD sous Open Policy Agent</a> (Routage Bellman-Ford sans boucle, distance de faisabilité, métriques radio ETX et bascule vers les transporteurs DTN inter-îlots).</li>
-<li><a href="article-7-cgr/">Article 7 — Routage par Graphe de Contacts Déterministe : Contact Graph Routing (CGR / SABR - CCSDS 734.3-B-1) sous Open Policy Agent</a> (Réseaux orbitaux et spatiaux, plan de contacts déterministe, Time-Expanded Dijkstra, EDT et drop précoce si dépassement de lifetime).</li>
-<li><a href="article-8-geodtn/">Article 8 — Routage Géographique et Geocasting en DTN : GeoDTN et Greedy-Carry-and-Forward sous Open Policy Agent</a> (Progression gloutonne MFR, contournement des impasses par Store-Carry-and-Forward, Geocasting délimité par facette <code>spatial_scope</code>).</li>
-<li><a href="article-9-synthese-architecture/">Article 9 — Synthèse Architecturale : Routage DTN Piloté par Politiques OPA, Bloc d'Extension Modulaire et Unification du Plan de Contrôle</a> (Découplage OPA/moteur DTN, réconciliation des messages de contrôle, builtins natifs Rego indispensables, retombées terrain/recherche, et alignement IETF/NASA avec ION SNW, bp-sand, ECOS et BPQ).</li>
-<li>
-<p><a href="article-10-roadmap-extensions/">Article 10 — Perspectives et Roadmap d'Extension : Vers une Vision Panoramique du Routage DTN et l'Évolution Extensible du Plan de Contrôle</a> (Cartographie panoramique des algorithmes scientifiques, démonstration de l'extensibilité du plan de contrôle pour le routage social, cinématique, canal/densité, et feuille de route d'implémentation).</p>
-</li>
-<li>
-<p><strong>Spécifications formelles (CDDL) :</strong></p>
-</li>
-<li><a href="mesh-algo-extension-block.cddl">mesh-algo-extension-block.cddl</a> : Format filaire générique du bloc de routage mesh (Type 200) et schéma complet de l'environnement d'évaluation OPA.</li>
-<li><a href="prophet.cddl">prophet.cddl</a> : Messages de contrôle inter-nœuds PRoPHET (HELLO, RIB Update, Summary Vector, Handshake combiné et Delivery ACK).</li>
-<li><a href="maxprop.cddl">maxprop.cddl</a> : Messages de contrôle inter-nœuds MaxProp (vecteur de probabilités directes, Cleared List d'acquittements) et métadonnées de tri/éviction.</li>
-<li><a href="reticulum.cddl">reticulum.cddl</a> : Messages de contrôle inter-nœuds Reticulum (Announce, Path Request, Path Response, Proof) et structure de table de routage locale.</li>
-<li><a href="babel.cddl">babel.cddl</a> : Messages de contrôle inter-nœuds Babel (Hello, IHU, Update, Route Request, Seqno Request) et table de routage proactive avec Feasible Distance.</li>
-<li>
-<p><a href="cgr.cddl">cgr.cddl</a> : Spécification des plans de contacts dynamiques CGR (Contact Plan Update, Revoke, Range Update) et routes calculées.</p>
-</li>
-<li>
-<p><strong>Code &amp; Politiques Déclaratives OPA :</strong></p>
-</li>
-<li>Règles Rego modulaires dans <a href="./policies/">policies/</a> réparties par protocole (<code>aprs/</code>, <code>flood/</code>, <code>prophet/</code>, <code>maxprop/</code>, <code>reticulum/</code>, <code>babel/</code>, <code>cgr/</code>, <code>geodtn/</code>).</li>
-<li>Suite de 140 tests unitaires automatisés (<code>opa test ./policies -v</code> -&gt; 140/140 PASS).</li>
-</ol>
+<h2 id="specifications-cddl-politiques-rego">🛠️ Spécifications CDDL &amp; Politiques Rego<a class="headerlink" href="#specifications-cddl-politiques-rego" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Bloc d'Extension DTN Unifié</strong> : Spécification CDDL <a href="mesh-algo-extension-block.cddl">mesh-algo-extension-block.cddl</a></li>
+<li><strong>Politiques OPA Rego</strong> : <a href="./policies/">Répertoire policies/</a> (140/140 tests validés)</li>
+<li><strong>Spécifications par Protocole</strong> : <a href="babel.cddl">babel.cddl</a>, <a href="cgr.cddl">cgr.cddl</a>, <a href="maxprop.cddl">maxprop.cddl</a>, <a href="prophet.cddl">prophet.cddl</a>, <a href="reticulum.cddl">reticulum.cddl</a></li>
+</ul>
 
 
 
