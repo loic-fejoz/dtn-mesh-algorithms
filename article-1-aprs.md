@@ -5,6 +5,8 @@
 > **Spécification CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl)  
 > **Code des politiques :** [policies/aprs/](./policies/aprs/) ([ingress.rego](./policies/aprs/ingress.rego), [contact.rego](./policies/aprs/contact.rego), [helpers.rego](./policies/aprs/helpers.rego), [constants.rego](./policies/aprs/constants.rego), [aprs_test.rego](./policies/aprs/aprs_test.rego))
 
+> ℹ️ **Transparence Éditoriale (Conformité EU AI Act) :** Cet article a été rédigé avec l'assistance d'une IA sous la direction éditoriale et la structuration d'un auteur humain, qui en assure la relecture, la vérification technique et la responsabilité du contenu (relecture en cours).
+
 ---
 
 ## 1. Introduction : L'héritage d'APRS et le paradigme New-N

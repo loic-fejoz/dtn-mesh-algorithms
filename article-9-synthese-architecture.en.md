@@ -15,6 +15,8 @@
 > **CDDL Specifications:** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl), [maxprop.cddl](./maxprop.cddl), [reticulum.cddl](./reticulum.cddl), [babel.cddl](./babel.cddl), [cgr.cddl](./cgr.cddl)  
 > **Policy Code:** [policies/](./policies/) (140 validated OPA unit tests)
 
+> ℹ️ **Editorial Transparency Note (EU AI Act Alignment):** This article was generated with AI assistance under the editorial direction and structuring of a human author, who assumes responsibility for its technical review, verification, and content (ongoing proofreading).
+
 ---
 
 ## 1. Introduction: The Convergence of Routing Paradigms
@@ -407,5 +409,7 @@ The CDDL specifications, Rego rules, and automated test suite provided in this r
 
 ---
 
-🏁 **End of the technical series.**  
-Explore the full source code, CDDL specifications, and declarative policies in the [DTN Mesh Algorithm Project Repository](./README.en.md).
+👉 **Continue Reading:**  
+[Article 10 — Perspectives and Extension Roadmap: Towards a Panoramic View of DTN Routing and Control Plane Evolution](./article-10-roadmap-extensions.en.md)
+
+🏁 Explore the full source code, CDDL specifications, and declarative policies in the [DTN Mesh Algorithm Project Repository](./README.en.md).

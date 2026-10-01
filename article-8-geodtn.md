@@ -13,6 +13,8 @@
 > **Spécifications CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl), [maxprop.cddl](./maxprop.cddl), [reticulum.cddl](./reticulum.cddl), [babel.cddl](./babel.cddl) & [cgr.cddl](./cgr.cddl)  
 > **Code des politiques :** [policies/geodtn/](./policies/geodtn/) ([ingress.rego](./policies/geodtn/ingress.rego), [contact.rego](./policies/geodtn/contact.rego), [storage.rego](./policies/geodtn/storage.rego), [helpers.rego](./policies/geodtn/helpers.rego), [constants.rego](./policies/geodtn/constants.rego), [geodtn_test.rego](./policies/geodtn/geodtn_test.rego))
 
+> ℹ️ **Transparence Éditoriale (Conformité EU AI Act) :** Cet article a été rédigé avec l'assistance d'une IA sous la direction éditoriale et la structuration d'un auteur humain, qui en assure la relecture, la vérification technique et la responsabilité du contenu (relecture en cours).
+
 ---
 
 ## 1. La Coordonnée comme Seule Adresse

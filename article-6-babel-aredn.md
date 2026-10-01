@@ -11,6 +11,8 @@
 > **Spécifications CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl), [reticulum.cddl](./reticulum.cddl) & [babel.cddl](./babel.cddl)  
 > **Code des politiques :** [policies/babel/](./policies/babel/) ([ingress.rego](./policies/babel/ingress.rego), [contact.rego](./policies/babel/contact.rego), [storage.rego](./policies/babel/storage.rego), [helpers.rego](./policies/babel/helpers.rego), [constants.rego](./policies/babel/constants.rego), [babel_test.rego](./policies/babel/babel_test.rego))
 
+> ℹ️ **Transparence Éditoriale (Conformité EU AI Act) :** Cet article a été rédigé avec l'assistance d'une IA sous la direction éditoriale et la structuration d'un auteur humain, qui en assure la relecture, la vérification technique et la responsabilité du contenu (relecture en cours).
+
 ---
 
 ## 1. Le Paradoxe des Îlots Haut Débit : Le Cas AREDN

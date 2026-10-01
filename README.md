@@ -2,6 +2,8 @@
 
 # DTN Mesh Algorithm: Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7)
 
+> ℹ️ **Transparence Éditoriale (Conformité EU AI Act) :** Cet article a été rédigé avec l'assistance d'une IA sous la direction éditoriale et la structuration d'un auteur humain, qui en assure la relecture, la vérification technique, et la responsabilité du contenu (relecture en cours).
+
 Ce projet de recherche et d'expérimentation vise à explorer la transposition, l'adaptation et l'unification d'algorithmes de routage issus de divers horizons (réseaux maillés ad-hoc, réseaux tactiques, radioamateurs, protocoles LPWAN/IoT et littérature DTN académique) au sein de l'architecture **DTN (Delay/Disruption Tolerant Networking)** basée sur le **Bundle Protocol version 7 ([RFC 9171](https://www.rfc-editor.org/rfc/rfc9171.html))**.
 
 Le projet sert de socle pour des réflexions théoriques, des spécifications d'extensions de blocs ([BUNDLE-BLOCK-TYPE.md](./BUNDLE-BLOCK-TYPE.md)), des modélisations de politiques de routage via **Open Policy Agent (OPA / Rego)**, ainsi qu'une série d'articles de blog techniques et d'implémentations de référence.
@@ -177,6 +179,7 @@ L'évaluation de la politique Rego produit un ensemble d'actions directes pour l
    - [Article 7 — Routage par Graphe de Contacts Déterministe : Contact Graph Routing (CGR / SABR - CCSDS 734.3-B-1) sous Open Policy Agent](./article-7-cgr.md) (Réseaux orbitaux et spatiaux, plan de contacts déterministe, Time-Expanded Dijkstra, EDT et drop précoce si dépassement de lifetime).
    - [Article 8 — Routage Géographique et Geocasting en DTN : GeoDTN et Greedy-Carry-and-Forward sous Open Policy Agent](./article-8-geodtn.md) (Progression gloutonne MFR, contournement des impasses par Store-Carry-and-Forward, Geocasting délimité par facette `spatial_scope`).
    - [Article 9 — Synthèse Architecturale : Routage DTN Piloté par Politiques OPA, Bloc d'Extension Modulaire et Unification du Plan de Contrôle](./article-9-synthese-architecture.md) (Découplage OPA/moteur DTN, réconciliation des messages de contrôle, builtins natifs Rego indispensables, retombées terrain/recherche, et alignement IETF/NASA avec ION SNW, bp-sand, ECOS et BPQ).
+   - [Article 10 — Perspectives et Roadmap d'Extension : Vers une Vision Panoramique du Routage DTN et l'Évolution Extensible du Plan de Contrôle](./article-10-roadmap-extensions.md) (Cartographie panoramique des algorithmes scientifiques, démonstration de l'extensibilité du plan de contrôle pour le routage social, cinématique, canal/densité, et feuille de route d'implémentation).
 
 2. **Spécifications formelles (CDDL) :**
    - [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl) : Format filaire générique du bloc de routage mesh (Type 200) et schéma complet de l'environnement d'évaluation OPA.

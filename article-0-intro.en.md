@@ -4,6 +4,8 @@
 > **Author:** DTN Mesh Research & Engineering  
 > **Associated Code:** [policies/](./policies) ([ingress.rego](./policies/ingress.rego), [storage.rego](./policies/storage.rego), [contact.rego](./policies/contact.rego), [helpers.rego](./policies/helpers.rego), [dtn_constants.rego](./policies/dtn_constants.rego))
 
+> ℹ️ **Editorial Transparency Note (EU AI Act Alignment):** This article was generated with AI assistance under the editorial direction and structuring of a human author, who assumes responsibility for its technical review, verification, and content (ongoing proofreading).
+
 ---
 
 ## 1. Introduction: Why Drive a DTN Router with OPA?

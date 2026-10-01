@@ -4,6 +4,8 @@
 > **Auteur :** Recherche & Ingénierie DTN Mesh  
 > **Code associé :** [policies/](./policies) ([ingress.rego](./policies/ingress.rego), [storage.rego](./policies/storage.rego), [contact.rego](./policies/contact.rego), [helpers.rego](./policies/helpers.rego), [dtn_constants.rego](./policies/dtn_constants.rego))
 
+> ℹ️ **Transparence Éditoriale (Conformité EU AI Act) :** Cet article a été rédigé avec l'assistance d'une IA sous la direction éditoriale et la structuration d'un auteur humain, qui en assure la relecture, la vérification technique et la responsabilité du contenu (relecture en cours).
+
 ---
 
 ## 1. Introduction : Pourquoi piloter un routeur DTN avec OPA ?

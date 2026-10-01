@@ -12,6 +12,8 @@
 > **CDDL Specifications:** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl) & [reticulum.cddl](./reticulum.cddl)  
 > **Policy Code:** [policies/reticulum/](./policies/reticulum/) ([ingress.rego](./policies/reticulum/ingress.rego), [contact.rego](./policies/reticulum/contact.rego), [storage.rego](./policies/reticulum/storage.rego), [helpers.rego](./policies/reticulum/helpers.rego), [constants.rego](./policies/reticulum/constants.rego), [reticulum_test.rego](./policies/reticulum/reticulum_test.rego))
 
+> ℹ️ **Editorial Transparency Note (EU AI Act Alignment):** This article was generated with AI assistance under the editorial direction and structuring of a human author, who assumes responsibility for its technical review, verification, and content (ongoing proofreading).
+
 ---
 
 ## 1. The Zero-IP Imperative and Self-Sovereign Identity

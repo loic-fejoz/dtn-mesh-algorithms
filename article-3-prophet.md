@@ -8,6 +8,8 @@
 > **Spécifications CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl) & [prophet.cddl](./prophet.cddl)  
 > **Code des politiques :** [policies/prophet/](./policies/prophet/) ([ingress.rego](./policies/prophet/ingress.rego), [contact.rego](./policies/prophet/contact.rego), [storage.rego](./policies/prophet/storage.rego), [helpers.rego](./policies/prophet/helpers.rego), [constants.rego](./policies/prophet/constants.rego), [prophet_test.rego](./policies/prophet/prophet_test.rego))
 
+> ℹ️ **Transparence Éditoriale (Conformité EU AI Act) :** Cet article a été rédigé avec l'assistance d'une IA sous la direction éditoriale et la structuration d'un auteur humain, qui en assure la relecture, la vérification technique et la responsabilité du contenu (relecture en cours).
+
 ---
 
 ## 1. Au-delà de l'Inondation Aveugle : La Mobilité Non-Aléatoire

@@ -1,5 +1,7 @@
 # DTN Mesh Algorithm: Transposing Mesh & Opportunistic Routing Algorithms to DTN (BPv7)
 
+> ℹ️ **Editorial Transparency Note (EU AI Act Alignment):** This article was generated with AI assistance under the editorial direction and structuring of a human author, who assumes responsibility for its technical review, verification, and content (ongoing proofreading).
+
 This research and experimentation project aims to explore the transposition, adaptation, and unification of routing algorithms from diverse domains (ad-hoc mesh networks, tactical networks, amateur radio, LPWAN/IoT protocols, and academic DTN literature) within the **DTN (Delay/Disruption Tolerant Networking)** architecture based on the **Bundle Protocol version 7 ([RFC 9171](https://www.rfc-editor.org/rfc/rfc9171.html))**.
 
 The project serves as a foundation for theoretical insights, block extension specifications ([BUNDLE-BLOCK-TYPE.md](./BUNDLE-BLOCK-TYPE.md)), routing policy modeling via **Open Policy Agent (OPA / Rego)**, as well as a series of technical blog posts and reference implementations.
@@ -175,6 +177,7 @@ Evaluation of the Rego policy produces a set of direct actions for the DTN engin
    - [Article 7 — Deterministic Contact Graph Routing: Contact Graph Routing (CGR / SABR - CCSDS 734.3-B-1) under Open Policy Agent](./article-7-cgr.en.md) (Orbital and deep-space networks, deterministic contact plan, Time-Expanded Dijkstra, EDT, and early drop on lifetime expiration).
    - [Article 8 — Geographic Routing and Geocasting in DTN: GeoDTN and Greedy-Carry-and-Forward under Open Policy Agent](./article-8-geodtn.en.md) (Greedy MFR progression, void handling via Store-Carry-and-Forward, Geocasting bounded by `spatial_scope` facet).
    - [Article 9 — Architectural Synthesis: Policy-Driven DTN Routing with OPA, Modular Extension Block, and Control Plane Unification](./article-9-synthese-architecture.en.md) (OPA/DTN engine decoupling, control message reconciliation, essential native Rego builtins, field/research impacts, and IETF/NASA alignment with ION SNW, bp-sand, ECOS, and BPQ).
+   - [Article 10 — Perspectives and Extension Roadmap: Towards a Panoramic View of DTN Routing and Control Plane Evolution](./article-10-roadmap-extensions.en.md) (Panoramic mapping of scientific algorithms, demonstrating control plane extensibility for social, kinematic, channel/density routing, and step-by-step implementation roadmap).
 
 2. **Formal specifications (CDDL):**
    - [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl): Generic wire format for the mesh routing block (Type 200) and complete OPA evaluation context schema.

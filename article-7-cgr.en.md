@@ -12,6 +12,8 @@
 > **CDDL Specifications:** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl), [maxprop.cddl](./maxprop.cddl), [reticulum.cddl](./reticulum.cddl), [babel.cddl](./babel.cddl) & [cgr.cddl](./cgr.cddl)  
 > **Policy Code:** [policies/cgr/](./policies/cgr/) ([ingress.rego](./policies/cgr/ingress.rego), [contact.rego](./policies/cgr/contact.rego), [storage.rego](./policies/cgr/storage.rego), [helpers.rego](./policies/cgr/helpers.rego), [constants.rego](./policies/cgr/constants.rego), [cgr_test.rego](./policies/cgr/cgr_test.rego))
 
+> ℹ️ **Editorial Transparency Note (EU AI Act Alignment):** This article was generated with AI assistance under the editorial direction and structuring of a human author, who assumes responsibility for its technical review, verification, and content (ongoing proofreading).
+
 ---
 
 ## 1. From Terrestrial Randomness to Celestial Determinism

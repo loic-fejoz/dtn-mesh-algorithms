@@ -12,6 +12,8 @@
 > **Spécifications CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl), [maxprop.cddl](./maxprop.cddl), [reticulum.cddl](./reticulum.cddl), [babel.cddl](./babel.cddl) & [cgr.cddl](./cgr.cddl)  
 > **Code des politiques :** [policies/cgr/](./policies/cgr/) ([ingress.rego](./policies/cgr/ingress.rego), [contact.rego](./policies/cgr/contact.rego), [storage.rego](./policies/cgr/storage.rego), [helpers.rego](./policies/cgr/helpers.rego), [constants.rego](./policies/cgr/constants.rego), [cgr_test.rego](./policies/cgr/cgr_test.rego))
 
+> ℹ️ **Transparence Éditoriale (Conformité EU AI Act) :** Cet article a été rédigé avec l'assistance d'une IA sous la direction éditoriale et la structuration d'un auteur humain, qui en assure la relecture, la vérification technique et la responsabilité du contenu (relecture en cours).
+
 ---
 
 ## 1. De l'Aléatoire Terrestre au Déterminisme Céleste

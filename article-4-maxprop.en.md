@@ -12,6 +12,8 @@
 > **CDDL Specifications:** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl) & [maxprop.cddl](./maxprop.cddl)  
 > **Policy Code:** [policies/maxprop/](./policies/maxprop/) ([ingress.rego](./policies/maxprop/ingress.rego), [contact.rego](./policies/maxprop/contact.rego), [storage.rego](./policies/maxprop/storage.rego), [helpers.rego](./policies/maxprop/helpers.rego), [constants.rego](./policies/maxprop/constants.rego), [maxprop_test.rego](./policies/maxprop/maxprop_test.rego))
 
+> ℹ️ **Editorial Transparency Note (EU AI Act Alignment):** This article was generated with AI assistance under the editorial direction and structuring of a human author, who assumes responsibility for its technical review, verification, and content (ongoing proofreading).
+
 ---
 
 ## 1. The Gordian Knot of DTN: Buffer Saturation

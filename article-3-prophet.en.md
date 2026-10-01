@@ -8,6 +8,8 @@
 > **CDDL Specifications:** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl) & [prophet.cddl](./prophet.cddl)  
 > **Policy Code:** [policies/prophet/](./policies/prophet/) ([ingress.rego](./policies/prophet/ingress.rego), [contact.rego](./policies/prophet/contact.rego), [storage.rego](./policies/prophet/storage.rego), [helpers.rego](./policies/prophet/helpers.rego), [constants.rego](./policies/prophet/constants.rego), [prophet_test.rego](./policies/prophet/prophet_test.rego))
 
+> ℹ️ **Editorial Transparency Note (EU AI Act Alignment):** This article was generated with AI assistance under the editorial direction and structuring of a human author, who assumes responsibility for its technical review, verification, and content (ongoing proofreading).
+
 ---
 
 ## 1. Beyond Blind Flooding: Non-Random Mobility

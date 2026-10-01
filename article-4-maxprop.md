@@ -12,6 +12,8 @@
 > **Spécifications CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl), [prophet.cddl](./prophet.cddl) & [maxprop.cddl](./maxprop.cddl)  
 > **Code des politiques :** [policies/maxprop/](./policies/maxprop/) ([ingress.rego](./policies/maxprop/ingress.rego), [contact.rego](./policies/maxprop/contact.rego), [storage.rego](./policies/maxprop/storage.rego), [helpers.rego](./policies/maxprop/helpers.rego), [constants.rego](./policies/maxprop/constants.rego), [maxprop_test.rego](./policies/maxprop/maxprop_test.rego))
 
+> ℹ️ **Transparence Éditoriale (Conformité EU AI Act) :** Cet article a été rédigé avec l'assistance d'une IA sous la direction éditoriale et la structuration d'un auteur humain, qui en assure la relecture, la vérification technique et la responsabilité du contenu (relecture en cours).
+
 ---
 
 ## 1. Le Nœud Gordien du DTN : La Saturation des Buffers

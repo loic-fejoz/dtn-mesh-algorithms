@@ -5,6 +5,8 @@
 > **CDDL Specification:** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl)  
 > **Policy Code:** [policies/aprs/](./policies/aprs/) ([ingress.rego](./policies/aprs/ingress.rego), [contact.rego](./policies/aprs/contact.rego), [helpers.rego](./policies/aprs/helpers.rego), [constants.rego](./policies/aprs/constants.rego), [aprs_test.rego](./policies/aprs/aprs_test.rego))
 
+> ℹ️ **Editorial Transparency Note (EU AI Act Alignment):** This article was generated with AI assistance under the editorial direction and structuring of a human author, who assumes responsibility for its technical review, verification, and content (ongoing proofreading).
+
 ---
 
 ## 1. Introduction: The Legacy of APRS and the New-N Paradigm

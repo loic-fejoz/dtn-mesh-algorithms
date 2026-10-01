@@ -7,6 +7,8 @@
 > **Spécification CDDL :** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl)  
 > **Code des politiques :** [policies/flood/](./policies/flood/) ([ingress.rego](./policies/flood/ingress.rego), [contact.rego](./policies/flood/contact.rego), [helpers.rego](./policies/flood/helpers.rego), [constants.rego](./policies/flood/constants.rego), [flood_test.rego](./policies/flood/flood_test.rego))
 
+> ℹ️ **Transparence Éditoriale (Conformité EU AI Act) :** Cet article a été rédigé avec l'assistance d'une IA sous la direction éditoriale et la structuration d'un auteur humain, qui en assure la relecture, la vérification technique et la responsabilité du contenu (relecture en cours).
+
 ---
 
 ## 1. La Tension Fondamentale de l'Inondation en Réseau Contraint

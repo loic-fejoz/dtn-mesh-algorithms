@@ -7,6 +7,8 @@
 > **CDDL Specification:** [mesh-algo-extension-block.cddl](./mesh-algo-extension-block.cddl)  
 > **Policy Code:** [policies/flood/](./policies/flood/) ([ingress.rego](./policies/flood/ingress.rego), [contact.rego](./policies/flood/contact.rego), [helpers.rego](./policies/flood/helpers.rego), [constants.rego](./policies/flood/constants.rego), [flood_test.rego](./policies/flood/flood_test.rego))
 
+> ℹ️ **Editorial Transparency Note (EU AI Act Alignment):** This article was generated with AI assistance under the editorial direction and structuring of a human author, who assumes responsibility for its technical review, verification, and content (ongoing proofreading).
+
 ---
 
 ## 1. The Fundamental Tension of Flooding in Constrained Networks
