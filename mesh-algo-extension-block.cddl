@@ -12,6 +12,39 @@
 ; n'est sérialisée ici pour préserver la bande passante radio.
 ; ==============================================================================
 
+; ------------------------------------------------------------------------------
+; Définitions des clés de carte (Clés duales : entier CBOR compact / chaîne JSON)
+; ------------------------------------------------------------------------------
+k-legacy-bridge-id = 1 / "legacy-bridge-id"
+k-replication-control = 2 / "replication-control"
+k-trajectory-control = 3 / "trajectory-control"
+k-opportunistic-threshold = 4 / "opportunistic-threshold"
+k-spatial-scope = 5 / "spatial-scope"
+k-custom-attributes = 6 / "custom-attributes"
+
+k-quota = 1 / "quota"
+k-mode = 2 / "mode"
+k-phase = 3 / "phase"
+k-generation = 4 / "generation"
+
+k-path-elements = 1 / "path-elements"
+k-active-hop-index = 2 / "active-hop-index"
+k-allow-substitution = 3 / "allow-substitution"
+
+k-target-type = 1 / "target-type"
+k-target-id = 2 / "target-id"
+k-completed = 3 / "completed"
+
+k-scope-name = 2 / "scope-name"
+k-max-count = 3 / "max-count"
+k-remaining-count = 4 / "remaining-count"
+k-serviced-by = 6 / "serviced-by"
+
+k-latitude = 1 / "latitude"
+k-longitude = 2 / "longitude"
+k-radius-meters = 3 / "radius-meters"
+k-altitude-meters = 4 / "altitude-meters"
+
 mesh-routing-extension-block = [
     block-type-code: 200,                 ; Plage expérimentale IANA (192-255)
     block-number: uint,                   ; Numéro de bloc unique dans le bundle
@@ -22,52 +55,52 @@ mesh-routing-extension-block = [
 ]
 
 mesh-routing-data = {
-    ? 1 => legacy-bridge-id: (bytes / uint), ; Empreinte externe (passerelle LoRa/AX.25 uniquement)
-    ? 2 => replication-control,              ; Primitives de réplication et quotas
-    ? 3 => trajectory-control,               ; Primitives de trajectoire ordonnée
-    ? 4 => opportunistic-threshold: float,   ; Seuil d'utilité exigé par l'émetteur
-    ? 5 => spatial-scope,                    ; Zone cible géographique (Geocasting)
-    ? 6 => custom-attributes: { * (uint / tstr) => any } ; Attributs applicatifs étendus
+    ? k-legacy-bridge-id => (bytes / uint), ; Empreinte externe (passerelle LoRa/AX.25 uniquement)
+    ? k-replication-control => replication-control, ; Primitives de réplication et quotas
+    ? k-trajectory-control => trajectory-control,   ; Primitives de trajectoire ordonnée
+    ? k-opportunistic-threshold => float,           ; Seuil d'utilité exigé par l'émetteur
+    ? k-spatial-scope => spatial-scope,             ; Zone cible géographique (Geocasting)
+    ? k-custom-attributes => { * (uint / tstr) => any } ; Attributs applicatifs étendus
 }
 
 ; 1. Contrôle de Réplication (Spray & Wait, MaxProp, etc.)
 replication-control = {
-    1 => quota: uint,                      ; Nombre L de répliques attribuées au porteur
-    ? 2 => mode: &(mode-source: 1, mode-binary: 2), ; Distribution unitaire ou binaire (L/2)
-    ? 3 => phase: &(phase-disseminate: 1, phase-wait: 2), ; Phase active
-    ? 4 => generation: uint                ; Niveau de génération de la copie
+    k-quota => uint,                       ; Nombre L de répliques attribuées au porteur
+    ? k-mode => &(mode-source: 1, mode-binary: 2), ; Distribution unitaire ou binaire (L/2)
+    ? k-phase => &(phase-disseminate: 1, phase-wait: 2), ; Phase active
+    ? k-generation => uint                 ; Niveau de génération de la copie
 }
 
 ; 2. Contrôle de Trajectoire (Source Routing, Digipeating APRS WIDE n-N)
 trajectory-control = {
-    1 => path-elements: [* path-element],  ; Liste ordonnée des étapes
-    2 => active-hop-index: uint,           ; Index 0-based pointant vers l'étape active
-    ? 3 => allow-substitution: bool        ; Autorise la substitution par l'identifiant réel
+    k-path-elements => [* path-element],   ; Liste ordonnée des étapes
+    k-active-hop-index => uint,            ; Index 0-based pointant vers l'étape active
+    ? k-allow-substitution => bool         ; Autorise la substitution par l'identifiant réel
 }
 
 path-element = strict-target / scoped-alias
 
 strict-target = {
-    1 => target-type: 1,                   ; 1 = Cible stricte
-    2 => target-id: tstr,                  ; EID ou identifiant de nœud / callsign
-    3 => completed: bool                   ; True si déjà validé/traversé
+    k-target-type => 1,                    ; 1 = Cible stricte
+    k-target-id => tstr,                   ; EID ou identifiant de nœud / callsign
+    k-completed => bool                    ; True si déjà validé/traversé
 }
 
 scoped-alias = {
-    1 => target-type: 2,                   ; 2 = Alias générique
-    2 => scope-name: tstr,                 ; Nom de l'alias (ex: "WIDE1", "WIDE2")
-    3 => max-count: uint,                  ; Compte initial autorisé
-    4 => remaining-count: uint,            ; Compte restant décrémenté
-    5 => completed: bool,                  ; True lorsque remaining-count == 0
-    ? 6 => serviced-by: tstr               ; Identifiant du relais ayant consommé l'étape
+    k-target-type => 2,                    ; 2 = Alias générique
+    k-scope-name => tstr,                  ; Nom de l'alias (ex: "WIDE1", "WIDE2")
+    k-max-count => uint,                   ; Compte initial autorisé
+    k-remaining-count => uint,             ; Compte restant décrémenté
+    k-completed => bool,                   ; True lorsque remaining-count == 0
+    ? k-serviced-by => tstr                ; Identifiant du relais ayant consommé l'étape
 }
 
 ; 3. Délimitation Spatiale (Geocast, secours)
 spatial-scope = {
-    1 => latitude: float,                  ; Latitude du centre
-    2 => longitude: float,                 ; Longitude du centre
-    3 => radius-meters: uint,              ; Rayon de la zone cible
-    ? 4 => altitude-meters: float          ; Altitude éventuelle
+    k-latitude => float,                   ; Latitude du centre
+    k-longitude => float,                  ; Longitude du centre
+    k-radius-meters => uint,               ; Rayon de la zone cible
+    ? k-altitude-meters => float           ; Altitude éventuelle
 }
 
 ; ==============================================================================

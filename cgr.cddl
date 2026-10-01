@@ -11,12 +11,38 @@
 ; 4. Acheminement au plus tôt (Earliest Delivery Time - EDT) avec respect du lifetime.
 ; ==============================================================================
 
+; ------------------------------------------------------------------------------
+; Définitions des clés de carte (Clés duales : entier CBOR compact / chaîne JSON)
+; ------------------------------------------------------------------------------
+k-message-type = 1 / "message-type"
+k-issuer-eid = 2 / "issuer-eid"
+k-timestamp-ms = 3 / "timestamp-ms"
+k-payload = 4 / "payload"
+
+k-contacts = 1 / "contacts"
+k-ranges = 2 / "ranges"
+
+k-contact-id = 1 / "contact-id"
+k-from-eid = 2 / "from-eid"
+k-to-eid = 3 / "to-eid"
+k-start-time-ms = 4 / "start-time-ms"
+k-end-time-ms = 5 / "end-time-ms"
+k-data-rate-bps = 6 / "data-rate-bps"
+k-max-capacity-bytes = 7 / "max-capacity-bytes"
+k-confidence = 8 / "confidence"
+
+k-owlt-ms = 5 / "owlt-ms"
+k-contact-ids = 1 / "contact-ids"
+k-reason = 2 / "reason"
+
+; ------------------------------------------------------------------------------
 ; Message de contrôle CGR transporté dans le payload d'un bundle administratif
+; ------------------------------------------------------------------------------
 cgr-control-bundle = {
-    1 => message-type: cgr-message-type,
-    2 => issuer-eid: tstr,                  ; EID de l'autorité émettrice du calendrier
-    3 => timestamp-ms: uint,                ; Horloge DTN d'émission
-    4 => payload: cgr-payload               ; Charge utile selon le type
+    k-message-type => cgr-message-type,
+    k-issuer-eid => tstr,                  ; EID de l'autorité émettrice du calendrier
+    k-timestamp-ms => uint,                ; Horloge DTN d'émission
+    k-payload => cgr-payload               ; Charge utile selon le type
 }
 
 cgr-message-type = &(
@@ -35,42 +61,42 @@ cgr-payload = (
 ; 1. MISE À JOUR DU CONTACT PLAN (Contact Plan Update)
 ; ------------------------------------------------------------------------------
 contact-plan-update-payload = {
-    1 => contacts: [ * scheduled-contact ],
-    ? 2 => ranges: [ * scheduled-range ]
+    k-contacts => [ * scheduled-contact ],
+    ? k-ranges => [ * scheduled-range ]
 }
 
 scheduled-contact = {
-    1 => contact-id: uint,                  ; Identifiant unique de contact
-    2 => from-eid: tstr,                    ; Nœud émetteur
-    3 => to-eid: tstr,                      ; Nœud récepteur
-    4 => start-time-ms: uint,               ; Début de la fenêtre de visibilité
-    5 => end-time-ms: uint,                 ; Fin de la fenêtre de visibilité
-    6 => data-rate-bps: uint,               ; Débit de transmission en octets ou bits/s
-    ? 7 => max-capacity-bytes: uint,        ; Capacité totale de la fenêtre
-    ? 8 => confidence: float                ; Probabilité de tenue de contact [0.0 - 1.0]
+    k-contact-id => uint,                  ; Identifiant unique de contact
+    k-from-eid => tstr,                    ; Nœud émetteur
+    k-to-eid => tstr,                      ; Nœud récepteur
+    k-start-time-ms => uint,               ; Début de la fenêtre de visibilité
+    k-end-time-ms => uint,                 ; Fin de la fenêtre de visibilité
+    k-data-rate-bps => uint,               ; Débit de transmission en octets ou bits/s
+    ? k-max-capacity-bytes => uint,        ; Capacité totale de la fenêtre
+    ? k-confidence => float                ; Probabilité de tenue de contact [0.0 - 1.0]
 }
 
 scheduled-range = {
-    1 => from-eid: tstr,
-    2 => to-eid: tstr,
-    3 => start-time-ms: uint,
-    4 => end-time-ms: uint,
-    5 => owlt-ms: uint                      ; One-Way Light Time en millisecondes
+    k-from-eid => tstr,
+    k-to-eid => tstr,
+    k-start-time-ms => uint,
+    k-end-time-ms => uint,
+    k-owlt-ms => uint                      ; One-Way Light Time en millisecondes
 }
 
 ; ------------------------------------------------------------------------------
 ; 2. RÉVOCATION DE CONTACT (Contact Revocation)
 ; ------------------------------------------------------------------------------
 contact-plan-revoke-payload = {
-    1 => contact-ids: [ * uint ],
-    2 => reason: tstr
+    k-contact-ids => [ * uint ],
+    k-reason => tstr
 }
 
 ; ------------------------------------------------------------------------------
 ; 3. MISE À JOUR DE DISTANCE (Range Update)
 ; ------------------------------------------------------------------------------
 range-update-payload = {
-    1 => ranges: [ * scheduled-range ]
+    k-ranges => [ * scheduled-range ]
 }
 
 ; ------------------------------------------------------------------------------

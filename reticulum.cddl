@@ -11,12 +11,39 @@
 ; 4. Les accusés de réception cryptographiques (Proofs).
 ; ==============================================================================
 
+; ------------------------------------------------------------------------------
+; Définitions des clés de carte (Clés duales : entier CBOR compact / chaîne JSON)
+; ------------------------------------------------------------------------------
+k-message-type = 1 / "message-type"
+k-destination-hash = 2 / "destination-hash"
+k-timestamp-ms = 3 / "timestamp-ms"
+k-payload = 4 / "payload"
+
+k-public-key = 1 / "public-key"
+k-announce-hops = 2 / "announce-hops"
+k-random-salt = 3 / "random-salt"
+k-signature = 4 / "signature"
+k-app-data = 5 / "app-data"
+k-ratchet = 6 / "ratchet"
+
+k-requested-destination-hash = 1 / "requested-destination-hash"
+k-requester-hash = 2 / "requester-hash"
+k-request-id = 3 / "request-id"
+
+k-hops-to-destination = 2 / "hops-to-destination"
+k-next-hop-node = 3 / "next-hop-node"
+k-announce-proof = 4 / "announce-proof"
+
+k-bundle-id-hash = 1 / "bundle-id-hash"
+
+; ------------------------------------------------------------------------------
 ; Message de contrôle Reticulum transporté dans le payload d'un bundle administratif
+; ------------------------------------------------------------------------------
 reticulum-control-bundle = {
-    1 => message-type: reticulum-message-type,
-    2 => destination-hash: bytes .size 16,  ; Hash SHA-256 tronqué à 16 octets
-    3 => timestamp-ms: uint,                ; Horloge DTN de création
-    4 => payload: reticulum-payload         ; Charge utile selon le type
+    k-message-type => reticulum-message-type,
+    k-destination-hash => bytes .size 16,  ; Hash SHA-256 tronqué à 16 octets
+    k-timestamp-ms => uint,                ; Horloge DTN de création
+    k-payload => reticulum-payload         ; Charge utile selon le type
 }
 
 reticulum-message-type = &(
@@ -39,12 +66,12 @@ reticulum-payload = (
 ; Permet à chaque nœud intermédiaire d'enregistrer la route vers le destinataire.
 ; ------------------------------------------------------------------------------
 announce-payload = {
-    1 => public-key: bytes .size 32,        ; Clé publique Ed25519 ou Curve25519
-    2 => announce-hops: uint,               ; Compteur de sauts d'annonce (0 à l'origine)
-    3 => random-salt: bytes .size 10,       ; Sel aléatoire (protection replay)
-    4 => signature: bytes .size 64,         ; Signature Ed25519 par la clé privée de destination
-    ? 5 => app-data: bytes,                 ; Métadonnées applicatives chiffrées ou claires
-    ? 6 => ratchet: bytes .size 32          ; Clé éphémère (Forward Secrecy)
+    k-public-key => bytes .size 32,        ; Clé publique Ed25519 ou Curve25519
+    k-announce-hops => uint,               ; Compteur de sauts d'annonce (0 à l'origine)
+    k-random-salt => bytes .size 10,       ; Sel aléatoire (protection replay)
+    k-signature => bytes .size 64,         ; Signature Ed25519 par la clé privée de destination
+    ? k-app-data => bytes,                 ; Métadonnées applicatives chiffrées ou claires
+    ? k-ratchet => bytes .size 32          ; Clé éphémère (Forward Secrecy)
 }
 
 ; ------------------------------------------------------------------------------
@@ -52,19 +79,19 @@ announce-payload = {
 ; Utilisé lorsqu'un bundle doit être envoyé mais qu'aucune annonce n'a été reçue.
 ; ------------------------------------------------------------------------------
 path-request-payload = {
-    1 => requested-destination-hash: bytes .size 16,
-    2 => requester-hash: bytes .size 16,
-    3 => request-id: uint
+    k-requested-destination-hash => bytes .size 16,
+    k-requester-hash => bytes .size 16,
+    k-request-id => uint
 }
 
 ; ------------------------------------------------------------------------------
 ; 3. PATH RESPONSE : Réponse à une Requête de Chemin
 ; ------------------------------------------------------------------------------
 path-response-payload = {
-    1 => destination-hash: bytes .size 16,
-    2 => hops-to-destination: uint,
-    3 => next-hop-node: tstr,               ; EID du relais suivant recommandé
-    4 => announce-proof: announce-payload   ; L'annonce originale signée en preuve
+    k-destination-hash => bytes .size 16,
+    k-hops-to-destination => uint,
+    k-next-hop-node => tstr,               ; EID du relais suivant recommandé
+    k-announce-proof => announce-payload   ; L'annonce originale signée en preuve
 }
 
 ; ------------------------------------------------------------------------------
@@ -72,8 +99,8 @@ path-response-payload = {
 ; Atteste de la livraison effective d'un paquet à son destinataire légitime.
 ; ------------------------------------------------------------------------------
 proof-payload = {
-    1 => bundle-id-hash: bytes .size 32,    ; Hash de l'identifiant du bundle acquitté
-    2 => signature: bytes .size 64          ; Signature par la clé privée du destinataire
+    k-bundle-id-hash => bytes .size 32,    ; Hash de l'identifiant du bundle acquitté
+    k-signature => bytes .size 64          ; Signature par la clé privée du destinataire
 }
 
 ; ------------------------------------------------------------------------------
