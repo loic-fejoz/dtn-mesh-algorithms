@@ -13,12 +13,30 @@
 ; 4. Cleared List (ACKs distribués) : liste des bundles livrés pour purge mémoire.
 ; ==============================================================================
 
+; ------------------------------------------------------------------------------
+; Définitions des clés de carte (Clés duales : entier CBOR compact / chaîne JSON)
+; ------------------------------------------------------------------------------
+k-message-type = 1 / "message-type"
+k-sender-eid = 2 / "sender-eid"
+k-timestamp-ms = 3 / "timestamp-ms"
+k-payload = 4 / "payload"
+
+k-probabilities = 1 / "probabilities"
+k-total-encounters = 2 / "total-encounters"
+
+k-cleared-bundle-ids = 1 / "cleared-bundle-ids"
+
+k-prob-vector = 1 / "prob-vector"
+k-cleared-list = 2 / "cleared-list"
+
+; ------------------------------------------------------------------------------
 ; Message de contrôle MaxProp transporté dans le payload d'un bundle administratif
+; ------------------------------------------------------------------------------
 maxprop-control-bundle = {
-    1 => message-type: maxprop-message-type,
-    2 => sender-eid: tstr,                  ; EID du nœud émetteur
-    3 => timestamp-ms: uint,                ; Horloge DTN d'émission
-    4 => payload: maxprop-payload           ; Charge utile selon le type
+    k-message-type => maxprop-message-type,
+    k-sender-eid => tstr,                  ; EID du nœud émetteur
+    k-timestamp-ms => uint,                ; Horloge DTN d'émission
+    k-payload => maxprop-payload           ; Charge utile selon le type
 }
 
 maxprop-message-type = &(
@@ -39,8 +57,8 @@ maxprop-payload = (
 ; probabilités de rencontre directes (complexité O(N) au lieu de O(N^2)).
 ; ------------------------------------------------------------------------------
 prob-vector-payload = {
-    1 => probabilities: { * tstr => float }, ; Map: destination EID => probabilité [0.0 - 1.0]
-    ? 2 => total-encounters: uint            ; Nombre total de rencontres enregistrées
+    k-probabilities => { * tstr => float }, ; Map: destination EID => probabilité [0.0 - 1.0]
+    ? k-total-encounters => uint            ; Nombre total de rencontres enregistrées
 }
 
 ; ------------------------------------------------------------------------------
@@ -49,7 +67,7 @@ prob-vector-payload = {
 ; devenues inutiles de leur mémoire tampon.
 ; ------------------------------------------------------------------------------
 cleared-list-payload = {
-    1 => cleared-bundle-ids: [ * canonical-bundle-id ]
+    k-cleared-bundle-ids => [ * canonical-bundle-id ]
 }
 
 canonical-bundle-id = [
@@ -63,8 +81,8 @@ canonical-bundle-id = [
 ; Fusionne les probabilités et la cleared list dans un seul bundle CBOR.
 ; ------------------------------------------------------------------------------
 combined-payload = {
-    1 => prob-vector: prob-vector-payload,
-    2 => cleared-list: cleared-list-payload
+    k-prob-vector => prob-vector-payload,
+    k-cleared-list => cleared-list-payload
 }
 
 ; ------------------------------------------------------------------------------

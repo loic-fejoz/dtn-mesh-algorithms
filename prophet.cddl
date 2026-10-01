@@ -8,11 +8,46 @@
 ; Conforme à la RFC 8610 (CDDL) et à la RFC 6693 (PRoPHET v2).
 ; ==============================================================================
 
+; ------------------------------------------------------------------------------
+; Définitions des clés de carte (Clés duales : entier CBOR compact / chaîne JSON)
+; ------------------------------------------------------------------------------
+k-message-type = 1 / "message-type"
+k-sender-eid = 2 / "sender-eid"
+k-timestamp-ms = 3 / "timestamp-ms"
+k-payload = 4 / "payload"
+
+k-prophet-version = 1 / "prophet-version"
+k-p-encounter-max = 2 / "p-encounter-max"
+k-gamma = 3 / "gamma"
+k-beta = 4 / "beta"
+k-aging-interval-seconds = 5 / "aging-interval-seconds"
+
+k-entries = 1 / "entries"
+k-destination-eid = 1 / "destination-eid"
+k-delivery-predictability = 2 / "delivery-predictability"
+k-last-update-dtn-time = 3 / "last-update-dtn-time"
+
+k-held-bundles = 1 / "held-bundles"
+k-rib-entries = 1 / "rib-entries"
+k-available-storage-bytes = 3 / "available-storage-bytes"
+
+k-offered-bundles = 1 / "offered-bundles"
+k-requested-bundles = 1 / "requested-bundles"
+k-delivered-bundles = 1 / "delivered-bundles"
+
+k-id = 1 / "id"
+k-size-bytes = 3 / "size-bytes"
+k-opportunistic-threshold = 4 / "opportunistic-threshold"
+k-delivered-at-time = 2 / "delivered-at-time"
+
+; ------------------------------------------------------------------------------
+; Message de contrôle PRoPHET transporté dans le payload d'un bundle administratif
+; ------------------------------------------------------------------------------
 prophet-control-bundle = {
-    1 => message-type: prophet-message-type,
-    2 => sender-eid: tstr,                  ; EID de l'émetteur du message de contrôle
-    3 => timestamp-ms: uint,                ; Horloge DTN d'émission du contrôle
-    ? 4 => payload: prophet-message-payload ; Contenu spécifique au type de message
+    k-message-type => prophet-message-type,
+    k-sender-eid => tstr,                  ; EID de l'émetteur du message de contrôle
+    k-timestamp-ms => uint,                ; Horloge DTN d'émission du contrôle
+    ? k-payload => prophet-message-payload ; Contenu spécifique au type de message
 }
 
 prophet-message-type = &(
@@ -39,11 +74,11 @@ prophet-message-payload = (
 ; 1. HELLO : Découverte de voisinage et paramètres opérationnels
 ; ------------------------------------------------------------------------------
 hello-payload = {
-    1 => prophet-version: uint,             ; Version du protocole (ex: 2 pour RFC 6693)
-    ? 2 => p-encounter-max: float,          ; Valeur configurée de P_encounter (défaut: 0.75)
-    ? 3 => gamma: float,                    ; Facteur de vieillissement temporel (défaut: 0.98)
-    ? 4 => beta: float,                     ; Facteur d'échelle de transitivité (défaut: 0.25)
-    ? 5 => aging-interval-seconds: uint     ; Période unitaire d'audit temporel
+    k-prophet-version => uint,             ; Version du protocole (ex: 2 pour RFC 6693)
+    ? k-p-encounter-max => float,          ; Valeur configurée de P_encounter (défaut: 0.75)
+    ? k-gamma => float,                    ; Facteur de vieillissement temporel (défaut: 0.98)
+    ? k-beta => float,                     ; Facteur d'échelle de transitivité (défaut: 0.25)
+    ? k-aging-interval-seconds => uint     ; Période unitaire d'audit temporel
 }
 
 ; ------------------------------------------------------------------------------
@@ -52,13 +87,13 @@ hello-payload = {
 ; P(a, c) = P(a, c) + (1 - P(a, c)) * P(a, b) * P(b, c) * beta
 ; ------------------------------------------------------------------------------
 rib-update-payload = {
-    1 => entries: [* rib-entry]             ; Liste des entrées de routage probabiliste
+    k-entries => [* rib-entry]             ; Liste des entrées de routage probabiliste
 }
 
 rib-entry = {
-    1 => destination-eid: tstr,             ; Endpoint ID de la destination finale
-    2 => delivery-predictability: float,    ; Valeur scalaire P entre 0.0 et 1.0
-    ? 3 => last-update-dtn-time: uint       ; Horodatage du dernier contact direct avec cette destination
+    k-destination-eid => tstr,             ; Endpoint ID de la destination finale
+    k-delivery-predictability => float,    ; Valeur scalaire P entre 0.0 et 1.0
+    ? k-last-update-dtn-time => uint       ; Horodatage du dernier contact direct avec cette destination
 }
 
 ; ------------------------------------------------------------------------------
@@ -67,7 +102,7 @@ rib-entry = {
 ; afin de ne pas gaspiller de bande passante radio à les répliquer.
 ; ------------------------------------------------------------------------------
 summary-vector-payload = {
-    1 => held-bundles: [* bundle-identifier]
+    k-held-bundles => [* bundle-identifier]
 }
 
 ; Identifiant universel canonique BPv7 (RFC 9171 Section 4.2.2) ou empreinte passerelle
@@ -87,9 +122,9 @@ legacy-bridge-id = (bytes / uint)
 ; dans une seule et unique trame CBOR, réduisant la négociation à un seul échange A <-> B.
 ; ------------------------------------------------------------------------------
 handshake-combined-payload = {
-    1 => rib-entries: [* rib-entry],
-    2 => held-bundles: [* bundle-identifier],
-    ? 3 => available-storage-bytes: uint    ; Espace mémoire restant pour estimer la capacité d'accueil
+    k-rib-entries => [* rib-entry],
+    k-held-bundles => [* bundle-identifier],
+    ? k-available-storage-bytes => uint    ; Espace mémoire restant pour estimer la capacité d'accueil
 }
 
 ; ------------------------------------------------------------------------------
@@ -98,16 +133,16 @@ handshake-combined-payload = {
 ; lesquels le pair offre une prévisibilité supérieure : P(peer, dest) > P(local, dest).
 ; ------------------------------------------------------------------------------
 bundle-offer-payload = {
-    1 => offered-bundles: [* {
-        1 => id: bundle-identifier,
-        2 => destination-eid: tstr,
-        3 => size-bytes: uint,
-        ? 4 => opportunistic-threshold: float
+    k-offered-bundles => [* {
+        k-id => bundle-identifier,
+        k-destination-eid => tstr,
+        k-size-bytes => uint,
+        ? k-opportunistic-threshold => float
     }]
 }
 
 bundle-request-payload = {
-    1 => requested-bundles: [* bundle-identifier]
+    k-requested-bundles => [* bundle-identifier]
 }
 
 ; ------------------------------------------------------------------------------
@@ -117,9 +152,9 @@ bundle-request-payload = {
 ; intermédiaires détruisent leurs copies inutiles.
 ; ------------------------------------------------------------------------------
 delivery-ack-payload = {
-    1 => delivered-bundles: [* {
-        1 => id: bundle-identifier,
-        2 => delivered-at-time: uint,
-        3 => destination-eid: tstr
+    k-delivered-bundles => [* {
+        k-id => bundle-identifier,
+        k-delivered-at-time => uint,
+        k-destination-eid => tstr
     }]
 }

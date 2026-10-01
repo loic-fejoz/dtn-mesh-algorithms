@@ -13,12 +13,36 @@
 ;    et tolérance aux délais inter-îlots par Store-Carry-and-Forward.
 ; ==============================================================================
 
+; ------------------------------------------------------------------------------
+; Définitions des clés de carte (Clés duales : entier CBOR compact / chaîne JSON)
+; ------------------------------------------------------------------------------
+k-message-type = 1 / "message-type"
+k-sender-router-id = 2 / "sender-router-id"
+k-timestamp-ms = 3 / "timestamp-ms"
+k-payload = 4 / "payload"
+
+k-seqno = 1 / "seqno"
+k-interval-ms = 2 / "interval-ms"
+k-tx-cost = 3 / "tx-cost"
+k-rx-cost = 1 / "rx-cost"
+k-peer-eid = 3 / "peer-eid"
+
+k-prefix-eid = 1 / "prefix-eid"
+k-router-id = 2 / "router-id"
+k-metric = 4 / "metric"
+k-etx-ratio = 6 / "etx-ratio"
+
+k-requested-prefix-eid = 1 / "requested-prefix-eid"
+k-hop-count = 4 / "hop-count"
+
+; ------------------------------------------------------------------------------
 ; Message de contrôle Babel transporté dans le payload d'un bundle administratif
+; ------------------------------------------------------------------------------
 babel-control-bundle = {
-    1 => message-type: babel-message-type,
-    2 => sender-router-id: bytes .size 8,   ; Identifiant unique du routeur (64 bits)
-    3 => timestamp-ms: uint,                ; Horloge DTN de création
-    4 => payload: babel-payload             ; Charge utile selon le type
+    k-message-type => babel-message-type,
+    k-sender-router-id => bytes .size 8,   ; Identifiant unique du routeur (64 bits)
+    k-timestamp-ms => uint,                ; Horloge DTN de création
+    k-payload => babel-payload             ; Charge utile selon le type
 }
 
 babel-message-type = &(
@@ -41,9 +65,9 @@ babel-payload = (
 ; 1. HELLO : Battement de cœur et sondage de lien
 ; ------------------------------------------------------------------------------
 hello-payload = {
-    1 => seqno: uint .size 2,               ; Numéro de séquence du Hello émetteur
-    2 => interval-ms: uint,                 ; Intervalle prévu entre deux Hellos
-    ? 3 => tx-cost: uint                    ; Coût estimé d'émission
+    k-seqno => uint .size 2,               ; Numéro de séquence du Hello émetteur
+    k-interval-ms => uint,                 ; Intervalle prévu entre deux Hellos
+    ? k-tx-cost => uint                    ; Coût estimé d'émission
 }
 
 ; ------------------------------------------------------------------------------
@@ -51,28 +75,28 @@ hello-payload = {
 ; Indispensable pour calculer la qualité radio bidirectionnelle (ETX).
 ; ------------------------------------------------------------------------------
 ihu-payload = {
-    1 => rx-cost: uint,                     ; Coût de réception observé
-    2 => interval-ms: uint,                 ; Intervalle de maintien en vie
-    3 => peer-eid: tstr                     ; EID du pair que l'on confirme entendre
+    k-rx-cost => uint,                     ; Coût de réception observé
+    k-interval-ms => uint,                 ; Intervalle de maintien en vie
+    k-peer-eid => tstr                     ; EID du pair que l'on confirme entendre
 }
 
 ; ------------------------------------------------------------------------------
 ; 3. UPDATE : Annonce de route proactive avec Distance de Faisabilité
 ; ------------------------------------------------------------------------------
 update-payload = {
-    1 => prefix-eid: tstr,                  ; Destination annoncée (préfixe EID ou subnet)
-    2 => router-id: bytes .size 8,          ; Router-ID d'origine de la destination
-    3 => seqno: uint .size 2,               ; Numéro de séquence émis par le routeur source
-    4 => metric: uint,                      ; Métrique cumulée (0 à 65535, 65535 = infini)
-    5 => interval-ms: uint,                 ; Durée de validité de l'annonce
-    ? 6 => etx-ratio: float                 ; Ratio ETX mesuré (optionnel pour diagnostic)
+    k-prefix-eid => tstr,                  ; Destination annoncée (préfixe EID ou subnet)
+    k-router-id => bytes .size 8,          ; Router-ID d'origine de la destination
+    k-seqno => uint .size 2,               ; Numéro de séquence émis par le routeur source
+    k-metric => uint,                      ; Métrique cumulée (0 à 65535, 65535 = infini)
+    k-interval-ms => uint,                 ; Durée de validité de l'annonce
+    ? k-etx-ratio => float                 ; Ratio ETX mesuré (optionnel pour diagnostic)
 }
 
 ; ------------------------------------------------------------------------------
 ; 4. ROUTE REQUEST : Demande d'annonce de route
 ; ------------------------------------------------------------------------------
 route-request-payload = {
-    1 => requested-prefix-eid: tstr         ; Préfixe/EID recherché (ou "*" pour tout)
+    k-requested-prefix-eid => tstr         ; Préfixe/EID recherché (ou "*" pour tout)
 }
 
 ; ------------------------------------------------------------------------------
@@ -81,10 +105,10 @@ route-request-payload = {
 ; Permet d'éviter le problème de "comptage à l'infini" de Bellman-Ford.
 ; ------------------------------------------------------------------------------
 seqno-request-payload = {
-    1 => prefix-eid: tstr,                  ; Destination concernée
-    2 => router-id: bytes .size 8,          ; Router-ID de la destination cible
-    3 => seqno: uint .size 2,               ; Séquence minimale demandée (seqno + 1)
-    4 => hop-count: uint                    ; Compteur de propagation de la requête
+    k-prefix-eid => tstr,                  ; Destination concernée
+    k-router-id => bytes .size 8,          ; Router-ID de la destination cible
+    k-seqno => uint .size 2,               ; Séquence minimale demandée (seqno + 1)
+    k-hop-count => uint                    ; Compteur de propagation de la requête
 }
 
 ; ------------------------------------------------------------------------------

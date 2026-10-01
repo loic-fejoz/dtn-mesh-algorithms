@@ -1,4 +1,4 @@
-name: CI/CD Pipeline — OPA Tests & MkDocs Build
+name: CI/CD Pipeline — OPA Tests, CDDL Validation & MkDocs Build
 
 on:
   push:
@@ -28,9 +28,30 @@ jobs:
         run: |
           opa test ./policies -v
 
+  test-cddl:
+    name: Validate CDDL Schemas (pycddl)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install pycddl
+        run: |
+          python -m pip install --upgrade pip
+          pip install pycddl
+
+      - name: Run CDDL Validator
+        run: |
+          python scripts/validate_cddl.py
+
   build-and-deploy-docs:
     name: Build & Deploy MkDocs Site
-    needs: test-opa
+    needs: [test-opa, test-cddl]
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
