@@ -1,0 +1,86 @@
+site_name: DTN Mesh Algorithm
+site_description: Transposition d'algorithmes de routage mesh & opportunistes vers DTN (BPv7) sous OPA
+site_author: Loïc & DTN Mesh Algorithm Team
+site_url: https://loic-fejoz.github.io/sdtn/
+
+theme:
+  name: material
+  language: fr
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Passage au mode sombre
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Passage au mode clair
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+plugins:
+  - search
+
+markdown_extensions:
+  - tables
+  - attr_list
+  - admonition
+  - fenced_code
+  - codehilite
+  - toc:
+      permalink: true
+
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - Home:
+      - 🇫🇷 Accueil (FR): index.md
+      - 🇬🇧 Home (EN): index.en.md
+  - 🇫🇷 Articles (FR):
+      - Art. 0 — Fondations DTN & OPA: article-0-intro.md
+      - Art. 1 — APRS AX.25 Digipeating: article-1-aprs.md
+      - Art. 2 — Flood, Spray & Wait, Meshtastic: article-2-flood.md
+      - Art. 3 — PRoPHET (RFC 6693): article-3-prophet.md
+      - Art. 4 — MaxProp & HP-MaxProp: article-4-maxprop.md
+      - Art. 5 — Reticulum (RNS): article-5-reticulum.md
+      - Art. 6 — Babel (RFC 8966) & HYMAD: article-6-babel-aredn.md
+      - Art. 7 — CGR / SABR (CCSDS 734.3-B-1): article-7-cgr.md
+      - Art. 8 — GeoDTN & Geocasting: article-8-geodtn.md
+      - Art. 9 — Synthèse Architecturale: article-9-synthese-architecture.md
+      - Art. 10 — Feuille de Route & Extensions: article-10-roadmap-extensions.md
+  - 🇬🇧 Articles (EN):
+      - Art. 0 — DTN & OPA Foundations: article-0-intro.en.md
+      - Art. 1 — APRS AX.25 Digipeating: article-1-aprs.en.md
+      - Art. 2 — Flood, Spray & Wait, Meshtastic: article-2-flood.en.md
+      - Art. 3 — PRoPHET (RFC 6693): article-3-prophet.en.md
+      - Art. 4 — MaxProp & HP-MaxProp: article-4-maxprop.en.md
+      - Art. 5 — Reticulum (RNS): article-5-reticulum.en.md
+      - Art. 6 — Babel (RFC 8966) & HYMAD: article-6-babel-aredn.en.md
+      - Art. 7 — CGR / SABR (CCSDS 734.3-B-1): article-7-cgr.en.md
+      - Art. 8 — GeoDTN & Geocasting: article-8-geodtn.en.md
+      - Art. 9 — Architectural Synthesis: article-9-synthese-architecture.en.md
+      - Art. 10 — Roadmap & Future Work: article-10-roadmap-extensions.en.md
+  - Spécifications CDDL:
+      - Type 200 Modular Extension Block: mesh-algo-extension-block.cddl
+      - PRoPHET Control Messages: prophet.cddl
+      - MaxProp Control Messages: maxprop.cddl
+      - Reticulum Control Messages: reticulum.cddl
+      - Babel Control Messages: babel.cddl
+      - CGR Contact Plan Messages: cgr.cddl
+  - Documents & Propositions IETF:
+      - Spécifications de Bloc DTN: BUNDLE-BLOCK-TYPE.md
+      - Commentaires IETF BP-SAND: comments-ietf-dtn-bp-sand-04.md

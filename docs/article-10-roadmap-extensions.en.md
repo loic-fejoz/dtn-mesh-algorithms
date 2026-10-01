@@ -199,4 +199,4 @@ By demonstrating that complex algorithms (whether probabilistic like PRoPHET/Max
 ---
 
 🏁 **End of the Technical Series.**  
-Explore full source code, CDDL specs, declarative policies, and the roadmap in the [DTN Mesh Algorithm Project Repository](./README.md).
+Explore full source code, CDDL specs, declarative policies, and the roadmap in the [DTN Mesh Algorithm Project Repository](./index.md).

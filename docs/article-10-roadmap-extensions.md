@@ -245,4 +245,4 @@ En démontrant que la complexité des algorithmes (qu'ils soient probabilistes c
 ---
 
 🏁 **Fin de la série technique.**  
-Consultez le code source complet, les spécifications CDDL, les politiques déclaratives et la feuille de route dans le [Dépôt du Projet DTN Mesh Algorithm](./README.md).
+Consultez le code source complet, les spécifications CDDL, les politiques déclaratives et la feuille de route dans le [Dépôt du Projet DTN Mesh Algorithm](./index.md).

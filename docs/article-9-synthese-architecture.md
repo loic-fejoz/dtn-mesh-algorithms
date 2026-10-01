@@ -412,4 +412,4 @@ Les spécifications CDDL, les règles Rego et la suite de tests automatisés fou
 👉 **Poursuivre la lecture :**  
 [Article 10 — Perspectives et Roadmap d'Extension : Vers une Vision Panoramique du Routage DTN et l'Évolution Extensible du Plan de Contrôle](./article-10-roadmap-extensions.md)
 
-🏁 Consultez le code source complet, les spécifications CDDL et les politiques déclaratives dans le [Dépôt du Projet DTN Mesh Algorithm](./README.md).
+🏁 Consultez le code source complet, les spécifications CDDL et les politiques déclaratives dans le [Dépôt du Projet DTN Mesh Algorithm](./index.md).

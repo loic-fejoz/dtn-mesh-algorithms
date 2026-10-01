@@ -412,4 +412,4 @@ The CDDL specifications, Rego rules, and automated test suite provided in this r
 👉 **Continue Reading:**  
 [Article 10 — Perspectives and Extension Roadmap: Towards a Panoramic View of DTN Routing and Control Plane Evolution](./article-10-roadmap-extensions.en.md)
 
-🏁 Explore the full source code, CDDL specifications, and declarative policies in the [DTN Mesh Algorithm Project Repository](./README.en.md).
+🏁 Explore the full source code, CDDL specifications, and declarative policies in the [DTN Mesh Algorithm Project Repository](./index.en.md).

@@ -1,0 +1,8 @@
+# MkDocs build directory
+site/
+
+# Generated docs files (copied by scripts/prepare_docs.sh during pre-build)
+docs/index.md
+docs/index.en.md
+docs/*.cddl
+docs/policies/

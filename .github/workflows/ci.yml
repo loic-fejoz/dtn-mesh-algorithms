@@ -1,0 +1,63 @@
+name: CI/CD Pipeline — OPA Tests & MkDocs Build
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  test-opa:
+    name: Validate OPA Policies (140/140 PASS)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Open Policy Agent (OPA)
+        uses: open-policy-agent/setup-opa@v2
+        with:
+          version: v0.59.0
+
+      - name: Run OPA Test Suite
+        run: |
+          opa test ./policies -v
+
+  build-and-deploy-docs:
+    name: Build & Deploy MkDocs Site
+    needs: test-opa
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install MkDocs & Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install mkdocs-material pymdown-extensions
+
+      - name: Prepare Documentation Files
+        run: |
+          chmod +x scripts/prepare_docs.sh
+          bash scripts/prepare_docs.sh
+
+      - name: Build Documentation Site
+        run: |
+          mkdocs build --strict
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
